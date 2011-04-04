@@ -5,7 +5,7 @@ require "syntax_tree/ruby/nodes"
 Dir[File.dirname(__FILE__) + "/events/*.rb"].sort.each { |file| require file }
 
 module SyntaxTree
-  class RubyParser < Ripper::SexpBuilder
+  class RubyParser < Ripper
     class ParseError < RuntimeError
     end
 
@@ -61,22 +61,6 @@ module SyntaxTree
       @prologue_stack = []
       prologue
     end
-
-    def parse
-      res = super
-      raise "Token stack not empty: #{@token_stack}" unless @token_stack.empty?
-      raise "Prologue stack not empty: #{@prologue_stack}" unless @prologue_stack.empty?
-      res
-    end
-
-    include Module.new {
-      EVENTS.each do |event|
-        name = :"on_#{event}"
-        unless instance_methods(false).include? name
-          define_method name do |*args| raise NotImplementedError, "#{name} not handled" end
-        end
-      end
-    }
 
     include Events::Arguments
     include Events::Arrays
