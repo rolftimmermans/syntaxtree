@@ -4,7 +4,7 @@ module SyntaxTree
       class << self
         def define_nodes(*nodes)
           attr_accessor *nodes
-          singleton_class.send(:define_method, :node_names) { nodes }
+          class << self; self; end.send(:define_method, :node_names) { nodes }
         end
 
         def append_nodes(*nodes)
