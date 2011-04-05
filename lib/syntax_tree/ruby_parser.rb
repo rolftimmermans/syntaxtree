@@ -6,7 +6,7 @@ require "syntax_tree/ruby/nodes"
 Dir[File.dirname(__FILE__) + "/events/*.rb"].sort.each { |file| require file }
 
 module SyntaxTree
-  class RubyParser < Ripper::SexpBuilder
+  class RubyParser < Ripper
     class ParseError < RuntimeError
     end
 

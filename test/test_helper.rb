@@ -4,7 +4,7 @@ require "bundler/setup"
 require "ripper"
 
 module SyntaxTree
-  class RubyParser < Ripper::SexpBuilder
+  class RubyParser < Ripper
     module Debugging
       Ripper::EVENTS.each do |event|
         define_method :"on_#{event}" do |*args| raise NotImplementedError, "Cannot process :#{event}" end
@@ -22,6 +22,13 @@ end
 
 require "syntaxtree"
 require "syntax_tree/visitors/to_ruby"
+
+Defined = SyntaxTree::Events.constants.map { |c| SyntaxTree::Events.const_get(c).instance_methods }.flatten
+All = Ripper::EVENTS.map { |e| :"on_#{e}" }
+Missing = All - Defined
+Complete = (Defined.length.to_f / All.length) * 100
+
+puts "#{Complete.round(2)}% complete"
 
 require "minitest/autorun"
 require "wrong/adapters/minitest"
