@@ -70,6 +70,10 @@ module SyntaxTree
         create_token :rparen, token
       end
 
+      def on_period(token)
+        create_token :period, token
+      end
+
       def on_comma(token)
         create_token_no_prologue :comma, token
       end

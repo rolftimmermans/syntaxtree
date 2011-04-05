@@ -52,4 +52,19 @@ class ToRubyTest < MiniTest::Unit::TestCase
     src = "foo_bar!(a, 3, :foo => 3, :bar => 'bar', 4 => nil)"
     assert { to_ruby(src) == src }
   end
+
+  test "method calls with receivers should be converted back to ruby" do
+    src = "foo.bar(a, 3)"
+    assert { to_ruby(src) == src }
+  end
+
+  test "method calls with const receivers should be converted back to ruby" do
+    src = "FooClass.bar(a, 3)"
+    assert { to_ruby(src) == src }
+  end
+
+  test "method calls with const receivers with double colon operator should be converted back to ruby" do
+    src = "FooClass::bar(a, 3)"
+    assert { to_ruby(src) == src }
+  end
 end

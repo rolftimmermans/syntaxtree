@@ -87,4 +87,42 @@ class MethodCallTest < MiniTest::Unit::TestCase
   test "method call with hash argument should return method call with argument list with hash with assoc operator" do
     assert { statement("foo(1, :foo => :bar)").arguments.last.first.operator.token == "=>" }
   end
+
+  # Receivers
+  test "method call with receiver should return method call" do
+    assert { statement("foo.bar(1, 2)").kind_of? SyntaxTree::Ruby::MethodCall }
+  end
+
+  test "method call with receiver should return method call with receiver" do
+    assert { statement("foo.bar(1, 2)").receiver.kind_of? SyntaxTree::Ruby::Identifier }
+  end
+
+  test "method call with receiver should return method call with receiver with token" do
+    assert { statement("foo.bar(1, 2)").receiver.token == "foo" }
+  end
+
+  test "method call with receiver should return method call with operator" do
+    assert { statement("foo.bar(1, 2)").operator.kind_of? SyntaxTree::Ruby::Token }
+  end
+
+  test "method call with receiver should return method call with operator with token" do
+    assert { statement("foo.bar(1, 2)").operator.token == "." }
+  end
+
+  # Const receivers
+  test "method call with constant receiver should return method call" do
+    assert { statement("Foo.bar(1, 2)").kind_of? SyntaxTree::Ruby::MethodCall }
+  end
+
+  test "method call with constant receiver should return method call with constant receiver" do
+    assert { statement("Foo.bar(1, 2)").receiver.kind_of? SyntaxTree::Ruby::Constant }
+  end
+
+  test "method call with constant receiver should return method call with constant receiver with token" do
+    assert { statement("FooBar.bar(1, 2)").receiver.token == "FooBar" }
+  end
+
+  test "method call with constant receiver with double colon operator should return method call with operator" do
+    assert { statement("FooBar::bar(1, 2)").operator.token == "::" }
+  end
 end

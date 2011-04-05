@@ -1,4 +1,4 @@
-require "syntax_tree/ruby/nodes/abstract/node"
+require "syntax_tree/ruby/nodes/token"
 
 module SyntaxTree
   module Ruby
