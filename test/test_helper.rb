@@ -4,7 +4,7 @@ require "bundler/setup"
 require "ripper"
 
 module SyntaxTree
-  class RubyParser < Ripper
+  class RubyParser < Ripper::SexpBuilder
     module Debugging
       Ripper::EVENTS.each do |event|
         define_method :"on_#{event}" do |*args| raise NotImplementedError, "Cannot process :#{event}" end
@@ -12,8 +12,7 @@ module SyntaxTree
 
       def parse
         super.tap do
-          raise "Token stack not empty: #{@token_stack}" unless @token_stack.empty?
-          raise "Prologue stack not empty: #{@prologue_stack}" unless @prologue_stack.empty?
+          raise "Token stack not empty: #{tokens.inspect}" unless tokens.empty?
         end
       end
     end

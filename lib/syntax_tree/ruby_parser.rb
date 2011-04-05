@@ -1,11 +1,12 @@
 require "ripper"
+require "syntax_tree/parser/token_stack"
 require "syntax_tree/ruby/position"
 require "syntax_tree/ruby/nodes"
 
 Dir[File.dirname(__FILE__) + "/events/*.rb"].sort.each { |file| require file }
 
 module SyntaxTree
-  class RubyParser < Ripper
+  class RubyParser < Ripper::SexpBuilder
     class ParseError < RuntimeError
     end
 
@@ -17,10 +18,11 @@ module SyntaxTree
 
     attr_reader :src, :file
 
+    attr_reader :tokens
+
     def initialize(src, file = nil, lineno = nil)
       @src, @file = src, file
-      @token_stack = []
-      @prologue_stack = []
+      @tokens = Parser::TokenStack.new
       @string_stack = []
       super
     end
@@ -29,44 +31,25 @@ module SyntaxTree
       Ruby::Position.new(lineno.to_i, column)
     end
 
-    def push_token(type, token)
-      @token_stack << [type, token]
+    def prologue
+      Ruby::Prologue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :comma, :semicolon)
     end
 
-    def pop_token
-      @token_stack.pop[1] rescue nil
-    end
-
-    def pop_typed_token(*types)
-      tuple = @token_stack.reverse_each.find { |type, token| types.include? type }
-      @token_stack.delete(tuple)
-    end
-
-    def push_prologue(token)
-      @prologue_stack << token
+    def epilogue
+      Ruby::Epilogue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :semicolon)
     end
 
     def push_string(string)
       @string_stack << string
     end
 
-    def collect_string
-      string = @string_stack
-      @string_stack = []
-      string
-    end
-
-    def collect_prologue
-      prologue = Ruby::Prologue.new.concat @prologue_stack
-      @prologue_stack = []
-      prologue
-    end
-
     include Events::Arguments
     include Events::Arrays
+    include Events::Hashes
     include Events::Identifiers
     include Events::Lexing
     include Events::Literals
+    include Events::MethodCalls
     include Events::Statements
     include Events::Strings
     include Events::Symbols

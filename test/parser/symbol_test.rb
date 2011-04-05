@@ -24,11 +24,11 @@ class SymbolTest < MiniTest::Unit::TestCase
   end
 
   test "dynamic symbol should return dynamic symbol literal with literl for interpolated string" do
-    assert { statement(':"my #{foo}"').elements.first.kind_of? SyntaxTree::Ruby::Literal }
+    assert { statement(':"my #{foo}"').first.kind_of? SyntaxTree::Ruby::Literal }
   end
 
   test "dynamic symbol should return dynamic symbol literal with string value for literal in interpolated string" do
-    assert { statement(':"my #{foo}"').elements.first.token == "my " }
+    assert { statement(':"my #{foo}"').first.token == "my " }
   end
 
   test "dynamic symbol should return dynamic symbol literal with embedded expression for interpolated string" do

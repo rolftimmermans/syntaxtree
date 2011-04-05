@@ -4,9 +4,9 @@ require "syntax_tree/ruby/nodes/aspects/delimited"
 module SyntaxTree
   module Ruby
     class EmbeddedExpression < Node
-      include Delimited
+      define_nodes :statements
 
-      attr_reader :statements
+      include Delimited
     end
   end
 end

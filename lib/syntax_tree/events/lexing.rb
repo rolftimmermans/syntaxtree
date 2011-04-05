@@ -2,10 +2,18 @@ module SyntaxTree
   module Events
     module Lexing
       def create_token(type, token)
-        token = Ruby::Token.new(token, position).tap do |token|
-          token.prologue = collect_prologue
-        end
-        push_token type, token
+        token = Ruby::Token.new token: token, position: position, prologue: prologue
+        tokens.push type, token
+      end
+
+      def create_token_no_prologue(type, token)
+        token = Ruby::Token.new token: token, position: position
+        tokens.push type, token
+      end
+
+      def create_whitespace(type, token)
+        token = Ruby::Whitespace.new token: token, position: position
+        tokens.push type, token
       end
 
       def on_tstring_beg(token)
@@ -14,6 +22,12 @@ module SyntaxTree
 
       def on_tstring_end(token)
         create_token :tstring_end, token
+      end
+
+      def on_tstring_content(content)
+        token = Ruby::Literal.new token: content, position: position
+        tokens.push :tstring_content, token
+        nil
       end
 
       def on_embexpr_beg(token)
@@ -40,8 +54,28 @@ module SyntaxTree
         create_token :rbracket, token
       end
 
+      def on_lbrace(token)
+        create_token :lbrace, token
+      end
+
+      def on_rbrace(token)
+        create_token :rbrace, token
+      end
+
+      def on_lparen(token)
+        create_token :lparen, token
+      end
+
+      def on_rparen(token)
+        create_token :rparen, token
+      end
+
       def on_comma(token)
-        create_token :comma, token
+        create_token_no_prologue :comma, token
+      end
+
+      def on_semicolon(token)
+        create_token_no_prologue :semicolon, token
       end
 
       def on_op(operator)
@@ -49,7 +83,15 @@ module SyntaxTree
       end
 
       def on_sp(space)
-        push_prologue Ruby::Whitespace.new(space, position)
+        create_whitespace :sp, space
+      end
+
+      def on_nl(newline)
+        create_whitespace :nl, newline
+      end
+
+      def on_ignored_nl(newline)
+        create_whitespace :ignored_nl, newline
       end
     end
   end

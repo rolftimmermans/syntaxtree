@@ -1,7 +1,10 @@
 module SyntaxTree
   module Ruby
     module Delimited
-      attr_accessor :left_delim, :right_delim
+      def self.included(base)
+        base.prepend_nodes :left_delim
+        base.append_nodes :right_delim
+      end
     end
   end
 end

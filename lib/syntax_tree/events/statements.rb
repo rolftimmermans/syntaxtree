@@ -2,7 +2,7 @@ module SyntaxTree
   module Events
     module Statements
       def on_program(statements)
-        Ruby::Program.new(src, file, statements)
+        Ruby::Program.new src: src, file: file, statements: statements, epilogue: epilogue
       end
 
       def on_stmts_new
@@ -10,7 +10,7 @@ module SyntaxTree
       end
 
       def on_stmts_add(statements, statement)
-        statements << statement if statement
+        statements.push statement
         statements
       end
 
@@ -30,8 +30,8 @@ module SyntaxTree
       #
       # def on_paren(node)
       #   node = Ruby::Statements.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
-      #   node.rdelim ||= pop_token(:@rparen)
-      #   node.ldelim ||= pop_token(:@lparen)
+      #   node.rdelim ||= tokens.pop(:@rparen)
+      #   node.ldelim ||= tokens.pop(:@lparen)
       #   node
       # end
       #

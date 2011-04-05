@@ -12,29 +12,24 @@ module SyntaxTree
       end
 
       def on_int(integer)
-        Ruby::Integer.new(integer, position).tap do |integer|
-          integer.prologue = collect_prologue
-        end
+        Ruby::Integer.new token: integer, position: position, prologue: prologue
       end
 
       def on_float(float)
-        Ruby::Float.new(float, position).tap do |float|
-          float.prologue = collect_prologue
-        end
+        Ruby::Float.new token: float, position: position, prologue: prologue
       end
 
       def on_dot2(left, right)
-        Ruby::Range.new(left, pop_token, right)
+        Ruby::Range.new begin: left, operator: tokens.pop(:".."), end: right
       end
 
       def on_dot3(left, right)
-        Ruby::Range.new(left, pop_token, right)
+        Ruby::Range.new begin: left, operator: tokens.pop(:"..."), end: right
       end
 
       def create_literal(token)
-        Ruby.const_get(token[0].upcase + token[1..-1]).new(token, position).tap do |literal|
-          literal.prologue = collect_prologue
-        end
+        klass = Ruby.const_get(token[0].upcase + token[1..-1])
+        klass.new token: token, position: position, prologue: prologue
       end
 
 
@@ -46,8 +41,8 @@ module SyntaxTree
       #
       # def on_paren(node)
       #   node = Ruby::Statements.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
-      #   node.rdelim ||= pop_token(:@rparen)
-      #   node.ldelim ||= pop_token(:@lparen)
+      #   node.rdelim ||= tokens.pop(:@rparen)
+      #   node.ldelim ||= tokens.pop(:@lparen)
       #   node
       # end
       #

@@ -1,7 +1,9 @@
 module SyntaxTree
   module Ruby
     module LeftDelimited
-      attr_accessor :left_delim
+      def self.included(base)
+        base.prepend_nodes :left_delim
+      end
     end
   end
 end

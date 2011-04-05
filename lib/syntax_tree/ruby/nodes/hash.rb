@@ -3,8 +3,8 @@ require "syntax_tree/ruby/nodes/aspects/delimited"
 
 module SyntaxTree
   module Ruby
-    class Range < Node
-      define_nodes :begin, :operator, :end
+    class Hash < Composite
+      include Delimited
     end
   end
 end

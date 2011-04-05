@@ -2,9 +2,7 @@ module SyntaxTree
   module Events
     module Symbols
       def on_symbol(symbol)
-        Ruby::Symbol.new(symbol).tap do |symbol|
-          symbol.left_delim = pop_token
-        end
+        Ruby::Symbol.new identifier: symbol, left_delim: tokens.pop(:symbeg)
       end
 
       def on_symbol_literal(symbol)
@@ -13,7 +11,7 @@ module SyntaxTree
 
       def on_dyna_symbol(symbol)
         symbol.tap do |symbol|
-          symbol.right_delim = pop_token
+          symbol.right_delim = tokens.pop(:tstring_end)
         end
       end
     end
