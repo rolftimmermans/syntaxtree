@@ -23,19 +23,23 @@ class SymbolTest < MiniTest::Unit::TestCase
     assert { statement(':"#{foo}"').kind_of? SyntaxTree::Ruby::DynamicSymbol }
   end
 
-  test "dynamic symbol should return dynamic symbol literal with literl for interpolated string" do
-    assert { statement(':"my #{foo}"').first.kind_of? SyntaxTree::Ruby::Literal }
+  test "dynamic symbol should return dynamic symbol literal with string contents" do
+    assert { statement(':"my #{foo}"').contents.kind_of? SyntaxTree::Ruby::StringContents }
+  end
+
+  test "dynamic symbol should return dynamic symbol literal with string literal for interpolated string" do
+    assert { statement(':"my #{foo}"').contents.first.kind_of? SyntaxTree::Ruby::StringPart }
   end
 
   test "dynamic symbol should return dynamic symbol literal with string value for literal in interpolated string" do
-    assert { statement(':"my #{foo}"').first.token == "my " }
+    assert { statement(':"my #{foo}"').contents.first.token == "my " }
   end
 
   test "dynamic symbol should return dynamic symbol literal with embedded expression for interpolated string" do
-    assert { statement(':"my #{foo}"').elements[1].kind_of? SyntaxTree::Ruby::EmbeddedExpression }
+    assert { statement(':"my #{foo}"').contents.elements[1].kind_of? SyntaxTree::Ruby::EmbeddedExpression }
   end
 
   test "dynamic symbol should return dynamic symbol literal with statement in expression for interpolated string" do
-    assert { statement(':"my #{foo}"').elements[1].statements.first.token == "foo" }
+    assert { statement(':"my #{foo}"').contents.elements[1].statements.first.token == "foo" }
   end
 end

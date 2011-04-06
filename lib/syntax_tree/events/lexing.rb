@@ -23,9 +23,17 @@ module SyntaxTree
       def on_tstring_end(token)
         create_token :tstring_end, token
       end
+      
+      def on_regexp_beg(token)
+        create_token :regexp_beg, token
+      end
+
+      def on_regexp_end(token)
+        create_token :regexp_end, token
+      end
 
       def on_tstring_content(content)
-        token = Ruby::Literal.new token: content, position: position
+        token = Ruby::StringPart.new token: content, position: position
         tokens.push :tstring_content, token
         nil
       end

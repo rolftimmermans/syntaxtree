@@ -18,13 +18,13 @@ module SyntaxTree
       end
 
       def on_args_add_block(arguments, block)
-        arguments.push Ruby::BlockArgument.new block: block if block
+        arguments.push Ruby::BlockArgument.new identifier: block, left_delim: tokens.pop(:"&") if block
         arguments
       end
 
-      def on_method_add_arg(method_call, arguments)
-        method_call.arguments = arguments
-        method_call
+      def on_args_add_star(arguments, argument)
+        arguments.push Ruby::SplatArgument.new identifier: argument, left_delim: tokens.pop(:"*")
+        arguments
       end
     end
   end

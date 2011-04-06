@@ -1,5 +1,5 @@
 require "forwardable"
-require "syntax_tree/ruby/nodes/abstract/node"
+require "syntax_tree/ruby/node"
 
 module SyntaxTree
   module Ruby
@@ -9,7 +9,7 @@ module SyntaxTree
       include Enumerable
 
       extend Forwardable
-      delegate [:each, :last, :empty?] => :elements
+      delegate [:each, :last, :size, :empty?] => :elements
 
       def initialize(assignments = {})
         @elements = []
@@ -22,7 +22,7 @@ module SyntaxTree
       end
 
       def concat(array)
-        @elements.concat array
+        @elements.concat array if array
         self
       end
     end

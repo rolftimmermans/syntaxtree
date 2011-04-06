@@ -1,18 +1,18 @@
 module SyntaxTree
   module Ruby
     class Position
-      attr_reader :line, :col
+      attr_reader :line, :column
 
-      def initialize(line, col)
-        @line, @col = line, col
+      def initialize(line, column)
+        @line, @column = line, column
       end
 
       def ==(other)
-        line == other.line and col == other.col
+        line == other.line and column == other.column
       end
 
-      def inspect
-        "(#{line},#{col})"
+      def to_s
+        "(#{line},#{column})"
       end
     end
   end

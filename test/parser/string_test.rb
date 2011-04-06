@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class StringTest < MiniTest::Unit::TestCase
   # Single quotes
-  test "string should return string literal" do
+  test "string should return string" do
     assert { statement("'abc'").kind_of? SyntaxTree::Ruby::String }
   end
 
@@ -11,7 +11,7 @@ class StringTest < MiniTest::Unit::TestCase
   end
 
   test "string should return string with left delim at correct position" do
-    assert { statement("'abc'").left_delim.position == pos(1, 0) }
+    assert { statement("'abc'").left_delim.position == pos(0, 0) }
   end
 
   test "string should return string with right delim" do
@@ -19,19 +19,23 @@ class StringTest < MiniTest::Unit::TestCase
   end
 
   test "string should return string with right delim at correct position" do
-    assert { statement("'abc'").right_delim.position == pos(1, 4) }
+    assert { statement("'abc'").right_delim.position == pos(0, 4) }
   end
 
-  test "string should return string with elements" do
-    assert { statement("'abc'").elements.kind_of? Array }
+  test "string should return string with string contents" do
+    assert { statement("'abc'").contents.kind_of? SyntaxTree::Ruby::StringContents }
   end
 
-  test "string should return string with string value" do
-    assert { statement("'abc'").first.token == "abc" }
+  test "string should return string contents with elements" do
+    assert { statement("'abc'").contents.elements.kind_of? Array }
   end
 
-  test "string should return string with string value for string that spans lines" do
-    assert { statement("'abc\ndef\nghi'").inject("") { |s, l| s << l.token } == "abc\ndef\nghi" }
+  test "string should return string contents with string value" do
+    assert { statement("'abc'").contents.first.token == "abc" }
+  end
+
+  test "string should return string contents with string value for string that spans lines" do
+    assert { statement("'abc\ndef\nghi'").contents.inject("") { |s, l| s << l.token } == "abc\ndef\nghi" }
   end
 
   # Quoted string
@@ -52,27 +56,35 @@ class StringTest < MiniTest::Unit::TestCase
     assert { statement('"my #{foo}"').right_delim.token == '"' }
   end
 
-  test "string should return string with for interpolated string" do
-    assert { statement('"my #{foo}"').first.kind_of? SyntaxTree::Ruby::Literal }
+  test "string should return string with string contents for interpolated string" do
+    assert { statement('"my #{foo}"').contents.kind_of? SyntaxTree::Ruby::StringContents }
+  end
+
+  test "string should return string with string literal for interpolated string" do
+    assert { statement('"my #{foo}"').contents.first.kind_of? SyntaxTree::Ruby::StringPart }
   end
 
   test "string should return string with string value for in interpolated string" do
-    assert { statement('"my #{foo}"').first.token == "my " }
+    assert { statement('"my #{foo}"').contents.first.token == "my " }
   end
 
   test "string should return string with embedded expression for interpolated string" do
-    assert { statement('"my #{foo}"').elements[1].kind_of? SyntaxTree::Ruby::EmbeddedExpression }
+    assert { statement('"my #{foo}"').contents.last.kind_of? SyntaxTree::Ruby::EmbeddedExpression }
   end
 
   test "string should return string with statement in expression for interpolated string" do
-    assert { statement('"my #{foo}"').elements[1].statements.first.token == "foo" }
+    assert { statement('"my #{foo}"').contents.last.statements.first.token == "foo" }
   end
 
   test "string should return string with embedded expression with left delimiter for interpolated string" do
-    assert { statement('"my #{foo}"').elements[1].left_delim.token == '#{' }
+    assert { statement('"my #{foo}"').contents.last.left_delim.token == '#{' }
   end
 
   test "string should return string with embedded expression with right delimiter for interpolated string" do
-    assert { statement('"my #{foo}"').elements[1].right_delim.token == '}' }
+    assert { statement('"my #{foo}"').contents.last.right_delim.token == '}' }
+  end
+
+  test "string should return string with correct statements size in expression for interpolated string" do
+    assert { statement('"my #{foo; bar; baz}"').contents.last.statements.size == 3 }
   end
 end

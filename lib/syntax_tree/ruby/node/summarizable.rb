@@ -1,8 +1,6 @@
-require "syntax_tree/ruby/nodes/abstract/composite"
-
 module SyntaxTree
   module Ruby
-    class Prologue < Composite
+    module Summarizable
       def to_s
         elements.inject("") do |string, element|
           string += element.token

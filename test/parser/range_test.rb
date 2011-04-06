@@ -27,7 +27,7 @@ class RangeTest < MiniTest::Unit::TestCase
   end
 
   test "range should return range literal with correct operator position" do
-    assert { statement(" 1..10").operator.position == pos(1, 2) }
+    assert { statement(" 1..10").operator.position == pos(0, 2) }
   end
 
   # Exclusive range
@@ -56,6 +56,6 @@ class RangeTest < MiniTest::Unit::TestCase
   end
 
   test "range should return range literal with correct operator position for exclusive range" do
-    assert { statement("  1...10").operator.position == pos(1, 3) }
+    assert { statement("  1...10").operator.position == pos(0, 3) }
   end
 end

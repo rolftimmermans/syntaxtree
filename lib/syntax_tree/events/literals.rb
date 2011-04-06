@@ -5,10 +5,15 @@ module SyntaxTree
 
       def on_kw(keyword)
         if LITERALS.include? keyword
-          create_literal(keyword)
+          create_named_keyword(keyword)
         else
-          raise NotImplementedError
+          token = Ruby::Keyword.new token: keyword, position: position, prologue: prologue
+          tokens.push keyword.to_sym, token
         end
+      end
+
+      def on_CHAR(character)
+        Ruby::Character.new token: character, position: position, prologue: prologue
       end
 
       def on_int(integer)
@@ -27,7 +32,11 @@ module SyntaxTree
         Ruby::Range.new begin: left, operator: tokens.pop(:"..."), end: right
       end
 
-      def create_literal(token)
+      def on_label(symbol)
+        Ruby::Label.new token: symbol, position: position, prologue: prologue
+      end
+
+      def create_named_keyword(token)
         klass = Ruby.const_get(token[0].upcase + token[1..-1])
         klass.new token: token, position: position, prologue: prologue
       end

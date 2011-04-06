@@ -6,7 +6,10 @@ module SyntaxTree
       end
 
       def on_const(identifier)
-        Ruby::Constant.new token: identifier, position: position, prologue: prologue
+        Ruby::Constant.new(
+          token: identifier,
+          position: position,
+          prologue: prologue.push(tokens.pop(:"::")))
       end
     end
   end

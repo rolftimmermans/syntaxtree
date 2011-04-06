@@ -2,24 +2,6 @@ $: << File.expand_path("../lib", File.dirname(__FILE__))
 require "bundler/setup"
 
 require "ripper"
-
-module SyntaxTree
-  class RubyParser < Ripper
-    module Debugging
-      Ripper::EVENTS.each do |event|
-        define_method :"on_#{event}" do |*args| raise NotImplementedError, "Cannot process :#{event}" end
-      end
-
-      def parse
-        super.tap do
-          raise "Token stack not empty: #{tokens.inspect}" unless tokens.empty?
-        end
-      end
-    end
-    include Debugging
-  end
-end
-
 require "syntaxtree"
 require "syntax_tree/visitors/to_ruby"
 
@@ -28,6 +10,7 @@ All = Ripper::EVENTS.map { |e| :"on_#{e}" }
 Missing = All - Defined
 Complete = (Defined.length.to_f / All.length) * 100
 
+# p Missing
 puts "#{Complete.round(2)}% complete"
 
 require "minitest/autorun"
@@ -41,15 +24,28 @@ class MiniTest::Unit::TestCase
     end
   end
 
-  def parse(src)
-    SyntaxTree::RubyParser.new(src).parse
+  def parse(source)
+    SyntaxTree::RubyParser.new(source, "test.rb").parse
   end
 
-  def statement(src)
-    parse(src).statements.first
+  def statement(source)
+    parse(source).statements.first
   end
 
   def pos(line, col)
     SyntaxTree::Ruby::Position.new(line, col)
+  end
+end
+
+class Hash
+  def hash_sort(&block)
+    self.class[sort(&block)]
+  end
+
+  def deep_sort(&block)
+    sorted = hash_sort(&block)
+    sorted.each do |k, v|
+      sorted[k] = v.deep_sort(&block) if v.kind_of? Hash
+    end
   end
 end

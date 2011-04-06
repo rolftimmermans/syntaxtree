@@ -2,7 +2,7 @@ module SyntaxTree
   module Events
     module Statements
       def on_program(statements)
-        Ruby::Program.new src: src, file: file, statements: statements, epilogue: epilogue
+        Ruby::Program.new source: source, file: file, statements: statements, epilogue: epilogue
       end
 
       def on_stmts_new
@@ -18,7 +18,20 @@ module SyntaxTree
         nil
       end
 
+      def on_bodystmt(body, rescue_block, else_block, ensure_block)
+        # p body
+        # p rescue_block
+        # p else_block
+        # p ensure_block
+        #
+        body
+      end
+
       def on_var_ref(reference)
+        reference
+      end
+
+      def on_const_ref(reference)
         reference
       end
 

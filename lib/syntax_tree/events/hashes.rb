@@ -2,8 +2,10 @@ module SyntaxTree
   module Events
     module Hashes
       def on_hash(associations)
-        elements = associations || []
-        Ruby::Hash.new elements: elements, left_delim: tokens.pop(:lbrace), right_delim: tokens.pop(:rbrace)
+        Ruby::Hash.new(
+          left_delim: tokens.pop(:lbrace),
+          elements: associations || [],
+          right_delim: tokens.pop(:rbrace))
       end
 
       def on_bare_assoc_hash(associations)

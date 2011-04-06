@@ -88,6 +88,48 @@ class MethodCallTest < MiniTest::Unit::TestCase
     assert { statement("foo(1, :foo => :bar)").arguments.last.first.operator.token == "=>" }
   end
 
+  # Splat arguments
+  test "method call with splat argument should return method call" do
+    assert { statement("foo(1, *args)").kind_of? SyntaxTree::Ruby::MethodCall }
+  end
+
+  test "method call with splat argument should return method call with argument list" do
+    assert { statement("foo(1, *args)").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
+  end
+
+  test "method call with splat argument should return method call with argument list with splat argument" do
+    assert { statement("foo(1, *args)").arguments.last.kind_of? SyntaxTree::Ruby::SplatArgument }
+  end
+
+  test "method call with splat argument should return method call with argument list with splat argument identifier" do
+    assert { statement("foo(1, *args)").arguments.last.identifier.token == "args" }
+  end
+
+  test "method call with splat argument should return method call with argument list with splat argument with left delim" do
+    assert { statement("foo(1, *args)").arguments.last.left_delim.token == "*" }
+  end
+
+  # Block arguments
+  test "method call with block argument should return method call" do
+    assert { statement("foo(1, &block)").kind_of? SyntaxTree::Ruby::MethodCall }
+  end
+
+  test "method call with block argument should return method call with argument list" do
+    assert { statement("foo(1, &block)").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
+  end
+
+  test "method call with block argument should return method call with argument list with block argument" do
+    assert { statement("foo(1, &block)").arguments.last.kind_of? SyntaxTree::Ruby::BlockArgument }
+  end
+
+  test "method call with block argument should return method call with argument list with block argument with identifier" do
+    assert { statement("foo(1, &block)").arguments.last.identifier.token == "block" }
+  end
+
+  test "method call with block argument should return method call with argument list with block argument with left delim" do
+    assert { statement("foo(1, &block)").arguments.last.left_delim.token == "&" }
+  end
+
   # Receivers
   test "method call with receiver should return method call" do
     assert { statement("foo.bar(1, 2)").kind_of? SyntaxTree::Ruby::MethodCall }
@@ -124,5 +166,30 @@ class MethodCallTest < MiniTest::Unit::TestCase
 
   test "method call with constant receiver with double colon operator should return method call with operator" do
     assert { statement("FooBar::bar(1, 2)").operator.token == "::" }
+  end
+
+  # Without braces
+  test "method call without braces should return method call" do
+    assert { statement("foo 1, 2").kind_of? SyntaxTree::Ruby::MethodCall }
+  end
+
+  test "method call without braces should return method call without receiver" do
+    assert { statement("foo 1, 2").receiver == nil }
+  end
+
+  test "method call without braces should return method call without operator" do
+    assert { statement("foo 1, 2").operator == nil }
+  end
+
+  test "method call without braces should return method call with argument list" do
+    assert { statement("foo 1, 2").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
+  end
+
+  test "method call without braces should return method call with argument list without left delimiter" do
+    assert { statement("foo 1, 2").arguments.left_delim == nil }
+  end
+
+  test "method call without braces should return method call with argument list without right delimiter" do
+    assert { statement("foo 1, 2").arguments.right_delim == nil }
   end
 end

@@ -9,10 +9,11 @@ module SyntaxTree
         symbol
       end
 
-      def on_dyna_symbol(symbol)
-        symbol.tap do |symbol|
-          symbol.right_delim = tokens.pop(:tstring_end)
-        end
+      def on_dyna_symbol(contents)
+        Ruby::DynamicSymbol.new(
+          left_delim: tokens.pop(:symbeg),
+          contents: contents,
+          right_delim: tokens.pop(:tstring_end))
       end
     end
   end
