@@ -22,6 +22,10 @@ module SyntaxTree
       define_nodes :key, :operator, :value
     end
 
+    class BinaryOperator < Node
+      define_nodes :left, :operator, :right
+    end
+
     class Block < Node
       define_nodes :parameters, :statements
       include Delimited

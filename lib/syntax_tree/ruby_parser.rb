@@ -66,6 +66,7 @@ module SyntaxTree
     include Events::Literals
     include Events::MethodCalls
     include Events::MethodDefinitions
+    include Events::Operators
     include Events::Parameters
     include Events::Statements
     include Events::Strings

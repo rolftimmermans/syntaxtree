@@ -1,6 +1,6 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class KeywordsTest < Test::Unit::TestCase
+class KeywordTest < Test::Unit::TestCase
   context "nil" do
     subject { statement "  nil" }
 

@@ -19,6 +19,7 @@ module SyntaxTree
 
       def push(type, token)
         @stack << TypedToken.new(type, token)
+        nil
       end
 
       def pop(*types)

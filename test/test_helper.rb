@@ -10,7 +10,7 @@ All = Ripper::EVENTS.map { |e| :"on_#{e}" }
 Missing = All - Defined
 Complete = (Defined.length.to_f / All.length) * 100
 
-# p Missing
+p Missing
 puts "#{Complete.round(2)}% complete"
 
 require "test/unit"

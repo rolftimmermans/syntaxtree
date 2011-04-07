@@ -64,6 +64,8 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Range => {},
           Association => {},
 
+          BinaryOperator => {},
+
           Token => { # Leaf nodes
             StringPart => {},
             Keyword => {

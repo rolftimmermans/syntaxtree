@@ -4,12 +4,12 @@ class SymbolTest < Test::Unit::TestCase
   context "symbol" do
     subject { statement "  :abc" }
 
-    should "be literal" do
-      assert { subject.kind_of? Ruby::Literal }
-    end
-
     should "be symbol" do
       assert { subject.class == Ruby::Symbol }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
     end
 
     should "have symbol value" do
@@ -22,6 +22,26 @@ class SymbolTest < Test::Unit::TestCase
 
     should "have prologue" do
       assert { subject.left_delim.prologue.first.token == "  " }
+    end
+  end
+
+  context "symbol with keyword name" do
+    subject { statement ":begin" }
+
+    should "be symbol" do
+      assert { subject.class == Ruby::Symbol }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have symbol value" do
+      assert { subject.value == :begin }
+    end
+
+    should "have left delimiter" do
+      assert { subject.left_delim.token == ":" }
     end
   end
 
