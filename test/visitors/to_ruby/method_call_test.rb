@@ -27,36 +27,6 @@ class ToRubyMethodCallTest < Test::Unit::TestCase
       assert { to_ruby(src) == src }
     end
 
-    should "convert method call with empty block" do
-      src = "foo.bar(a, 3) { } "
-      assert { to_ruby(src) == src }
-    end
-
-    should "convert method call with block with empty parameter list" do
-      src = "foo.bar(a, 3) { ||  puts 'foo' } "
-      assert { to_ruby(src) == src }
-    end
-
-    should "convert method call with block with parameters" do
-      src = "foo.bar(a, 3) { | x , y | puts x } "
-      assert { to_ruby(src) == src }
-    end
-
-    should "convert method call with block with excessed comma" do
-      src = "foo.bar(a, 3) { | x, y, | puts x } "
-      assert { to_ruby(src) == src }
-    end
-
-    should "convert method call with block with regular parameters after optional arguments" do
-      src = "foo.bar(a, 3) { |x, y = 3, z|  puts x; } "
-      assert { to_ruby(src) == src }
-    end
-
-    should "convert method call with block with all kinds of parameters" do
-      src = "foo.bar(a, 3) { |x, y = 3, z = 'foo', *parameters, &block| puts x; puts y\n puts z } "
-      assert { to_ruby(src) == src }
-    end
-
     should "convert array element method call" do
       src = " foo [1 ] "
       assert { to_ruby(src) == src }
@@ -64,6 +34,26 @@ class ToRubyMethodCallTest < Test::Unit::TestCase
 
     should "convert array element method call with multiple arguments" do
       src = " foo [ 1, 'foo' ] "
+      assert { to_ruby(src) == src }
+    end
+
+    should "convert method call with keyword identifier" do
+      src = "foo.if(baz, qux)"
+      assert { to_ruby(src) == src }
+    end
+
+    should "convert method call with operator" do
+      src = "foo.<<(bar)"
+      assert { to_ruby(src) == src }
+    end
+
+    should "convert method call without parentheses" do
+      src = "foo.bar baz, qux"
+      assert { to_ruby(src) == src }
+    end
+
+    should "convert method call with keyword identifier without parentheses" do
+      src = "foo.class"
       assert { to_ruby(src) == src }
     end
   end

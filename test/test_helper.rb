@@ -8,9 +8,15 @@ require "syntax_tree/visitors/to_ruby"
 Defined = SyntaxTree::Events.constants.map { |c| SyntaxTree::Events.const_get(c).instance_methods }.flatten
 All = Ripper::EVENTS.map { |e| :"on_#{e}" }
 Missing = All - Defined
+Incorrect = Defined - All
 Complete = (Defined.length.to_f / All.length) * 100
 
-p Missing
+puts "To be implemented: " + Missing.inspect
+puts
+
+puts "Unknown: " + Incorrect.inspect
+puts
+
 puts "#{Complete.round(2)}% complete"
 
 require "test/unit"

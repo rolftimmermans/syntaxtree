@@ -66,6 +66,8 @@ class NodeHierarchyTest < Test::Unit::TestCase
 
           BinaryOperator => {},
 
+          Alias => {},
+
           Token => { # Leaf nodes
             Keyword => {
               False => {},

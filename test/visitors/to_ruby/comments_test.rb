@@ -18,7 +18,7 @@ class ToRubyCommentsTest < Test::Unit::TestCase
     end
 
     should "convert magic comment" do
-      src = "# -*- foo:bar -*-\nstatement"
+      src = "# -*- encoding: UTF-8 -*-\nstatement"
       assert { to_ruby(src) == src }
     end
   end

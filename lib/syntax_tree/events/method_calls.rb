@@ -9,12 +9,20 @@ module SyntaxTree
         Ruby::MethodCall.new(
           receiver: receiver,
           operator: tokens.pop(:period, :"::"),
-          identifier: identifier)
+          identifier: identifier || tokens.pop)
       end
 
       def on_command(identifier, arguments)
         Ruby::MethodCall.new(
           identifier: identifier,
+          arguments: arguments)
+      end
+
+      def on_command_call(receiver, operator, identifier, arguments)
+        Ruby::MethodCall.new(
+          receiver: receiver,
+          operator: tokens.pop(:period, :"::"),
+          identifier: identifier || tokens.pop,
           arguments: arguments)
       end
 
@@ -28,6 +36,16 @@ module SyntaxTree
         method_call
       end
 
+      def on_brace_block(parameters, statements)
+        parameters ||= Ruby::ParameterList.new
+        Ruby::Block.new(
+          left_delim: tokens.pop(:lbrace, :do),
+          parameters: parameters,
+          statements: statements,
+          right_delim: tokens.pop(:rbrace, :end))
+      end
+      alias_method :on_do_block, :on_brace_block
+
       def on_block_var(parameters, _)
         right_delim, left_delim = tokens.pop(:|), tokens.pop(:|)
         left_delim, right_delim = split_empty_block_delims unless left_delim
@@ -35,13 +53,12 @@ module SyntaxTree
         parameters
       end
 
-      def on_brace_block(parameters, statements)
-        parameters ||= Ruby::ParameterList.new
-        Ruby::Block.new(
-          left_delim: tokens.pop(:lbrace),
-          parameters: parameters,
-          statements: statements,
-          right_delim: tokens.pop(:rbrace))
+      def on_block_var_add_block
+        # Unused
+      end
+
+      def on_block_var_add_star
+        # Unused
       end
 
       def on_aref(identifier, arguments)
@@ -53,7 +70,7 @@ module SyntaxTree
           arguments: arguments)
       end
 
-      protected
+      private
 
       def split_empty_block_delims
         incorrect_operator = tokens.pop(:"||")

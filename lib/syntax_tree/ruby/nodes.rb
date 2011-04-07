@@ -10,6 +10,10 @@ require "syntax_tree/ruby/node/summarizable"
 
 module SyntaxTree
   module Ruby
+    class Alias < Node
+      define_nodes :keyword, :alias, :original
+    end
+
     class ArgumentList < Composite
       include Delimited
     end
@@ -78,7 +82,7 @@ module SyntaxTree
     end
 
     class MethodDefinition < Node
-      define_nodes :identifier, :parameters, :statements
+      define_nodes :receiver, :operator, :identifier, :parameters, :statements
       include Delimited
     end
 

@@ -43,20 +43,4 @@ class ToRubyTest < Test::Unit::TestCase
     src = "1\n[a, b]\n:foo\n{ :foo => 'bar'}\n?x\n??\n5.65\n1.1\n{ label: 'value'}"
     assert { to_ruby(src) == src }
   end
-
-  # Method definitions
-  test "method definition should be converted back to ruby" do
-    src = "def foo\n\n  puts 'foo'\nend"
-    assert { to_ruby(src) == src }
-  end
-
-  test "method definition with empty params should be converted back to ruby" do
-    src = "def foo() \n\n  puts 'foo'\nend"
-    assert { to_ruby(src) == src }
-  end
-
-  test "method definition with params should be converted back to ruby" do
-    src = "def foo(bar, baz = 2, qux = {}, *rest, &block)\n\n  puts 'foo'\nend"
-    assert { to_ruby(src) == src }
-  end
 end

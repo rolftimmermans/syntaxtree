@@ -16,6 +16,14 @@ class MethodCallTest < Test::Unit::TestCase
       assert { subject.operator == nil }
     end
 
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "foo" }
+    end
+
     should "have argument list" do
       assert { subject.arguments.class == Ruby::ArgumentList }
     end
@@ -38,6 +46,18 @@ class MethodCallTest < Test::Unit::TestCase
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
+    end
+
+    should "have no operator" do
+      assert { subject.operator == nil }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "foo" }
     end
 
     should "have argument list" do
@@ -152,7 +172,7 @@ class MethodCallTest < Test::Unit::TestCase
       assert { subject.class == Ruby::MethodCall }
     end
 
-    should "have identifier receiver" do
+    should "have variable receiver" do
       assert { subject.receiver.class == Ruby::Variable }
     end
 
@@ -166,6 +186,14 @@ class MethodCallTest < Test::Unit::TestCase
 
     should "have operator with token" do
       assert { subject.operator.token == "." }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "bar" }
     end
   end
 
@@ -182,6 +210,14 @@ class MethodCallTest < Test::Unit::TestCase
 
     should "have constant receiver with token" do
       assert { subject.receiver.token == "FooBar" }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "bar" }
     end
 
     context "with colon operator" do
@@ -208,6 +244,58 @@ class MethodCallTest < Test::Unit::TestCase
       assert { subject.operator == nil }
     end
 
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "foo" }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.class == Ruby::ArgumentList }
+    end
+
+    should "have argument list without left delimiter" do
+      assert { subject.arguments.left_delim == nil }
+    end
+
+    should "have argument list without right delimiter" do
+      assert { subject.arguments.right_delim == nil }
+    end
+  end
+
+  context "method call without parens with receiver" do
+    subject { statement "foo.bar 1, 2" }
+
+    should "be method call" do
+      assert { subject.class == Ruby::MethodCall }
+    end
+
+    should "have receiver" do
+      assert { subject.receiver.class == Ruby::Variable }
+    end
+
+    should "have receiver with token" do
+      assert { subject.receiver.token == "foo" }
+    end
+
+    should "have operator" do
+      assert { subject.operator.class == Ruby::Token }
+    end
+
+    should "have operator with token" do
+      assert { subject.operator.token == "." }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "bar" }
+    end
+
     should "have argument list" do
       assert { subject.arguments.class == Ruby::ArgumentList }
     end
@@ -222,18 +310,22 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "array element method call" do
-    subject { statement("foo[1, 3]") }
+    subject { statement "foo[1, 3]" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
     end
 
-    should "have identifier receiver" do
+    should "have variable receiver" do
       assert { subject.receiver.class == Ruby::Variable }
     end
 
     should "have receiver with token" do
       assert { subject.receiver.token == "foo" }
+    end
+
+    should "have no identifier" do
+      assert { subject.identifier == nil }
     end
 
     should "have argument list" do
@@ -246,6 +338,50 @@ class MethodCallTest < Test::Unit::TestCase
 
     should "have argument list with right delim" do
       assert { subject.arguments.right_delim.token == "]" }
+    end
+  end
+
+  context "method call with operator identifier" do
+    subject { statement "foo.<<(bar)" }
+
+    should "be method call" do
+      assert { subject.class == Ruby::MethodCall }
+    end
+
+    should "have variable receiver" do
+      assert { subject.receiver.class == Ruby::Variable }
+    end
+
+    should "have receiver with token" do
+      assert { subject.receiver.token == "foo" }
+    end
+
+    should "have operator" do
+      assert { subject.operator.class == Ruby::Token }
+    end
+
+    should "have operator with token" do
+      assert { subject.operator.token == "." }
+    end
+
+    should "have token identifier" do
+      assert { subject.identifier.class == Ruby::Token }
+    end
+
+    should "have identifier with token" do
+      assert { subject.identifier.token == "<<" }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.class == Ruby::ArgumentList }
+    end
+
+    should "have argument list with left delim" do
+      assert { subject.arguments.left_delim.token == "(" }
+    end
+
+    should "have argument list with right delim" do
+      assert { subject.arguments.right_delim.token == ")" }
     end
   end
 end

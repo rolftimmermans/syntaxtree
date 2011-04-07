@@ -5,8 +5,8 @@ module SyntaxTree
         Ruby::Program.new source: source, file: file, statements: statements, epilogue: epilogue
       end
 
-      def on_magic_comment(a, b)
-        raise "FIXME"
+      def on_magic_comment(key, somehow_always_false)
+        # Ignore magic comments; they appear as comment token anyway.
       end
 
       def on_paren(node)
@@ -55,13 +55,13 @@ module SyntaxTree
         reference
       end
 
-      def on_alias(target, arguments)
-        raise "FIXME"
+      def on_alias(aliased, original)
+        Ruby::Alias.new(
+          keyword: tokens.pop(:alias),
+          alias: aliased,
+          original: original)
       end
-
-      def on_var_alias(target, arguments)
-        raise "FIXME"
-      end
+      alias_method :on_var_alias, :on_alias
 
       # def on_body_stmt(body, rescue_block, else_block, ensure_block)
       #   statements = [rescue_block, else_block, ensure_block].compact
