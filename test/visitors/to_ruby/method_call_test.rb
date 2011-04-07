@@ -42,6 +42,11 @@ class ToRubyMethodCallTest < Test::Unit::TestCase
       assert { to_ruby(src) == src }
     end
 
+    should "convert method call with block with excessed comma" do
+      src = "foo.bar(a, 3) { | x, y, | puts x } "
+      assert { to_ruby(src) == src }
+    end
+
     should "convert method call with block with regular parameters after optional arguments" do
       src = "foo.bar(a, 3) { |x, y = 3, z|  puts x; } "
       assert { to_ruby(src) == src }

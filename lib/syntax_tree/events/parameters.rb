@@ -21,6 +21,10 @@ module SyntaxTree
       def on_blockarg(identifier)
         Ruby::BlockParameter.new identifier: identifier, left_delim: tokens.pop(:"&")
       end
+
+      def on_excessed_comma(token)
+        # Excessed comma is added to token prologues.
+      end
     end
   end
 end

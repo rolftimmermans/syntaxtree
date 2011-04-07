@@ -67,6 +67,10 @@ class BlockTest < Test::Unit::TestCase
     assert { statement("foo(a, b) { |x| puts x }").block.parameters.first.token == "x" }
   end
 
+  test "call with block with excessed parameters" do
+    assert { statement("foo(a, b) { |x, y, | puts x }").block.parameters.first.token == "x" }
+  end
+
   # Default parameters
   test "call with block with default param should return block with param list" do
     assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.class == Ruby::ParameterList }
