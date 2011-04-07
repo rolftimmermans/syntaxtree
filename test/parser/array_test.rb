@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class ArrayTest < Test::Unit::TestCase
   context "empty array" do
-    subject { statement("[]") }
+    subject { statement "[]" }
 
     should "empty have array" do
       assert { subject.kind_of? Ruby::Array }
@@ -14,7 +14,7 @@ class ArrayTest < Test::Unit::TestCase
   end
 
   context "array" do
-    subject { statement("[1, 2, 3]") }
+    subject { statement "[1, 2, 3]" }
 
     should "be array" do
       assert { subject.kind_of? Ruby::Array }
@@ -50,13 +50,15 @@ class ArrayTest < Test::Unit::TestCase
   end
 
   context "array with method calls" do
-    should "have method calls with identifiers with prologue" do
-      assert { statement("[foo(), bar()]").last.identifier.prologue.to_s == ", " }
+    subject { statement "[foo(), bar()]" }
+
+    should "have identifiers with prologue" do
+      assert { subject.last.identifier.prologue.to_s == ", " }
     end
   end
 
   context "array with trailing comma" do
-    subject { statement("[1, 2, 3, ]") }
+    subject { statement "[1, 2, 3, ]" }
 
     should "be array" do
       assert { subject.kind_of? Ruby::Array }

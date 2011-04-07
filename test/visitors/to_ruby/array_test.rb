@@ -16,5 +16,10 @@ class ToRubyArrayTest < Test::Unit::TestCase
       src = " [1, 2, 3, ]  "
       assert { to_ruby(src) == src }
     end
+
+    should "convert array with mixed elements" do
+      src = " [ :foo, 'bar' , baz(), QUX]  "
+      assert { to_ruby(src) == src }
+    end
   end
 end

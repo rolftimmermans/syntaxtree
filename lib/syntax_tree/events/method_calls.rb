@@ -44,11 +44,13 @@ module SyntaxTree
           right_delim: tokens.pop(:rbrace))
       end
 
-      def on_aref(target, args)
-        args ||= Ruby::ArgsList.new
-        args.ldelim ||= pop_token(:@lbracket, :left => target)
-        args.rdelim ||= pop_token(:@rbracket, :reverse => true, :pass => true, :left => args.ldelim)
-        Ruby::Call.new(target, nil, nil, args)
+      def on_aref(identifier, arguments)
+        # args ||= Ruby::ArgumentList.new
+        arguments.left_delim = tokens.pop(:lbracket)
+        arguments.right_delim = tokens.pop(:rbracket)
+        Ruby::MethodCall.new(
+          receiver: identifier,
+          arguments: arguments)
       end
 
       protected

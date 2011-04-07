@@ -1,95 +1,159 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class ClassTest < Test::Unit::TestCase
-  # Class
-  test "class should return class" do
-    assert { statement("class Foo; end").kind_of? Ruby::Class }
+  context "empty class" do
+    subject { statement "class Foo; end" }
+
+    should "be class" do
+      assert { subject.kind_of? Ruby::Class }
+    end
+
+    should "have left delimiter" do
+      assert { subject.left_delim.token == "class" }
+    end
+
+    should "have right delimiter" do
+      assert { subject.right_delim.token == "end" }
+    end
+
+    should "have constant identifier" do
+      assert { subject.identifier.kind_of? Ruby::Constant }
+    end
+
+    should "have constant identifier with given name" do
+      assert { subject.identifier.token == "Foo" }
+    end
+
+    should "have statements attribute" do
+      assert { subject.statements.kind_of? Ruby::Statements }
+    end
+
+    should "have no statements" do
+      assert { subject.statements.elements == [] }
+    end
+
+    should "have no operator" do
+      assert { subject.operator == nil }
+    end
+
+    should "have no superclass" do
+      assert { subject.superclass == nil }
+    end
   end
 
-  test "class should return class with left delimiter" do
-    assert { statement("class Foo; end").left_delim.token == "class" }
+  context "class with statements" do
+    subject { statement "class Foo; define_foo; define_bar; 3; end" }
+
+    should "be class" do
+      assert { subject.kind_of? Ruby::Class }
+    end
+
+    should "have statements attribute" do
+      assert { subject.statements.kind_of? Ruby::Statements }
+    end
+
+    should "have statements" do
+      assert { subject.statements.first.kind_of? Ruby::Identifier }
+    end
+
+    should "have correct statement length" do
+      assert { subject.statements.size == 3 }
+    end
   end
 
-  test "class should return class with right delimiter" do
-    assert { statement("class Foo; end").right_delim.token == "end" }
+  context "namespaced class" do
+    subject { statement "class Foo::Bar::Baz::Qux; end" }
+
+    should "be class" do
+      assert { subject.kind_of? Ruby::Class }
+    end
+
+    should "have namespace" do
+      assert { subject.identifier.kind_of? Ruby::Namespace }
+    end
+
+    should "have namespace with constant" do
+      assert { subject.identifier.first.kind_of? Ruby::Constant }
+    end
+
+    should "have namespace with constant names" do
+      assert { subject.identifier.map(&:token) == ["Foo", "Bar", "Baz", "Qux"] }
+    end
   end
 
-  test "class should return class with constant identifier" do
-    assert { statement("class Foo; end").identifier.kind_of? Ruby::Constant }
+  context "child class" do
+    subject { statement "class Foo < Bar; end" }
+
+    should "be class" do
+      assert { subject.kind_of? Ruby::Class }
+    end
+
+    should "have superclass" do
+      assert { subject.superclass.kind_of? Ruby::Constant }
+    end
+
+    should "have superclass with correct token" do
+      assert { subject.superclass.token == "Bar" }
+    end
+
+    should "have operator" do
+      assert { subject.operator.token == "<" }
+    end
   end
 
-  test "class should return class with constant identifier with given name" do
-    assert { statement("class Foo; end").identifier.token == "Foo" }
+  context "metaclass" do
+    subject { statement "class << foo_bar; define_foo; def xyz(); end; end" }
+
+    should "be class" do
+      assert { subject.kind_of? Ruby::Class }
+    end
+
+    should "be metaclass" do
+      assert { subject.kind_of? Ruby::MetaClass }
+    end
+
+    should "have left delimiter" do
+      assert { subject.left_delim.token == "class" }
+    end
+
+    should "have right delimiter" do
+      assert { subject.right_delim.token == "end" }
+    end
+
+    should "have operator" do
+      assert { subject.operator.token == "<<" }
+    end
+
+    should "have identifier" do
+      assert { subject.identifier.kind_of? Ruby::Identifier }
+    end
+
+    should "have identifier with given name" do
+      assert { subject.identifier.token == "foo_bar" }
+    end
+
+    should "have statements" do
+      assert { subject.statements.first.kind_of? Ruby::Identifier }
+    end
+
+    should "have correct statement length" do
+      assert { subject.statements.size == 2 }
+    end
   end
 
-  test "class should return class with statements attribute" do
-    assert { statement("class Foo; end").statements.kind_of? Ruby::Statements }
-  end
+  context "singleton class" do
+    subject { statement "class << self; end" }
 
-  test "class should return class with no statements" do
-    assert { statement("class Foo; end").statements.elements == [] }
-  end
+    should "be class" do
+      assert { subject.kind_of? Ruby::Class }
+    end
 
-  test "class should return class without operator" do
-    assert { statement("class Foo; end").operator == nil }
-  end
+    should "be metaclass" do
+      assert { subject.kind_of? Ruby::MetaClass }
+    end
 
-  test "class should return class without superclass" do
-    assert { statement("class Foo; end").superclass == nil }
-  end
-
-  # Class with statements
-  test "class with statements should return class" do
-    assert { statement("class Foo; define_foo; end").kind_of? Ruby::Class }
-  end
-
-  test "class with statements should return class with statements attribute" do
-    assert { statement("class Foo; define_foo; end").statements.kind_of? Ruby::Statements }
-  end
-
-  test "class with statements should return class with statements" do
-    assert { statement("class Foo; define_foo; end").statements.first.kind_of? Ruby::Identifier }
-  end
-
-  test "class with statements should return class correct statement length" do
-    assert { statement("class Foo; define_foo; define_bar; 3; end").statements.size == 3 }
-  end
-
-  # Child class
-  test "child class should return class" do
-    assert { statement("class Foo < Bar; end").kind_of? Ruby::Class }
-  end
-
-  test "child class should return class with superclass" do
-    assert { statement("class Foo < Bar; end").superclass.kind_of? Ruby::Constant }
-  end
-
-  test "child class should return class with superclass with correct token" do
-    assert { statement("class Foo < Bar; end").superclass.token == "Bar" }
-  end
-
-  test "child class should return class with operator" do
-    assert { statement("class Foo < Bar; end").operator.token == "<" }
-  end
-
-  # Class with namespace
-  test "namespaced class should return class" do
-    assert { statement("class Foo::Bar; end").kind_of? Ruby::Class }
-  end
-
-  test "namespaced class should return class with namespace" do
-    assert { statement("class Foo::Bar; end").identifier.kind_of? Ruby::Namespace }
-  end
-
-  test "namespaced class should return class with namespace with constant" do
-    assert { statement("class Foo::Bar; end").identifier.first.kind_of? Ruby::Constant }
-  end
-
-  test "namespaced class should return class with namespace with constant names" do
-    assert { statement("class Foo::Bar; end").identifier.map(&:token) == ["Foo", "Bar"] }
-  end
-
-  test "deeply namespaced class should return class with namespace with last constant name" do
-    assert { statement("class Foo::Bar::Baz::Qux; end").identifier.map(&:token) == ["Foo", "Bar", "Baz", "Qux"] }
+    should "have identifier" do
+      assert { subject.identifier.kind_of? Ruby::Self }
+    end
   end
 end

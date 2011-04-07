@@ -41,7 +41,10 @@ class NodeHierarchyTest < Test::Unit::TestCase
 
           Program => {}, # Root node
 
-          Class => {},
+          Class => {
+            MetaClass => {}
+          },
+          Module => {},
           Block => {},
 
           MethodCall => {},
@@ -66,7 +69,8 @@ class NodeHierarchyTest < Test::Unit::TestCase
             Keyword => {
               False => {},
               True => {},
-              Nil => {}
+              Nil => {},
+              Self => {}
             },
             Literal => {
               Character => {},

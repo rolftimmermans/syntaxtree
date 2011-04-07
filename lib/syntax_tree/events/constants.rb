@@ -5,8 +5,25 @@ module SyntaxTree
         Ruby::Class.new(
           left_delim: tokens.pop(:class),
           identifier: constant,
-          operator: tokens.pop(:"<"),
+          operator: tokens.pop(:<),
           superclass: superclass,
+          statements: body,
+          right_delim: tokens.pop(:end))
+      end
+
+      def on_sclass(identifier, body)
+        Ruby::MetaClass.new(
+          left_delim: tokens.pop(:class),
+          operator: tokens.pop(:<<),
+          identifier: identifier,
+          statements: body,
+          right_delim: tokens.pop(:end))
+      end
+
+      def on_module(constant, body)
+        Ruby::Module.new(
+          left_delim: tokens.pop(:module),
+          identifier: constant,
           statements: body,
           right_delim: tokens.pop(:end))
       end

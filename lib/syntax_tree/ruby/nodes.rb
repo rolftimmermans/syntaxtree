@@ -64,12 +64,22 @@ module SyntaxTree
       include Delimited
     end
 
+    class MetaClass < Class
+      define_nodes :operator, :identifier, :statements
+      include Delimited
+    end
+
     class MethodCall < Node
       define_nodes :receiver, :operator, :identifier, :arguments, :block
     end
 
     class MethodDefinition < Node
       define_nodes :identifier, :parameters, :statements
+      include Delimited
+    end
+
+    class Module < Node
+      define_nodes :identifier, :statements
       include Delimited
     end
 

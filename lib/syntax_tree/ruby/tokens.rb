@@ -32,6 +32,9 @@ module SyntaxTree
       end
     end
 
+    class Self < Keyword
+    end
+
     class True < Keyword
       def value
         true

@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class MethodCallTest < Test::Unit::TestCase
   context "method call with empty args" do
-    subject { statement("foo()") }
+    subject { statement "foo()" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -34,7 +34,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with primitive args" do
-    subject { statement("foo(1, 2)") }
+    subject { statement "foo(1, 2)" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -66,7 +66,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with hash argument" do
-    subject { statement("foo(1, :foo => :bar)") }
+    subject { statement "foo(1, :foo => :bar)" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -98,7 +98,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with splat argument" do
-    subject { statement("foo(1, *args)") }
+    subject { statement "foo(1, *args)" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -122,7 +122,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with block argument" do
-    subject { statement("foo(1, &block)") }
+    subject { statement "foo(1, &block)" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -146,13 +146,13 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with receiver" do
-    subject { statement("foo.bar(1, 2)") }
+    subject { statement "foo.bar(1, 2)" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
     end
 
-    should "have receiver" do
+    should "have identifier receiver" do
       assert { subject.receiver.kind_of? Ruby::Identifier }
     end
 
@@ -170,7 +170,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with constant receiver" do
-    subject { statement("FooBar.bar(1, 2)") }
+    subject { statement "FooBar.bar(1, 2)" }
 
     should "have method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -185,7 +185,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     context "with colon operator" do
-      subject { statement("FooBar::bar(1, 2)") }
+      subject { statement "FooBar::bar(1, 2)" }
 
       should "should have operator" do
         assert { subject.operator.token == "::" }
@@ -194,7 +194,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call without parens" do
-    subject { statement("foo 1, 2") }
+    subject { statement "foo 1, 2" }
 
     should "be method call" do
       assert { subject.kind_of? Ruby::MethodCall }
@@ -218,6 +218,34 @@ class MethodCallTest < Test::Unit::TestCase
 
     should "have argument list without right delimiter" do
       assert { subject.arguments.right_delim == nil }
+    end
+  end
+
+  context "array element method call" do
+    subject { statement("foo[1, 3]") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have identifier receiver" do
+      assert { subject.receiver.kind_of? Ruby::Identifier }
+    end
+
+    should "have receiver with token" do
+      assert { subject.receiver.token == "foo" }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
+
+    should "have argument list with left delim" do
+      assert { subject.arguments.left_delim.token == "[" }
+    end
+
+    should "have argument list with right delim" do
+      assert { subject.arguments.right_delim.token == "]" }
     end
   end
 end

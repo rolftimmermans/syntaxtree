@@ -1,7 +1,7 @@
 module SyntaxTree
   module Events
     module Literals
-      LITERALS = %w{nil true false}
+      LITERALS = %w{nil true false self}
 
       def on_kw(keyword)
         if LITERALS.include? keyword

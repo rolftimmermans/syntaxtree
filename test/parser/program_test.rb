@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class ProgramTest < Test::Unit::TestCase
   context "empty source" do
-    subject { parse("") }
+    subject { parse "" }
 
     should "be program" do
       assert { subject.kind_of? Ruby::Program }
@@ -18,7 +18,7 @@ class ProgramTest < Test::Unit::TestCase
   end
 
   context "whitespace source" do
-    subject { parse("  \n\t ") }
+    subject { parse "  \n\t " }
 
     should "be program" do
       assert { subject.kind_of? Ruby::Program }
@@ -34,7 +34,7 @@ class ProgramTest < Test::Unit::TestCase
   end
 
   context "program with statement" do
-    subject { parse("foo") }
+    subject { parse "foo" }
 
     should "have identifier" do
       assert { subject.statements.first.kind_of? Ruby::Identifier }
@@ -42,19 +42,19 @@ class ProgramTest < Test::Unit::TestCase
   end
 
   context "program with semicolons" do
-    subject { parse("foo; foo") }
+    subject { parse "foo; foo" }
 
-    should "identifiers with semicolumns should return program with identifier" do
+    should "have identifier" do
       assert { subject.statements.first.kind_of? Ruby::Identifier }
     end
 
-    should "identifiers with semicolumns should return program with identifier with prologue" do
+    should "have identifier with prologue" do
       assert { subject.statements.last.prologue.to_s == "; " }
     end
   end
 
   context "program with multiple semicolons" do
-    subject { parse("foo;;; foo") }
+    subject { parse "foo;;; foo" }
 
     should "have identifier with prologue" do
       assert { subject.statements.last.prologue.to_s == ";;; " }
@@ -62,7 +62,7 @@ class ProgramTest < Test::Unit::TestCase
   end
 
   context "program with trailing semicolon" do
-    subject { parse("foo; foo ; ") }
+    subject { parse "foo; foo ; " }
 
     should "have epilogue" do
       assert { subject.epilogue.to_s == " ; " }

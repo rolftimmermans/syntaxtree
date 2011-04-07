@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class MethodDefinitionTest < Test::Unit::TestCase
   context "method def without params" do
-    subject { statement("def foo\nend") }
+    subject { statement "def foo\nend" }
 
     should "be method definition" do
       assert { subject.kind_of? Ruby::MethodDefinition }
@@ -34,7 +34,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
   end
 
   context "method def with empty params" do
-    subject { statement("def foo()\nend") }
+    subject { statement "def foo()\nend" }
 
     should "be method definition" do
       assert { subject.kind_of? Ruby::MethodDefinition }
@@ -62,7 +62,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
   end
 
   context "method def with statements" do
-    subject { statement("def foo(a, b)\n  puts 'foo'; puts b\n end") }
+    subject { statement "def foo(a, b)\n  puts 'foo'; puts b\n end" }
 
     should "have statements" do
       assert { subject.statements.kind_of? Ruby::Statements }

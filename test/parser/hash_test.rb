@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class HashTest < Test::Unit::TestCase
   context "empty hash" do
-    subject { statement("{}") }
+    subject { statement "{}" }
 
     should "be hash" do
       assert { subject.kind_of? Ruby::Hash }
@@ -14,7 +14,7 @@ class HashTest < Test::Unit::TestCase
   end
 
   context "hash" do
-    subject { statement("{ :one => 2, :two => 3 }") }
+    subject { statement "{ :one => 2, :two => 3 }" }
 
     should "be hash" do
       assert { subject.kind_of? Ruby::Hash }
