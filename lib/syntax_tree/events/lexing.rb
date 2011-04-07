@@ -1,12 +1,25 @@
 module SyntaxTree
   module Events
     module Lexing
-      def create_token(type, token)
-        token = Ruby::Token.new token: token, position: position, prologue: prologue
-        tokens.push type, token
+      TOKEN_TYPES = [:tstring_beg, :tstring_end, :regexp_beg, :regexp_end,
+      :embexpr_beg, :embexpr_end, :lparen, :rparen, :lbrace, :rbrace,
+      :lbracket, :rbracket, :symbeg, :period]
+
+      TOKEN_TYPES.each do |type|
+        class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def on_#{type}(token)
+            push_token #{type.inspect}, token
+          end
+        RUBY
       end
 
-      def create_token_no_prologue(type, token)
+      private
+
+      def push_token(klass = Ruby::Token, type, token)
+        tokens.push type, klass.new(token: token, position: position, prologue: prologue)
+      end
+
+      def push_token_no_prologue(type, token)
         token = Ruby::Token.new token: token, position: position
         tokens.push type, token
       end
@@ -21,81 +34,21 @@ module SyntaxTree
         tokens.push type, token
       end
 
-      def on_tstring_beg(token)
-        create_token :tstring_beg, token
-      end
-
-      def on_tstring_end(token)
-        create_token :tstring_end, token
-      end
-
-      def on_regexp_beg(token)
-        create_token :regexp_beg, token
-      end
-
-      def on_regexp_end(token)
-        create_token :regexp_end, token
-      end
-
       def on_tstring_content(content)
         token = Ruby::StringPart.new token: content, position: position
         tokens.push :tstring_content, token
       end
 
-      def on_embexpr_beg(token)
-        create_token :embexpr_beg, token
-      end
-
-      def on_embexpr_end(token)
-        create_token :embexpr_end, token
-      end
-
-      def on_rbrace(token)
-        create_token :rbrace, token
-      end
-
-      def on_symbeg(token)
-        create_token :symbeg, token
-      end
-
-      def on_lbracket(token)
-        create_token :lbracket, token
-      end
-
-      def on_rbracket(token)
-        create_token :rbracket, token
-      end
-
-      def on_lbrace(token)
-        create_token :lbrace, token
-      end
-
-      def on_rbrace(token)
-        create_token :rbrace, token
-      end
-
-      def on_lparen(token)
-        create_token :lparen, token
-      end
-
-      def on_rparen(token)
-        create_token :rparen, token
-      end
-
-      def on_period(token)
-        create_token :period, token
-      end
-
       def on_comma(token)
-        create_token_no_prologue :comma, token
+        push_token_no_prologue :comma, token
       end
 
       def on_semicolon(token)
-        create_token_no_prologue :semicolon, token
+        push_token_no_prologue :semicolon, token
       end
 
       def on_op(operator)
-        create_token operator.to_sym, operator
+        push_token operator.to_sym, operator
       end
 
       def on_sp(space)
