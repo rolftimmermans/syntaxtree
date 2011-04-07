@@ -5,6 +5,15 @@ module SyntaxTree
         Ruby::Program.new source: source, file: file, statements: statements, epilogue: epilogue
       end
 
+      def on_paren(node)
+        # node = Ruby::Statements.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
+        # node.rdelim ||= tokens.pop(:@rparen)
+        # node.ldelim ||= tokens.pop(:@lparen)
+        node.left_delim = tokens.pop(:lparen)
+        node.right_delim = tokens.pop(:rparen)
+        node
+      end
+
       def on_stmts_new
         Ruby::Statements.new
       end
@@ -41,12 +50,6 @@ module SyntaxTree
       #   body
       # end
       #
-      # def on_paren(node)
-      #   node = Ruby::Statements.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
-      #   node.rdelim ||= tokens.pop(:@rparen)
-      #   node.ldelim ||= tokens.pop(:@lparen)
-      #   node
-      # end
       #
       # def on_stmts_add(target, statement)
       #   on_words_end if statement.is_a?(Ruby::Array) && !string_stack.empty? # simulating on_words_end event

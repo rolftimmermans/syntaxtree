@@ -1,13 +1,13 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class LiteralValuesTest < MiniTest::Unit::TestCase
+class LiteralValuesTest < Test::Unit::TestCase
   # Nil
   test "nil should return keyword" do
-    assert { statement("nil").kind_of? SyntaxTree::Ruby::Keyword }
+    assert { statement("nil").kind_of? Ruby::Keyword }
   end
 
   test "nil should return nil" do
-    assert { statement("nil").kind_of? SyntaxTree::Ruby::Nil }
+    assert { statement("nil").kind_of? Ruby::Nil }
   end
 
   test "nil should return nil with nil value" do
@@ -20,11 +20,11 @@ class LiteralValuesTest < MiniTest::Unit::TestCase
 
   # True
   test "true should return keyword" do
-    assert { statement("true").kind_of? SyntaxTree::Ruby::Keyword }
+    assert { statement("true").kind_of? Ruby::Keyword }
   end
 
   test "true should return true" do
-    assert { statement("true").kind_of? SyntaxTree::Ruby::True }
+    assert { statement("true").kind_of? Ruby::True }
   end
 
   test "true should return true with true value" do
@@ -41,11 +41,11 @@ class LiteralValuesTest < MiniTest::Unit::TestCase
 
   # False
   test "false should return keyword" do
-    assert { statement("false").kind_of? SyntaxTree::Ruby::Keyword }
+    assert { statement("false").kind_of? Ruby::Keyword }
   end
 
   test "false should return false" do
-    assert { statement("false").kind_of? SyntaxTree::Ruby::False }
+    assert { statement("false").kind_of? Ruby::False }
   end
 
   test "false should return false with false value" do
@@ -62,11 +62,11 @@ class LiteralValuesTest < MiniTest::Unit::TestCase
 
   # Integer
   test "integer should return literal" do
-    assert { statement("1").kind_of? SyntaxTree::Ruby::Literal }
+    assert { statement("1").kind_of? Ruby::Literal }
   end
 
   test "integer should return integer literal" do
-    assert { statement("1").kind_of? SyntaxTree::Ruby::Integer }
+    assert { statement("1").kind_of? Ruby::Integer }
   end
 
   test "integer should return integer literal with integer value" do
@@ -83,11 +83,11 @@ class LiteralValuesTest < MiniTest::Unit::TestCase
 
   # Float
   test "float should return literal" do
-    assert { statement("1.23").kind_of? SyntaxTree::Ruby::Literal }
+    assert { statement("1.23").kind_of? Ruby::Literal }
   end
 
   test "float should return float literal" do
-    assert { statement("1.23").kind_of? SyntaxTree::Ruby::Float }
+    assert { statement("1.23").kind_of? Ruby::Float }
   end
 
   test "float should return float literal with float value" do
@@ -104,11 +104,11 @@ class LiteralValuesTest < MiniTest::Unit::TestCase
 
   # Character
   test "character should return literal" do
-    assert { statement("?x").kind_of? SyntaxTree::Ruby::Literal }
+    assert { statement("?x").kind_of? Ruby::Literal }
   end
 
   test "character should return character literal" do
-    assert { statement("?x").kind_of? SyntaxTree::Ruby::Character }
+    assert { statement("?x").kind_of? Ruby::Character }
   end
 
   test "character should return character literal with character value" do
@@ -125,7 +125,7 @@ class LiteralValuesTest < MiniTest::Unit::TestCase
 
   # Label
   test "label should return label literal" do
-    assert { statement("{label: bar}").first.key.kind_of? SyntaxTree::Ruby::Label }
+    assert { statement("{label: bar}").first.key.kind_of? Ruby::Label }
   end
 
   test "label should return label literal with token" do

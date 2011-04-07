@@ -1,10 +1,6 @@
-require File.expand_path("../test_helper", File.dirname(__FILE__))
+require File.expand_path("../../test_helper", File.dirname(__FILE__))
 
-class ToRubyTest < MiniTest::Unit::TestCase
-  def to_ruby(src)
-    SyntaxTree::Visitors::ToRuby.new.accept SyntaxTree::RubyParser.new(src).parse
-  end
-
+class ToRubyTest < Test::Unit::TestCase
   # Trivial programs
   test "trivial statement should be converted back to ruby" do
     src = "nil"
@@ -127,6 +123,22 @@ class ToRubyTest < MiniTest::Unit::TestCase
 
   test "class definition with namespaced constant and superclass should be converted back to ruby" do
     src = "class Foo::Bar::Baz  < Foo::Bar::Qux\n\nfoo\nbar\n\nend"
+    assert { to_ruby(src) == src }
+  end
+
+  # Method definitions
+  test "method definition should be converted back to ruby" do
+    src = "def foo\n\n  puts 'foo'\nend"
+    assert { to_ruby(src) == src }
+  end
+
+  test "method definition with empty params should be converted back to ruby" do
+    src = "def foo() \n\n  puts 'foo'\nend"
+    assert { to_ruby(src) == src }
+  end
+
+  test "method definition with params should be converted back to ruby" do
+    src = "def foo(bar, baz = 2, qux = {}, *rest, &block)\n\n  puts 'foo'\nend"
     assert { to_ruby(src) == src }
   end
 end

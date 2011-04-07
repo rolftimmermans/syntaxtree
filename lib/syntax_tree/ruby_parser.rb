@@ -59,13 +59,13 @@ module SyntaxTree
 
     include Events::Arguments
     include Events::Arrays
-    include Events::Blocks
     include Events::Constants
     include Events::Hashes
     include Events::Identifiers
     include Events::Lexing
     include Events::Literals
     include Events::MethodCalls
+    include Events::MethodDefinitions
     include Events::Parameters
     include Events::Statements
     include Events::Strings

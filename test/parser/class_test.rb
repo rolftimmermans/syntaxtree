@@ -1,9 +1,9 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class ClassTest < MiniTest::Unit::TestCase
+class ClassTest < Test::Unit::TestCase
   # Class
   test "class should return class" do
-    assert { statement("class Foo; end").kind_of? SyntaxTree::Ruby::Class }
+    assert { statement("class Foo; end").kind_of? Ruby::Class }
   end
 
   test "class should return class with left delimiter" do
@@ -15,7 +15,7 @@ class ClassTest < MiniTest::Unit::TestCase
   end
 
   test "class should return class with constant identifier" do
-    assert { statement("class Foo; end").identifier.kind_of? SyntaxTree::Ruby::Constant }
+    assert { statement("class Foo; end").identifier.kind_of? Ruby::Constant }
   end
 
   test "class should return class with constant identifier with given name" do
@@ -23,7 +23,7 @@ class ClassTest < MiniTest::Unit::TestCase
   end
 
   test "class should return class with statements attribute" do
-    assert { statement("class Foo; end").statements.kind_of? SyntaxTree::Ruby::Statements }
+    assert { statement("class Foo; end").statements.kind_of? Ruby::Statements }
   end
 
   test "class should return class with no statements" do
@@ -40,15 +40,15 @@ class ClassTest < MiniTest::Unit::TestCase
 
   # Class with statements
   test "class with statements should return class" do
-    assert { statement("class Foo; define_foo; end").kind_of? SyntaxTree::Ruby::Class }
+    assert { statement("class Foo; define_foo; end").kind_of? Ruby::Class }
   end
 
   test "class with statements should return class with statements attribute" do
-    assert { statement("class Foo; define_foo; end").statements.kind_of? SyntaxTree::Ruby::Statements }
+    assert { statement("class Foo; define_foo; end").statements.kind_of? Ruby::Statements }
   end
 
   test "class with statements should return class with statements" do
-    assert { statement("class Foo; define_foo; end").statements.first.kind_of? SyntaxTree::Ruby::Identifier }
+    assert { statement("class Foo; define_foo; end").statements.first.kind_of? Ruby::Identifier }
   end
 
   test "class with statements should return class correct statement length" do
@@ -57,11 +57,11 @@ class ClassTest < MiniTest::Unit::TestCase
 
   # Child class
   test "child class should return class" do
-    assert { statement("class Foo < Bar; end").kind_of? SyntaxTree::Ruby::Class }
+    assert { statement("class Foo < Bar; end").kind_of? Ruby::Class }
   end
 
   test "child class should return class with superclass" do
-    assert { statement("class Foo < Bar; end").superclass.kind_of? SyntaxTree::Ruby::Constant }
+    assert { statement("class Foo < Bar; end").superclass.kind_of? Ruby::Constant }
   end
 
   test "child class should return class with superclass with correct token" do
@@ -74,15 +74,15 @@ class ClassTest < MiniTest::Unit::TestCase
 
   # Class with namespace
   test "namespaced class should return class" do
-    assert { statement("class Foo::Bar; end").kind_of? SyntaxTree::Ruby::Class }
+    assert { statement("class Foo::Bar; end").kind_of? Ruby::Class }
   end
 
   test "namespaced class should return class with namespace" do
-    assert { statement("class Foo::Bar; end").identifier.kind_of? SyntaxTree::Ruby::Namespace }
+    assert { statement("class Foo::Bar; end").identifier.kind_of? Ruby::Namespace }
   end
 
   test "namespaced class should return class with namespace with constant" do
-    assert { statement("class Foo::Bar; end").identifier.first.kind_of? SyntaxTree::Ruby::Constant }
+    assert { statement("class Foo::Bar; end").identifier.first.kind_of? Ruby::Constant }
   end
 
   test "namespaced class should return class with namespace with constant names" do

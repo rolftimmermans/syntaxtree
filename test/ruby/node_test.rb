@@ -1,8 +1,8 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class NodeTest < MiniTest::Unit::TestCase
+class NodeTest < Test::Unit::TestCase
   def setup
-    @klass = Class.new SyntaxTree::Ruby::Node
+    @klass = Class.new Ruby::Node
     @node = @klass.new
   end
 

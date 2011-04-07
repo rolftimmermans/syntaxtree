@@ -1,6 +1,4 @@
 require "syntax_tree/ruby/node"
-require "syntax_tree/ruby/composite"
-
 require "syntax_tree/ruby/node/prologued"
 
 module SyntaxTree

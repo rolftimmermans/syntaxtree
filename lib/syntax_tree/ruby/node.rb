@@ -36,7 +36,7 @@ module SyntaxTree
       #     lines.join("\n  ")
       #   end.join("\n")
       #
-      #   "#<#{self.class.name.sub("SyntaxTree::Ruby::", "")}\n  " + inspected_nodes + "\n"
+      #   "#<#{self.class.name.sub("Ruby::", "")}\n  " + inspected_nodes + "\n"
       # end
     end
   end

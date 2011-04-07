@@ -1,13 +1,13 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class RangeTest < MiniTest::Unit::TestCase
+class RangeTest < Test::Unit::TestCase
   # Inclusive range
   test "range should return range literal" do
-    assert { statement("1..10").kind_of? SyntaxTree::Ruby::Range }
+    assert { statement("1..10").kind_of? Ruby::Range }
   end
 
   test "range should return range literal with begin expression" do
-    assert { statement("1..10").begin.kind_of? SyntaxTree::Ruby::Integer }
+    assert { statement("1..10").begin.kind_of? Ruby::Integer }
   end
 
   test "range should return range literal with correct value for begin expression" do
@@ -15,7 +15,7 @@ class RangeTest < MiniTest::Unit::TestCase
   end
 
   test "range should return range literal with end expression" do
-    assert { statement("1..10").end.kind_of? SyntaxTree::Ruby::Integer }
+    assert { statement("1..10").end.kind_of? Ruby::Integer }
   end
 
   test "range should return range literal with correct value for end expression" do
@@ -32,11 +32,11 @@ class RangeTest < MiniTest::Unit::TestCase
 
   # Exclusive range
   test "range should return range literal for exclusive range" do
-    assert { statement("1...10").kind_of? SyntaxTree::Ruby::Range }
+    assert { statement("1...10").kind_of? Ruby::Range }
   end
 
   test "range should return range literal with begin expression for exclusive range" do
-    assert { statement("1...10").begin.kind_of? SyntaxTree::Ruby::Integer }
+    assert { statement("1...10").begin.kind_of? Ruby::Integer }
   end
 
   test "range should return range literal with correct value for begin expression for exclusive range" do
@@ -44,7 +44,7 @@ class RangeTest < MiniTest::Unit::TestCase
   end
 
   test "range should return range literal with end expression for exclusive range" do
-    assert { statement("1...10").end.kind_of? SyntaxTree::Ruby::Integer }
+    assert { statement("1...10").end.kind_of? Ruby::Integer }
   end
 
   test "range should return range literal with correct value for end expression for exclusive range" do

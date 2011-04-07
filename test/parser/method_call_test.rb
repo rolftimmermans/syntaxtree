@@ -1,195 +1,223 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class MethodCallTest < MiniTest::Unit::TestCase
-  # Empty argument list
-  test "method call with empty arguments should return method call" do
-    assert { statement("foo()").kind_of? SyntaxTree::Ruby::MethodCall }
+class MethodCallTest < Test::Unit::TestCase
+  context "method call with empty args" do
+    subject { statement("foo()") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have no receiver" do
+      assert { subject.receiver == nil }
+    end
+
+    should "have no operator" do
+      assert { subject.operator == nil }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
+
+    should "have argument list with left delimiter" do
+      assert { subject.arguments.left_delim.token == "(" }
+    end
+
+    should "have argument list with right delimiter" do
+      assert { subject.arguments.right_delim.token == ")" }
+    end
+
+    should "include delimiters in nodes" do
+      assert { subject.arguments.nodes.first.kind_of? Ruby::Token }
+    end
   end
 
-  test "method call with empty arguments should return method call without receiver" do
-    assert { statement("foo()").receiver == nil }
+  context "method call with primitive args" do
+    subject { statement("foo(1, 2)") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
+
+    should "have argument list with left delimiter" do
+      assert { subject.arguments.left_delim.token == "(" }
+    end
+
+    should "have argument list with right delimiter" do
+      assert { subject.arguments.right_delim.token == ")" }
+    end
+
+    should "have primitive argument" do
+      assert { subject.arguments.first.kind_of? Ruby::Integer }
+    end
+
+    should "have primitive argument with token" do
+      assert { subject.arguments.first.token == "1" }
+    end
+
+    should "have primitive argument with prologue" do
+      assert { subject.arguments.last.prologue.to_s == ", " }
+    end
   end
 
-  test "method call with empty arguments should return method call without operator" do
-    assert { statement("foo()").operator == nil }
+  context "method call with hash argument" do
+    subject { statement("foo(1, :foo => :bar)") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
+
+    should "have argument list with hash" do
+      assert { subject.arguments.last.kind_of? Ruby::Hash }
+    end
+
+    should "have argument list with hash assoc" do
+      assert { subject.arguments.last.first.kind_of? Ruby::Association }
+    end
+
+    should "have argument list with hash with assoc key" do
+      assert { subject.arguments.last.first.key.identifier.token == "foo" }
+    end
+
+    should "have argument list with hash with assoc value" do
+      assert { subject.arguments.last.first.value.identifier.token == "bar" }
+    end
+
+    should "have argument list with hash with assoc operator" do
+      assert { subject.arguments.last.first.operator.token == "=>" }
+    end
   end
 
-  test "method call with empty arguments should return method call with argument list" do
-    assert { statement("foo()").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
+  context "method call with splat argument" do
+    subject { statement("foo(1, *args)") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
+
+    should "have argument list with splat argument" do
+      assert { subject.arguments.last.kind_of? Ruby::SplatArgument }
+    end
+
+    should "have argument list with splat argument identifier" do
+      assert { subject.arguments.last.identifier.token == "args" }
+    end
+
+    should "have argument list with splat argument with left delim" do
+      assert { subject.arguments.last.left_delim.token == "*" }
+    end
   end
 
-  test "method call with empty arguments should return method call with argument list with left delimiter" do
-    assert { statement("foo()").arguments.left_delim.token == "(" }
+  context "method call with block argument" do
+    subject { statement("foo(1, &block)") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
+
+    should "have argument list with block argument" do
+      assert { subject.arguments.last.kind_of? Ruby::BlockArgument }
+    end
+
+    should "have argument list with block argument with identifier" do
+      assert { subject.arguments.last.identifier.token == "block" }
+    end
+
+    should "have argument list with block argument with left delim" do
+      assert { subject.arguments.last.left_delim.token == "&" }
+    end
   end
 
-  test "method call with empty arguments should return method call with argument list with right delimiter" do
-    assert { statement("foo()").arguments.right_delim.token == ")" }
+  context "method call with receiver" do
+    subject { statement("foo.bar(1, 2)") }
+
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have receiver" do
+      assert { subject.receiver.kind_of? Ruby::Identifier }
+    end
+
+    should "have receiver with token" do
+      assert { subject.receiver.token == "foo" }
+    end
+
+    should "have operator" do
+      assert { subject.operator.kind_of? Ruby::Token }
+    end
+
+    should "have operator with token" do
+      assert { subject.operator.token == "." }
+    end
   end
 
-  test "method call with empty arguments should return delimiters in nodes" do
-    assert { statement("foo()").arguments.nodes.first.kind_of? SyntaxTree::Ruby::Token }
+  context "method call with constant receiver" do
+    subject { statement("FooBar.bar(1, 2)") }
+
+    should "have method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
+
+    should "have constant receiver" do
+      assert { subject.receiver.kind_of? Ruby::Constant }
+    end
+
+    should "have constant receiver with token" do
+      assert { subject.receiver.token == "FooBar" }
+    end
+
+    context "with colon operator" do
+      subject { statement("FooBar::bar(1, 2)") }
+
+      should "should have operator" do
+        assert { subject.operator.token == "::" }
+      end
+    end
   end
 
-  # Simple arguments
-  test "method call with primitve arguments should return method call" do
-    assert { statement("foo(1, 2)").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
+  context "method call without parens" do
+    subject { statement("foo 1, 2") }
 
-  test "method call with primitve arguments should return method call with argument list" do
-    assert { statement("foo(1, 2)").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
-  end
+    should "be method call" do
+      assert { subject.kind_of? Ruby::MethodCall }
+    end
 
-  test "method call with primitve arguments should return method call with argument list with left delimiter" do
-    assert { statement("foo(1, 2)").arguments.left_delim.token == "(" }
-  end
+    should "have no receiver" do
+      assert { subject.receiver == nil }
+    end
 
-  test "method call with primitve arguments should return method call with argument list with right delimiter" do
-    assert { statement("foo(1, 2)").arguments.right_delim.token == ")" }
-  end
+    should "have no operator" do
+      assert { subject.operator == nil }
+    end
 
-  test "method call with primitve arguments should return method call with primitive argument" do
-    assert { statement("foo(1, 2)").arguments.first.kind_of? SyntaxTree::Ruby::Integer }
-  end
+    should "have argument list" do
+      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+    end
 
-  test "method call with primitve arguments should return method call with primitive argument with token" do
-    assert { statement("foo(1, 2)").arguments.first.token == "1" }
-  end
+    should "have argument list without left delimiter" do
+      assert { subject.arguments.left_delim == nil }
+    end
 
-  test "method call with primitve arguments should return method call with primitive argument with prologue" do
-    assert { statement("foo(1, 2)").arguments.last.prologue.to_s == ", " }
-  end
-
-  # Hash arguments
-  test "method call with hash argument should return method call" do
-    assert { statement("foo(1, :foo => :bar)").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
-
-  test "method call with hash argument should return method call with argument list" do
-    assert { statement("foo(1, :foo => :bar)").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
-  end
-
-  test "method call with hash argument should return method call with argument list with hash" do
-    assert { statement("foo(1, :foo => :bar)").arguments.last.kind_of? SyntaxTree::Ruby::Hash }
-  end
-
-  test "method call with hash argument should return method call with argument list with hash assoc" do
-    assert { statement("foo(1, :foo => :bar)").arguments.last.first.kind_of? SyntaxTree::Ruby::Association }
-  end
-
-  test "method call with hash argument should return method call with argument list with hash with assoc key" do
-    assert { statement("foo(1, :foo => :bar)").arguments.last.first.key.identifier.token == "foo" }
-  end
-
-  test "method call with hash argument should return method call with argument list with hash with assoc value" do
-    assert { statement("foo(1, :foo => :bar)").arguments.last.first.value.identifier.token == "bar" }
-  end
-
-  test "method call with hash argument should return method call with argument list with hash with assoc operator" do
-    assert { statement("foo(1, :foo => :bar)").arguments.last.first.operator.token == "=>" }
-  end
-
-  # Splat arguments
-  test "method call with splat argument should return method call" do
-    assert { statement("foo(1, *args)").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
-
-  test "method call with splat argument should return method call with argument list" do
-    assert { statement("foo(1, *args)").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
-  end
-
-  test "method call with splat argument should return method call with argument list with splat argument" do
-    assert { statement("foo(1, *args)").arguments.last.kind_of? SyntaxTree::Ruby::SplatArgument }
-  end
-
-  test "method call with splat argument should return method call with argument list with splat argument identifier" do
-    assert { statement("foo(1, *args)").arguments.last.identifier.token == "args" }
-  end
-
-  test "method call with splat argument should return method call with argument list with splat argument with left delim" do
-    assert { statement("foo(1, *args)").arguments.last.left_delim.token == "*" }
-  end
-
-  # Block arguments
-  test "method call with block argument should return method call" do
-    assert { statement("foo(1, &block)").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
-
-  test "method call with block argument should return method call with argument list" do
-    assert { statement("foo(1, &block)").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
-  end
-
-  test "method call with block argument should return method call with argument list with block argument" do
-    assert { statement("foo(1, &block)").arguments.last.kind_of? SyntaxTree::Ruby::BlockArgument }
-  end
-
-  test "method call with block argument should return method call with argument list with block argument with identifier" do
-    assert { statement("foo(1, &block)").arguments.last.identifier.token == "block" }
-  end
-
-  test "method call with block argument should return method call with argument list with block argument with left delim" do
-    assert { statement("foo(1, &block)").arguments.last.left_delim.token == "&" }
-  end
-
-  # Receivers
-  test "method call with receiver should return method call" do
-    assert { statement("foo.bar(1, 2)").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
-
-  test "method call with receiver should return method call with receiver" do
-    assert { statement("foo.bar(1, 2)").receiver.kind_of? SyntaxTree::Ruby::Identifier }
-  end
-
-  test "method call with receiver should return method call with receiver with token" do
-    assert { statement("foo.bar(1, 2)").receiver.token == "foo" }
-  end
-
-  test "method call with receiver should return method call with operator" do
-    assert { statement("foo.bar(1, 2)").operator.kind_of? SyntaxTree::Ruby::Token }
-  end
-
-  test "method call with receiver should return method call with operator with token" do
-    assert { statement("foo.bar(1, 2)").operator.token == "." }
-  end
-
-  # Const receivers
-  test "method call with constant receiver should return method call" do
-    assert { statement("Foo.bar(1, 2)").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
-
-  test "method call with constant receiver should return method call with constant receiver" do
-    assert { statement("Foo.bar(1, 2)").receiver.kind_of? SyntaxTree::Ruby::Constant }
-  end
-
-  test "method call with constant receiver should return method call with constant receiver with token" do
-    assert { statement("FooBar.bar(1, 2)").receiver.token == "FooBar" }
-  end
-
-  test "method call with constant receiver with double colon operator should return method call with operator" do
-    assert { statement("FooBar::bar(1, 2)").operator.token == "::" }
-  end
-
-  # Without braces
-  test "method call without braces should return method call" do
-    assert { statement("foo 1, 2").kind_of? SyntaxTree::Ruby::MethodCall }
-  end
-
-  test "method call without braces should return method call without receiver" do
-    assert { statement("foo 1, 2").receiver == nil }
-  end
-
-  test "method call without braces should return method call without operator" do
-    assert { statement("foo 1, 2").operator == nil }
-  end
-
-  test "method call without braces should return method call with argument list" do
-    assert { statement("foo 1, 2").arguments.kind_of? SyntaxTree::Ruby::ArgumentList }
-  end
-
-  test "method call without braces should return method call with argument list without left delimiter" do
-    assert { statement("foo 1, 2").arguments.left_delim == nil }
-  end
-
-  test "method call without braces should return method call with argument list without right delimiter" do
-    assert { statement("foo 1, 2").arguments.right_delim == nil }
+    should "have argument list without right delimiter" do
+      assert { subject.arguments.right_delim == nil }
+    end
   end
 end

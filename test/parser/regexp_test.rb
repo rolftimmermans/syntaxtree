@@ -1,9 +1,9 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class RegexpTest < MiniTest::Unit::TestCase
+class RegexpTest < Test::Unit::TestCase
   # Regexp
   test "regexp should return regexp" do
-    assert { statement("/abc/").kind_of? SyntaxTree::Ruby::Regexp }
+    assert { statement("/abc/").kind_of? Ruby::Regexp }
   end
 
   test "regexp should return regexp with left delim" do
@@ -15,7 +15,7 @@ class RegexpTest < MiniTest::Unit::TestCase
   end
 
   test "regexp should return regexp with string contents" do
-    assert { statement("/abc/").contents.kind_of? SyntaxTree::Ruby::StringContents }
+    assert { statement("/abc/").contents.kind_of? Ruby::StringContents }
   end
 
   test "regexp should return regexp with string contents with elements" do
@@ -28,7 +28,7 @@ class RegexpTest < MiniTest::Unit::TestCase
 
   # Different delimiters
   test "regexp with different delimiters should return regexp" do
-    assert { statement("%r{abc}").kind_of? SyntaxTree::Ruby::Regexp }
+    assert { statement("%r{abc}").kind_of? Ruby::Regexp }
   end
 
   test "regexp with different delimiters should return regexp with left delim" do
@@ -41,7 +41,7 @@ class RegexpTest < MiniTest::Unit::TestCase
 
   # Modifiers
   test "regexp with modifiers should return regexp" do
-    assert { statement("/abc/im").kind_of? SyntaxTree::Ruby::Regexp }
+    assert { statement("/abc/im").kind_of? Ruby::Regexp }
   end
 
   test "regexp with modifiers should return regexp with left delim" do
@@ -54,7 +54,7 @@ class RegexpTest < MiniTest::Unit::TestCase
 
   # Multiline
   test "regexp with multiple lines should return regexp" do
-    assert { statement("/abc\n[abc]+\n[def]{1,2}/x").kind_of? SyntaxTree::Ruby::Regexp }
+    assert { statement("/abc\n[abc]+\n[def]{1,2}/x").kind_of? Ruby::Regexp }
   end
 
   test "regexp with multiple lines should return string contents with string value" do
@@ -71,11 +71,11 @@ class RegexpTest < MiniTest::Unit::TestCase
   end
 
   test "regexp should return regexp with regexp contents for interpolated regexp" do
-    assert { statement('/my #{foo}/').contents.kind_of? SyntaxTree::Ruby::StringContents }
+    assert { statement('/my #{foo}/').contents.kind_of? Ruby::StringContents }
   end
 
   test "regexp should return regexp with regexp literal for interpolated regexp" do
-    assert { statement('/my #{foo}/').contents.first.kind_of? SyntaxTree::Ruby::StringPart }
+    assert { statement('/my #{foo}/').contents.first.kind_of? Ruby::StringPart }
   end
 
   test "regexp should return regexp with regexp value for in interpolated regexp" do
@@ -83,7 +83,7 @@ class RegexpTest < MiniTest::Unit::TestCase
   end
 
   test "regexp should return regexp with embedded expression for interpolated regexp" do
-    assert { statement('/my #{foo}/').contents.last.kind_of? SyntaxTree::Ruby::EmbeddedExpression }
+    assert { statement('/my #{foo}/').contents.last.kind_of? Ruby::EmbeddedExpression }
   end
 
   test "regexp should return regexp with statement in expression for interpolated regexp" do

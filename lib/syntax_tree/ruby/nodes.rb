@@ -68,6 +68,11 @@ module SyntaxTree
       define_nodes :receiver, :operator, :identifier, :arguments, :block
     end
 
+    class MethodDefinition < Node
+      define_nodes :identifier, :parameters, :statements
+      include Delimited
+    end
+
     class Namespace < Composite
     end
 

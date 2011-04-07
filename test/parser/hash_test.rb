@@ -1,45 +1,51 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class HashTest < MiniTest::Unit::TestCase
-  # Empty hash
-  test "empty hash should return hash" do
-    assert { statement("{}").kind_of? SyntaxTree::Ruby::Hash }
+class HashTest < Test::Unit::TestCase
+  context "empty hash" do
+    subject { statement("{}") }
+
+    should "be hash" do
+      assert { subject.kind_of? Ruby::Hash }
+    end
+
+    should "have no elements" do
+      assert { subject.elements.empty? }
+    end
   end
 
-  test "empty hash should return hash with no elements" do
-    assert { statement("{}").elements == [] }
-  end
+  context "hash" do
+    subject { statement("{ :one => 2, :two => 3 }") }
 
-  # Hash
-  test "hash should return hash" do
-    assert { statement("{ :one => 2 }").kind_of? SyntaxTree::Ruby::Hash }
-  end
+    should "be hash" do
+      assert { subject.kind_of? Ruby::Hash }
+    end
 
-  test "hash should return hash with left delimiter" do
-    assert { statement("{ :one => 2 }").left_delim.token == "{" }
-  end
+    should "have left delimiter" do
+      assert { subject.left_delim.token == "{" }
+    end
 
-  test "hash should return hash with right delimiter" do
-    assert { statement("{ :one => 2 }").right_delim.token == "}" }
-  end
+    should "have right delimiter" do
+      assert { subject.right_delim.token == "}" }
+    end
 
-  test "hash should return hash with association" do
-    assert { statement("{ :one => 2 }").first.kind_of? SyntaxTree::Ruby::Association }
-  end
+    should "have association" do
+      assert { subject.first.kind_of? Ruby::Association }
+    end
 
-  test "hash should return hash with association with key" do
-    assert { statement("{ :one => 2 }").first.key.identifier.token == "one" }
-  end
+    should "have association with key" do
+      assert { subject.first.key.identifier.token == "one" }
+    end
 
-  test "hash should return hash with association with value" do
-    assert { statement("{ :one => 2 }").first.value.token == "2" }
-  end
+    should "have association with value" do
+      assert { subject.first.value.token == "2" }
+    end
 
-  test "hash should return hash with association with operator" do
-    assert { statement("{ :one => 2 }").first.operator.token == "=>" }
-  end
+    should "have association with operator" do
+      assert { subject.first.operator.token == "=>" }
+    end
 
-  test "hash should be enumerable" do
-    assert { statement("{ :one => 2, :two => 3 }").collect.to_a.length == 2 }
+    should "be enumerable" do
+      assert { subject.collect.to_a.length == 2 }
+    end
   end
 end

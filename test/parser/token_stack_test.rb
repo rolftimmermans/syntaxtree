@@ -1,8 +1,8 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class TokenStackTest < MiniTest::Unit::TestCase
+class TokenStackTest < Test::Unit::TestCase
   def new_token(val = @val.succ!)
-    SyntaxTree::Ruby::Token.new token: @val, position: SyntaxTree::Ruby::Position.new(1, 1)
+    Ruby::Token.new token: @val, position: Ruby::Position.new(1, 1)
   end
 
   def setup

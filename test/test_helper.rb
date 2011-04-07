@@ -13,10 +13,16 @@ Complete = (Defined.length.to_f / All.length) * 100
 # p Missing
 puts "#{Complete.round(2)}% complete"
 
-require "minitest/autorun"
-require "wrong/adapters/minitest"
+require "test/unit"
+require "wrong"
+require "shoulda-context"
 
-class MiniTest::Unit::TestCase
+Wrong.config.color
+
+class Test::Unit::TestCase
+  include SyntaxTree
+  include Wrong
+
   class << self
     # Support declarative specification of test methods.
     def test(name)
@@ -25,7 +31,7 @@ class MiniTest::Unit::TestCase
   end
 
   def parse(source)
-    SyntaxTree::RubyParser.new(source, "test.rb").parse
+    RubyParser.new(source, "test.rb").parse
   end
 
   def statement(source)
@@ -33,7 +39,11 @@ class MiniTest::Unit::TestCase
   end
 
   def pos(line, col)
-    SyntaxTree::Ruby::Position.new(line, col)
+    Ruby::Position.new(line, col)
+  end
+
+  def to_ruby(src)
+    Visitors::ToRuby.new.accept RubyParser.new(src).parse
   end
 end
 

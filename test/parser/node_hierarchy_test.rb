@@ -1,9 +1,9 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class NodeHierarchyTest < MiniTest::Unit::TestCase
-  include SyntaxTree::Ruby
+class NodeHierarchyTest < Test::Unit::TestCase
+  include Ruby
 
-  def construct_hierarchy(root = SyntaxTree::Ruby::Node)
+  def construct_hierarchy(root = Ruby::Node)
     nodes = []
     tree = {}
     ObjectSpace.each_object(::Class) do |klass|
@@ -20,71 +20,68 @@ class NodeHierarchyTest < MiniTest::Unit::TestCase
     hierarchy.deep_sort { |one, other| one[0].name <=> other[0].name }
   end
 
-  test "hierarchy should be sensible" do
-    expected_hierarchy = sort({
-      Node => { # Abstract
-        Composite => { # Enumerable
-          Epilogue => {},
-          Prologue => {},
+  context "hierarchy" do
+    subject { sort(construct_hierarchy) }
 
-          Statements => {},
-          Hash => {},
-          Array => {},
-          ArgumentList => {},
-          ParameterList => {},
-          StringContents => {},
-          Namespace => {},
-        },
+    should "be sensible" do
+      expected_hierarchy = sort({
+        Node => { # Abstract
+          Composite => { # Enumerable
+            Epilogue => {},
+            Prologue => {},
 
-        Program => {}, # Root node
-
-        Class => {},
-        MethodCall => {},
-        Block => {},
-
-        SplatArgument => {},
-        BlockArgument => {},
-
-        DefaultParameter => {},
-        SplatParameter => {},
-        BlockParameter => {},
-
-        Symbol => {},
-        DynamicSymbol => {},
-        String => {},
-        Regexp => {},
-        EmbeddedExpression => {},
-        Range => {},
-        Association => {},
-
-        Token => { # Leaf nodes
-          StringPart => {},
-          Keyword => {
-            False => {},
-            True => {},
-            Nil => {}
+            Statements => {},
+            Hash => {},
+            Array => {},
+            ArgumentList => {},
+            ParameterList => {},
+            StringContents => {},
+            Namespace => {},
           },
-          Literal => {
-            Character => {},
-            Float => {},
-            Integer => {},
-            Label => {}
-          },
-          Identifier => {
-            Constant => {}
-          },
-          Whitespace => {},
+
+          Program => {}, # Root node
+
+          Class => {},
+          Block => {},
+
+          MethodCall => {},
+          SplatArgument => {},
+          BlockArgument => {},
+
+          MethodDefinition => {},
+          DefaultParameter => {},
+          SplatParameter => {},
+          BlockParameter => {},
+
+          Symbol => {},
+          DynamicSymbol => {},
+          String => {},
+          Regexp => {},
+          EmbeddedExpression => {},
+          Range => {},
+          Association => {},
+
+          Token => { # Leaf nodes
+            StringPart => {},
+            Keyword => {
+              False => {},
+              True => {},
+              Nil => {}
+            },
+            Literal => {
+              Character => {},
+              Float => {},
+              Integer => {},
+              Label => {}
+            },
+            Identifier => {
+              Constant => {}
+            },
+            Whitespace => {},
+          }
         }
-      }
-    })
-    actual_hierarchy = sort(construct_hierarchy)
-    assert { actual_hierarchy == expected_hierarchy }
+      })
+      assert { subject == expected_hierarchy }
+    end
   end
-
-  # test "node tree should be readable" do
-  #   tree = parse("class Foo; end").inspect
-  #   puts tree
-  #   expected_inspect = ""
-  #   assert { tree == expected_inspect }
-  # end
 end

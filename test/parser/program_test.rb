@@ -1,49 +1,71 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
-class ProgramTest < MiniTest::Unit::TestCase
-  # Empty programs
-  test "empty source should return program" do
-    assert { parse("").kind_of? SyntaxTree::Ruby::Program }
+class ProgramTest < Test::Unit::TestCase
+  context "empty source" do
+    subject { parse("") }
+
+    should "be program" do
+      assert { subject.kind_of? Ruby::Program }
+    end
+
+    should "have statement list" do
+      assert { subject.statements.kind_of? Ruby::Statements }
+    end
+
+    should "have no statements" do
+      assert { subject.statements.empty? }
+    end
   end
 
-  test "empty source should return program with statements" do
-    assert { parse("").statements.kind_of? SyntaxTree::Ruby::Statements }
+  context "whitespace source" do
+    subject { parse("  \n\t ") }
+
+    should "be program" do
+      assert { subject.kind_of? Ruby::Program }
+    end
+
+    should "have no statements" do
+      assert { subject.statements.empty? }
+    end
+
+    should "have epilogue" do
+      assert { subject.epilogue.to_s == "  \n\t " }
+    end
   end
 
-  test "empty source should return program with no statements" do
-    assert { parse("").statements.elements == [] }
+  context "program with statement" do
+    subject { parse("foo") }
+
+    should "have identifier" do
+      assert { subject.statements.first.kind_of? Ruby::Identifier }
+    end
   end
 
-  test "whitespace source should return program" do
-    assert { parse("  \n\t ").kind_of? SyntaxTree::Ruby::Program }
+  context "program with semicolons" do
+    subject { parse("foo; foo") }
+
+    should "identifiers with semicolumns should return program with identifier" do
+      assert { subject.statements.first.kind_of? Ruby::Identifier }
+    end
+
+    should "identifiers with semicolumns should return program with identifier with prologue" do
+      assert { subject.statements.last.prologue.to_s == "; " }
+    end
   end
 
-  test "whitespace source should return program without statements" do
-    assert { parse("  \n\t ").statements.empty? }
+  context "program with multiple semicolons" do
+    subject { parse("foo;;; foo") }
+
+    should "have identifier with prologue" do
+      assert { subject.statements.last.prologue.to_s == ";;; " }
+    end
   end
 
-  test "whitespace source should return program with epilogue" do
-    assert { parse("  \n\t ").epilogue.to_s == "  \n\t " }
-  end
+  context "program with trailing semicolon" do
+    subject { parse("foo; foo ; ") }
 
-  # Identifiers only
-  test "identifier should return program with identifier" do
-    assert { parse("foo").statements.first.kind_of? SyntaxTree::Ruby::Identifier }
-  end
-
-  test "identifiers with semicolumns should return program with identifier" do
-    assert { parse("foo; foo").statements.first.kind_of? SyntaxTree::Ruby::Identifier }
-  end
-
-  test "identifiers with semicolumns should return program with identifier with prologue" do
-    assert { parse("foo; foo").statements.last.prologue.to_s == "; " }
-  end
-
-  test "identifiers with multiple semicolumns should return program with identifier with prologue" do
-    assert { parse("foo;;; foo").statements.last.prologue.to_s == ";;; " }
-  end
-
-  test "identifiers with trailing semicolumns should return program with epilogue" do
-    assert { parse("foo; foo ; ").epilogue.to_s == " ; " }
+    should "have epilogue" do
+      assert { subject.epilogue.to_s == " ; " }
+    end
   end
 end
