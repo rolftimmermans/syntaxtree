@@ -16,6 +16,9 @@ module SyntaxTree
     class Whitespace < Token
     end
 
+    class Comment < Token
+    end
+
 
     class Keyword < Token
     end

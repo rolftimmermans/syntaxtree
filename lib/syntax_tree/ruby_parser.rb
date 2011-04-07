@@ -44,11 +44,11 @@ module SyntaxTree
     end
 
     def prologue
-      Ruby::Prologue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :comma, :semicolon)
+      Ruby::Prologue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :comment, :comma, :semicolon)
     end
 
     def epilogue
-      Ruby::Epilogue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :semicolon)
+      Ruby::Epilogue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :comment, :semicolon)
     end
 
     def on_parse_error(message)

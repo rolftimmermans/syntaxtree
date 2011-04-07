@@ -16,6 +16,11 @@ module SyntaxTree
         tokens.push type, token
       end
 
+      def create_comment(type, token)
+        token = Ruby::Comment.new token: token, position: position
+        tokens.push type, token
+      end
+
       def on_tstring_beg(token)
         create_token :tstring_beg, token
       end
@@ -103,6 +108,10 @@ module SyntaxTree
 
       def on_ignored_nl(newline)
         create_whitespace :ignored_nl, newline
+      end
+
+      def on_comment(comment)
+        create_comment :comment, comment
       end
     end
   end

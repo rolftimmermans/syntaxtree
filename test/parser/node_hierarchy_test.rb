@@ -67,7 +67,6 @@ class NodeHierarchyTest < Test::Unit::TestCase
           BinaryOperator => {},
 
           Token => { # Leaf nodes
-            StringPart => {},
             Keyword => {
               False => {},
               True => {},
@@ -87,6 +86,8 @@ class NodeHierarchyTest < Test::Unit::TestCase
               ClassVariable => {},
               GlobalVariable => {}
             },
+            StringPart => {},
+            Comment => {},
             Whitespace => {},
           }
         }
