@@ -86,7 +86,7 @@ class ParseErrorTest < Test::Unit::TestCase
   end
 
   context "ambiguous argument" do
-    subject { "puts /m/, 42" }
+    subject { "puts //" }
 
     should "not raise syntax error" do
       assert { parse_error(subject) == nil }

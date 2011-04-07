@@ -72,6 +72,10 @@ module SyntaxTree
       include Delimited
     end
 
+    class KeywordCall < Node
+      define_nodes :keyword, :arguments, :block
+    end
+
     class MetaClass < Class
       define_nodes :operator, :identifier, :statements
       include Delimited
@@ -128,6 +132,7 @@ module SyntaxTree
     end
 
     class Statements < Composite
+      include Delimited
     end
 
     class String < Node

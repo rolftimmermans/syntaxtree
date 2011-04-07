@@ -59,6 +59,7 @@ module SyntaxTree
     include Events::Errors
     include Events::Hashes
     include Events::Identifiers
+    include Events::KeywordCalls
     include Events::Lexing
     include Events::Literals
     include Events::MethodCalls

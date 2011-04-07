@@ -28,6 +28,16 @@ class ToRubyTest < Test::Unit::TestCase
     assert { to_ruby(src) == src }
   end
 
+  test "multiple statements with parentheses should be converted back to ruby" do
+    src = "(1; 2;  3)"
+    assert { to_ruby(src) == src }
+  end
+
+  test "multiple statements with individual parentheses should be converted back to ruby" do
+    src = "(1); ((2));  (((3)))"
+    assert { to_ruby(src) == src }
+  end
+
   test "multiple method calls should be converted back to ruby" do
     src = "  foo()\n  bar()\n  baz() "
     assert { to_ruby(src) == src }

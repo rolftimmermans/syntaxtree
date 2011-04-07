@@ -48,6 +48,7 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Block => {},
 
           MethodCall => {},
+          KeywordCall => {},
           SplatArgument => {},
           BlockArgument => {},
 
