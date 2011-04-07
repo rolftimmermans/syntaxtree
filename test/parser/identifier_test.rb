@@ -64,4 +64,20 @@ class IdentifierTest < Test::Unit::TestCase
       assert { subject.token == "$foo" }
     end
   end
+
+  context "back reference" do
+    subject { statement "$1" }
+
+    should "be identifier" do
+      assert { subject.kind_of? Ruby::Identifier }
+    end
+
+    should "be global variable" do
+      assert { subject.class == Ruby::GlobalVariable }
+    end
+
+    should "have token" do
+      assert { subject.token == "$1" }
+    end
+  end
 end

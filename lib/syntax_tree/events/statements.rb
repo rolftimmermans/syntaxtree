@@ -5,6 +5,10 @@ module SyntaxTree
         Ruby::Program.new source: source, file: file, statements: statements, epilogue: epilogue
       end
 
+      def on_magic_comment(a, b)
+        raise "FIXME"
+      end
+
       def on_paren(node)
         # node = Ruby::Statements.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
         # node.rdelim ||= tokens.pop(:@rparen)
@@ -49,6 +53,14 @@ module SyntaxTree
 
       def on_const_ref(reference)
         reference
+      end
+
+      def on_alias(target, arguments)
+        raise "FIXME"
+      end
+
+      def on_var_alias(target, arguments)
+        raise "FIXME"
       end
 
       # def on_body_stmt(body, rescue_block, else_block, ensure_block)

@@ -51,15 +51,12 @@ module SyntaxTree
       Ruby::Epilogue.new.concat tokens.remove(:sp, :nl, :ignored_nl, :comment, :semicolon)
     end
 
-    def on_parse_error(message)
-      raise SyntaxError.new("#{file}:#{position.line + 1}: #{message}")
-    end
-
     include FailFast
 
     include Events::Arguments
     include Events::Arrays
     include Events::Constants
+    include Events::Errors
     include Events::Hashes
     include Events::Identifiers
     include Events::Lexing

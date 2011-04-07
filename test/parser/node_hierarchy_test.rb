@@ -86,8 +86,8 @@ class NodeHierarchyTest < Test::Unit::TestCase
               ClassVariable => {},
               GlobalVariable => {}
             },
-            StringPart => {},
             Comment => {},
+            StringPart => {},
             Whitespace => {},
           }
         }

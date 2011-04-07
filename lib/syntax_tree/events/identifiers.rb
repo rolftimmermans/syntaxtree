@@ -35,6 +35,7 @@ module SyntaxTree
           position: position,
           prologue: prologue)
       end
+      alias_method :on_backref, :on_gvar
     end
   end
 end
