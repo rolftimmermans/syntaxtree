@@ -32,8 +32,8 @@ class SymbolTest < Test::Unit::TestCase
       assert { subject.class == Ruby::Symbol }
     end
 
-    should "have identifier" do
-      assert { subject.identifier.class == Ruby::Identifier }
+    should "have keyword identifier" do
+      assert { subject.identifier.class == Ruby::Keyword }
     end
 
     should "have symbol value" do

@@ -2,11 +2,8 @@ module SyntaxTree
   module Events
     module Symbols
       def on_symbol(symbol)
-        # Symbol is nil if symbol is also a keyword. Convert to identifier.
-        symbol ||= Ruby::Identifier.new(
-          token: tokens.pop.token,
-          position: position,
-          prologue: prologue)
+        # Symbol is nil if symbol is also a keyword.
+        symbol ||= tokens.pop
 
         Ruby::Symbol.new(
           left_delim: tokens.pop(:symbeg),
