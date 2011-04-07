@@ -37,7 +37,14 @@ module SyntaxTree
       end
 
       def on_var_ref(reference)
-        reference
+        if reference.class == Ruby::Identifier
+          Ruby::Variable.new(
+            token: reference.token,
+            position: reference.position,
+            prologue: reference.prologue)
+        else
+          reference
+        end
       end
 
       def on_const_ref(reference)

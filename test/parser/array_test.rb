@@ -5,7 +5,7 @@ class ArrayTest < Test::Unit::TestCase
     subject { statement "[]" }
 
     should "empty have array" do
-      assert { subject.kind_of? Ruby::Array }
+      assert { subject.class == Ruby::Array }
     end
 
     should "empty have array with no elements" do
@@ -17,7 +17,7 @@ class ArrayTest < Test::Unit::TestCase
     subject { statement "[1, 2, 3]" }
 
     should "be array" do
-      assert { subject.kind_of? Ruby::Array }
+      assert { subject.class == Ruby::Array }
     end
 
     should "have left delimiter" do
@@ -33,7 +33,7 @@ class ArrayTest < Test::Unit::TestCase
     end
 
     should "have integers" do
-      assert { subject.first.kind_of? Ruby::Integer }
+      assert { subject.first.class == Ruby::Integer }
     end
 
     should "have integers with prologue" do
@@ -61,7 +61,7 @@ class ArrayTest < Test::Unit::TestCase
     subject { statement "[1, 2, 3, ]" }
 
     should "be array" do
-      assert { subject.kind_of? Ruby::Array }
+      assert { subject.class == Ruby::Array }
     end
 
     should "have left delimiter with prologue" do

@@ -5,7 +5,7 @@ class HashTest < Test::Unit::TestCase
     subject { statement "{}" }
 
     should "be hash" do
-      assert { subject.kind_of? Ruby::Hash }
+      assert { subject.class == Ruby::Hash }
     end
 
     should "have no elements" do
@@ -17,7 +17,7 @@ class HashTest < Test::Unit::TestCase
     subject { statement "{ :one => 2, :two => 3 }" }
 
     should "be hash" do
-      assert { subject.kind_of? Ruby::Hash }
+      assert { subject.class == Ruby::Hash }
     end
 
     should "have left delimiter" do
@@ -29,7 +29,7 @@ class HashTest < Test::Unit::TestCase
     end
 
     should "have association" do
-      assert { subject.first.kind_of? Ruby::Association }
+      assert { subject.first.class == Ruby::Association }
     end
 
     should "have association with key" do

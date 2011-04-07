@@ -5,15 +5,19 @@ class MethodDefinitionTest < Test::Unit::TestCase
     subject { statement "def foo\nend" }
 
     should "be method definition" do
-      assert { subject.kind_of? Ruby::MethodDefinition }
+      assert { subject.class == Ruby::MethodDefinition }
     end
 
     should "have identifier" do
+      assert { subject.identifier.class == Ruby::Identifier }
+    end
+
+    should "have identifier with token" do
       assert { subject.identifier.token == "foo" }
     end
 
     should "have param list" do
-      assert { subject.parameters.kind_of? Ruby::ParameterList }
+      assert { subject.parameters.class == Ruby::ParameterList }
     end
 
     should "have empty param list" do
@@ -37,7 +41,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
     subject { statement "def foo()\nend" }
 
     should "be method definition" do
-      assert { subject.kind_of? Ruby::MethodDefinition }
+      assert { subject.class == Ruby::MethodDefinition }
     end
 
     should "have identifier" do
@@ -45,7 +49,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
     end
 
     should "have param list" do
-      assert { subject.parameters.kind_of? Ruby::ParameterList }
+      assert { subject.parameters.class == Ruby::ParameterList }
     end
 
     should "have empty param list" do
@@ -65,7 +69,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
     subject { statement "def foo(a, b)\n  puts 'foo'; puts b\n end" }
 
     should "have statements" do
-      assert { subject.statements.kind_of? Ruby::Statements }
+      assert { subject.statements.class == Ruby::Statements }
     end
 
     should "have statements with size" do

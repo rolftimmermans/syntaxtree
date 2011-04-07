@@ -3,15 +3,15 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 class BlockTest < Test::Unit::TestCase
   # Block without parameters
   test "call with block without parameters should return block" do
-    assert { statement("foo(a, b) { puts x }").block.kind_of? Ruby::Block }
+    assert { statement("foo(a, b) { puts x }").block.class == Ruby::Block }
   end
 
   test "call with block without parameters should return block with param list" do
-    assert { statement("foo(a, b) { puts x }").block.parameters.kind_of? Ruby::ParameterList }
+    assert { statement("foo(a, b) { puts x }").block.parameters.class == Ruby::ParameterList }
   end
 
   test "call with block with empty parameters should return block with param list" do
-    assert { statement("foo(a, b) { || puts x }").block.parameters.kind_of? Ruby::ParameterList }
+    assert { statement("foo(a, b) { || puts x }").block.parameters.class == Ruby::ParameterList }
   end
 
   test "call with block with empty parameters should return block with param list with left delim" do
@@ -31,7 +31,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   test "call with block with empty parameters with space should return block with param list" do
-    assert { statement("foo(a, b) { |  | puts x }").block.parameters.kind_of? Ruby::ParameterList }
+    assert { statement("foo(a, b) { |  | puts x }").block.parameters.class == Ruby::ParameterList }
   end
 
   test "call with block with empty parameters with space should return block with param list with left delim" do
@@ -52,15 +52,15 @@ class BlockTest < Test::Unit::TestCase
 
   # Block with parameter
   test "call with block should return block" do
-    assert { statement("foo(a, b) { |x| puts x }").block.kind_of? Ruby::Block }
+    assert { statement("foo(a, b) { |x| puts x }").block.class == Ruby::Block }
   end
 
   test "call with block should return block with param list" do
-    assert { statement("foo(a, b) { |x| puts x }").block.parameters.kind_of? Ruby::ParameterList }
+    assert { statement("foo(a, b) { |x| puts x }").block.parameters.class == Ruby::ParameterList }
   end
 
   test "call with block should return block with param list with param" do
-    assert { statement("foo(a, b) { |x| puts x }").block.parameters.first.kind_of? Ruby::Identifier }
+    assert { statement("foo(a, b) { |x| puts x }").block.parameters.first.class == Ruby::Identifier }
   end
 
   test "call with block should return block with param list with param with token" do
@@ -69,15 +69,15 @@ class BlockTest < Test::Unit::TestCase
 
   # Default parameters
   test "call with block with default param should return block with param list" do
-    assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.kind_of? Ruby::ParameterList }
+    assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.class == Ruby::ParameterList }
   end
 
   test "call with block with default param should return block with param list with param" do
-    assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.last.kind_of? Ruby::DefaultParameter }
+    assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.last.class == Ruby::DefaultParameter }
   end
 
   test "call with block with default param should return block with param list with param with identifier" do
-    assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.last.identifier.kind_of? Ruby::Identifier }
+    assert { statement("foo(a, b) { |x, y = 3| puts x }").block.parameters.last.identifier.class == Ruby::Identifier }
   end
 
   test "call with block with default param should return block with param list with param with token" do
@@ -89,20 +89,20 @@ class BlockTest < Test::Unit::TestCase
   end
 
   test "call with block with only a default param should return block with param list with param" do
-    assert { statement("foo(a, b) { |x = 3| puts x }").block.parameters.first.kind_of? Ruby::DefaultParameter }
+    assert { statement("foo(a, b) { |x = 3| puts x }").block.parameters.first.class == Ruby::DefaultParameter }
   end
 
   test "call with block with only a default param should return block with param list with param with identifier" do
-    assert { statement("foo(a, b) { |x = 3| puts x }").block.parameters.first.identifier.kind_of? Ruby::Identifier }
+    assert { statement("foo(a, b) { |x = 3| puts x }").block.parameters.first.identifier.class == Ruby::Identifier }
   end
 
   # Splat parameters
   test "call with block with splat param block should return block with param list with splat param" do
-    assert { statement("foo(a, b) { |x, *other| puts x }").block.parameters.last.kind_of? Ruby::SplatParameter }
+    assert { statement("foo(a, b) { |x, *other| puts x }").block.parameters.last.class == Ruby::SplatParameter }
   end
 
   test "call with block with splat param block should return block with param list with splat param with identifier" do
-    assert { statement("foo(a, b) { |x, *other| puts x }").block.parameters.last.identifier.kind_of? Ruby::Identifier }
+    assert { statement("foo(a, b) { |x, *other| puts x }").block.parameters.last.identifier.class == Ruby::Identifier }
   end
 
   test "call with block with splat param block should return block with param list with splat param with identifier with token" do
@@ -115,11 +115,11 @@ class BlockTest < Test::Unit::TestCase
 
   # Block parameters
   test "call with block with block param block should return block with param list with block param" do
-    assert { statement("foo(a, b) { |x, &block| puts x }").block.parameters.last.kind_of? Ruby::BlockParameter }
+    assert { statement("foo(a, b) { |x, &block| puts x }").block.parameters.last.class == Ruby::BlockParameter }
   end
 
   test "call with block with block param block should return block with param list with block param with identifier" do
-    assert { statement("foo(a, b) { |x, &block| puts x }").block.parameters.last.identifier.kind_of? Ruby::Identifier }
+    assert { statement("foo(a, b) { |x, &block| puts x }").block.parameters.last.identifier.class == Ruby::Identifier }
   end
 
   test "call with block with block param block should return block with param list with block param with identifier with token" do
@@ -132,7 +132,7 @@ class BlockTest < Test::Unit::TestCase
 
   # Statements
   test "call with empty block should return block with statement list" do
-    assert { statement("foo(a, b) { }").block.statements.kind_of? Ruby::Statements }
+    assert { statement("foo(a, b) { }").block.statements.class == Ruby::Statements }
   end
 
   test "call with empty block should return block with empty statements" do
@@ -140,11 +140,11 @@ class BlockTest < Test::Unit::TestCase
   end
 
   test "call with block should return block with statement list" do
-    assert { statement("foo(a, b) { foo\nbar; baz }").block.statements.kind_of? Ruby::Statements }
+    assert { statement("foo(a, b) { foo\nbar; baz }").block.statements.class == Ruby::Statements }
   end
 
   test "call with block should return block with statements" do
-    assert { statement("foo(a, b) { foo\nbar; baz }").block.statements.first.kind_of? Ruby::Identifier }
+    assert { statement("foo(a, b) { foo\nbar; baz }").block.statements.first.class == Ruby::Variable }
   end
 
   test "call with block should return block with statement size" do

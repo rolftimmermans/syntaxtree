@@ -9,7 +9,7 @@ class LiteralValuesTest < Test::Unit::TestCase
     end
 
     should "be integer" do
-      assert { subject.kind_of? Ruby::Integer }
+      assert { subject.class == Ruby::Integer }
     end
 
     should "have integer value" do
@@ -33,7 +33,7 @@ class LiteralValuesTest < Test::Unit::TestCase
     end
 
     should "be float" do
-      assert { subject.kind_of? Ruby::Float }
+      assert { subject.class == Ruby::Float }
     end
 
     should "have float value" do
@@ -57,7 +57,7 @@ class LiteralValuesTest < Test::Unit::TestCase
     end
 
     should "be character" do
-      assert { subject.kind_of? Ruby::Character }
+      assert { subject.class == Ruby::Character }
     end
 
     should "have character value" do
@@ -81,7 +81,7 @@ class LiteralValuesTest < Test::Unit::TestCase
     end
 
     should "be label" do
-      assert { subject.key.kind_of? Ruby::Label }
+      assert { subject.key.class == Ruby::Label }
     end
 
     should "have token" do

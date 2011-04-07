@@ -79,7 +79,11 @@ class NodeHierarchyTest < Test::Unit::TestCase
               Label => {}
             },
             Identifier => {
-              Constant => {}
+              Constant => {},
+              Variable => {},
+              InstanceVariable => {},
+              ClassVariable => {},
+              GlobalVariable => {}
             },
             Whitespace => {},
           }

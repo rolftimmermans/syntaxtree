@@ -5,11 +5,11 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "" }
 
     should "be program" do
-      assert { subject.kind_of? Ruby::Program }
+      assert { subject.class == Ruby::Program }
     end
 
     should "have statement list" do
-      assert { subject.statements.kind_of? Ruby::Statements }
+      assert { subject.statements.class == Ruby::Statements }
     end
 
     should "have no statements" do
@@ -21,7 +21,7 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "  \n\t " }
 
     should "be program" do
-      assert { subject.kind_of? Ruby::Program }
+      assert { subject.class == Ruby::Program }
     end
 
     should "have no statements" do
@@ -37,7 +37,7 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "foo" }
 
     should "have identifier" do
-      assert { subject.statements.first.kind_of? Ruby::Identifier }
+      assert { subject.statements.first.class == Ruby::Variable }
     end
   end
 
@@ -45,7 +45,7 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "foo; foo" }
 
     should "have identifier" do
-      assert { subject.statements.first.kind_of? Ruby::Identifier }
+      assert { subject.statements.first.class == Ruby::Variable }
     end
 
     should "have identifier with prologue" do

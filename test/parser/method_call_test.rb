@@ -5,7 +5,7 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo()" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have no receiver" do
@@ -17,7 +17,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list with left delimiter" do
@@ -29,7 +29,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "include delimiters in nodes" do
-      assert { subject.arguments.nodes.first.kind_of? Ruby::Token }
+      assert { subject.arguments.nodes.first.class == Ruby::Token }
     end
   end
 
@@ -37,11 +37,11 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo(1, 2)" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list with left delimiter" do
@@ -53,7 +53,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have primitive argument" do
-      assert { subject.arguments.first.kind_of? Ruby::Integer }
+      assert { subject.arguments.first.class == Ruby::Integer }
     end
 
     should "have primitive argument with token" do
@@ -69,19 +69,19 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo(1, :foo => :bar)" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list with hash" do
-      assert { subject.arguments.last.kind_of? Ruby::Hash }
+      assert { subject.arguments.last.class == Ruby::Hash }
     end
 
     should "have argument list with hash assoc" do
-      assert { subject.arguments.last.first.kind_of? Ruby::Association }
+      assert { subject.arguments.last.first.class == Ruby::Association }
     end
 
     should "have argument list with hash with assoc key" do
@@ -101,15 +101,15 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo(1, *args)" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list with splat argument" do
-      assert { subject.arguments.last.kind_of? Ruby::SplatArgument }
+      assert { subject.arguments.last.class == Ruby::SplatArgument }
     end
 
     should "have argument list with splat argument identifier" do
@@ -125,15 +125,15 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo(1, &block)" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list with block argument" do
-      assert { subject.arguments.last.kind_of? Ruby::BlockArgument }
+      assert { subject.arguments.last.class == Ruby::BlockArgument }
     end
 
     should "have argument list with block argument with identifier" do
@@ -149,11 +149,11 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo.bar(1, 2)" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have identifier receiver" do
-      assert { subject.receiver.kind_of? Ruby::Identifier }
+      assert { subject.receiver.class == Ruby::Variable }
     end
 
     should "have receiver with token" do
@@ -161,7 +161,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have operator" do
-      assert { subject.operator.kind_of? Ruby::Token }
+      assert { subject.operator.class == Ruby::Token }
     end
 
     should "have operator with token" do
@@ -173,11 +173,11 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "FooBar.bar(1, 2)" }
 
     should "have method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have constant receiver" do
-      assert { subject.receiver.kind_of? Ruby::Constant }
+      assert { subject.receiver.class == Ruby::Constant }
     end
 
     should "have constant receiver with token" do
@@ -197,7 +197,7 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement "foo 1, 2" }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have no receiver" do
@@ -209,7 +209,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list without left delimiter" do
@@ -225,11 +225,11 @@ class MethodCallTest < Test::Unit::TestCase
     subject { statement("foo[1, 3]") }
 
     should "be method call" do
-      assert { subject.kind_of? Ruby::MethodCall }
+      assert { subject.class == Ruby::MethodCall }
     end
 
     should "have identifier receiver" do
-      assert { subject.receiver.kind_of? Ruby::Identifier }
+      assert { subject.receiver.class == Ruby::Variable }
     end
 
     should "have receiver with token" do
@@ -237,7 +237,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have argument list" do
-      assert { subject.arguments.kind_of? Ruby::ArgumentList }
+      assert { subject.arguments.class == Ruby::ArgumentList }
     end
 
     should "have argument list with left delim" do

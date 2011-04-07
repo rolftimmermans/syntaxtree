@@ -3,7 +3,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 class StringTest < Test::Unit::TestCase
   # Single quotes
   test "string should return string" do
-    assert { statement("'abc'").kind_of? Ruby::String }
+    assert { statement("'abc'").class == Ruby::String }
   end
 
   test "string should return string with left delim" do
@@ -23,7 +23,7 @@ class StringTest < Test::Unit::TestCase
   end
 
   test "string should return string with string contents" do
-    assert { statement("'abc'").contents.kind_of? Ruby::StringContents }
+    assert { statement("'abc'").contents.class == Ruby::StringContents }
   end
 
   test "string should return string contents with elements" do
@@ -57,11 +57,11 @@ class StringTest < Test::Unit::TestCase
   end
 
   test "string should return string with string contents for interpolated string" do
-    assert { statement('"my #{foo}"').contents.kind_of? Ruby::StringContents }
+    assert { statement('"my #{foo}"').contents.class == Ruby::StringContents }
   end
 
   test "string should return string with string literal for interpolated string" do
-    assert { statement('"my #{foo}"').contents.first.kind_of? Ruby::StringPart }
+    assert { statement('"my #{foo}"').contents.first.class == Ruby::StringPart }
   end
 
   test "string should return string with string value for in interpolated string" do
@@ -69,7 +69,7 @@ class StringTest < Test::Unit::TestCase
   end
 
   test "string should return string with embedded expression for interpolated string" do
-    assert { statement('"my #{foo}"').contents.last.kind_of? Ruby::EmbeddedExpression }
+    assert { statement('"my #{foo}"').contents.last.class == Ruby::EmbeddedExpression }
   end
 
   test "string should return string with statement in expression for interpolated string" do

@@ -9,7 +9,7 @@ class KeywordsTest < Test::Unit::TestCase
     end
 
     should "be nil" do
-      assert { subject.kind_of? Ruby::Nil }
+      assert { subject.class == Ruby::Nil }
     end
 
     should "have nil value" do
@@ -29,7 +29,7 @@ class KeywordsTest < Test::Unit::TestCase
     end
 
     should "be true" do
-      assert { subject.kind_of? Ruby::True }
+      assert { subject.class == Ruby::True }
     end
 
     should "have true value" do
@@ -53,7 +53,7 @@ class KeywordsTest < Test::Unit::TestCase
     end
 
     should "be false" do
-      assert { subject.kind_of? Ruby::False }
+      assert { subject.class == Ruby::False }
     end
 
     should "have false value" do
@@ -77,7 +77,7 @@ class KeywordsTest < Test::Unit::TestCase
     end
 
     should "be self" do
-      assert { subject.kind_of? Ruby::Self }
+      assert { subject.class == Ruby::Self }
     end
 
     should "have position" do

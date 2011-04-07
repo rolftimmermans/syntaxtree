@@ -29,7 +29,7 @@ module SyntaxTree
       end
 
       def on_const_path_ref(namespace, constant)
-        namespace = Ruby::Namespace.new.push namespace if namespace.kind_of? Ruby::Constant
+        namespace = Ruby::Namespace.new.push namespace if namespace.class == Ruby::Constant
         namespace.push constant
       end
 

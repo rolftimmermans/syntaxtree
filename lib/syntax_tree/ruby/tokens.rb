@@ -73,7 +73,19 @@ module SyntaxTree
     class Identifier < Token
     end
 
+    class ClassVariable < Identifier
+    end
+
     class Constant < Identifier
+    end
+
+    class GlobalVariable < Identifier
+    end
+
+    class InstanceVariable < Identifier
+    end
+
+    class Variable < Identifier
     end
   end
 end

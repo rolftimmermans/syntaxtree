@@ -5,7 +5,7 @@ class ModuleTest < Test::Unit::TestCase
     subject { statement "module Foo; end" }
 
     should "be module" do
-      assert { subject.kind_of? Ruby::Module }
+      assert { subject.class == Ruby::Module }
     end
 
     should "have left delimiter" do
@@ -17,7 +17,7 @@ class ModuleTest < Test::Unit::TestCase
     end
 
     should "have constant identifier" do
-      assert { subject.identifier.kind_of? Ruby::Constant }
+      assert { subject.identifier.class == Ruby::Constant }
     end
 
     should "have constant identifier with given name" do
@@ -25,7 +25,7 @@ class ModuleTest < Test::Unit::TestCase
     end
 
     should "have statements attribute" do
-      assert { subject.statements.kind_of? Ruby::Statements }
+      assert { subject.statements.class == Ruby::Statements }
     end
 
     should "have no statements" do
@@ -37,15 +37,15 @@ class ModuleTest < Test::Unit::TestCase
     subject { statement "module Foo; define_foo; define_bar; 3; end" }
 
     should "be module" do
-      assert { subject.kind_of? Ruby::Module }
+      assert { subject.class == Ruby::Module }
     end
 
     should "have statements attribute" do
-      assert { subject.statements.kind_of? Ruby::Statements }
+      assert { subject.statements.class == Ruby::Statements }
     end
 
     should "have statements" do
-      assert { subject.statements.first.kind_of? Ruby::Identifier }
+      assert { subject.statements.first.class == Ruby::Variable }
     end
 
     should "have correct statement length" do
@@ -57,15 +57,15 @@ class ModuleTest < Test::Unit::TestCase
     subject { statement "module Foo::Bar::Baz::Qux; end" }
 
     should "be module" do
-      assert { subject.kind_of? Ruby::Module }
+      assert { subject.class == Ruby::Module }
     end
 
     should "have namespace" do
-      assert { subject.identifier.kind_of? Ruby::Namespace }
+      assert { subject.identifier.class == Ruby::Namespace }
     end
 
     should "have namespace with constant" do
-      assert { subject.identifier.first.kind_of? Ruby::Constant }
+      assert { subject.identifier.first.class == Ruby::Constant }
     end
 
     should "have namespace with constant names" do
