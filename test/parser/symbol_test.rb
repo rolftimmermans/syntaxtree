@@ -1,45 +1,55 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class SymbolTest < Test::Unit::TestCase
-  # Symbol
-  test "symbol should return symbol literal" do
-    assert { statement(":abc").class == Ruby::Symbol }
+  context "symbol" do
+    subject { statement "  :abc" }
+
+    should "be literal" do
+      assert { subject.kind_of? Ruby::Literal }
+    end
+
+    should "be symbol" do
+      assert { subject.class == Ruby::Symbol }
+    end
+
+    should "have symbol value" do
+      assert { subject.value == :abc }
+    end
+
+    should "have left delimiter" do
+      assert { subject.left_delim.token == ":" }
+    end
+
+    should "have prologue" do
+      assert { subject.left_delim.prologue.first.token == "  " }
+    end
   end
 
-  test "symbol should return symbol literal with symbol value" do
-    assert { statement(":abc").value == :abc }
-  end
+  context "dynamic symbol" do
+    subject { statement ':"my #{foo}"' }
 
-  test "symbol should return symbol literal with left delimiter" do
-    assert { statement(":abc").left_delim.token == ":" }
-  end
+    should "be dynamic symbol" do
+      assert { subject.class == Ruby::DynamicSymbol }
+    end
 
-  test "symbol should return symbol literal with prologue" do
-    assert { statement("  :abc").left_delim.prologue.first.token == "  " }
-  end
+    should "have string contents" do
+      assert { subject.contents.class == Ruby::StringContents }
+    end
 
-  # Dynamic symbol
-  test "dynamic symbol should return dynamic symbol literal" do
-    assert { statement(':"#{foo}"').class == Ruby::DynamicSymbol }
-  end
+    should "have string part" do
+      assert { subject.contents.first.class == Ruby::StringPart }
+    end
 
-  test "dynamic symbol should return dynamic symbol literal with string contents" do
-    assert { statement(':"my #{foo}"').contents.class == Ruby::StringContents }
-  end
+    should "have string part with token" do
+      assert { subject.contents.first.token == "my " }
+    end
 
-  test "dynamic symbol should return dynamic symbol literal with string literal for interpolated string" do
-    assert { statement(':"my #{foo}"').contents.first.class == Ruby::StringPart }
-  end
+    should "have embedded expression" do
+      assert { subject.contents.elements[1].class == Ruby::EmbeddedExpression }
+    end
 
-  test "dynamic symbol should return dynamic symbol literal with string value for literal in interpolated string" do
-    assert { statement(':"my #{foo}"').contents.first.token == "my " }
-  end
-
-  test "dynamic symbol should return dynamic symbol literal with embedded expression for interpolated string" do
-    assert { statement(':"my #{foo}"').contents.elements[1].class == Ruby::EmbeddedExpression }
-  end
-
-  test "dynamic symbol should return dynamic symbol literal with statement in expression for interpolated string" do
-    assert { statement(':"my #{foo}"').contents.elements[1].statements.first.token == "foo" }
+    should "have statement in expression" do
+      assert { subject.contents.elements[1].statements.first.token == "foo" }
+    end
   end
 end
