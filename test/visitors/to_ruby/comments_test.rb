@@ -21,5 +21,10 @@ class ToRubyCommentsTest < Test::Unit::TestCase
       src = "# -*- encoding: UTF-8 -*-\nstatement"
       assert { to_ruby(src) == src }
     end
+
+    should "convert multiline comment" do
+      src = "=begin\nOne\nTwo\nThree\n=end"
+      assert { to_ruby(src) == src }
+    end
   end
 end

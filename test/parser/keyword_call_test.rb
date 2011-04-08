@@ -1,6 +1,40 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class KeywordTest < Test::Unit::TestCase
+  class << self
+    include SyntaxTree
+
+    def should_be_keyword_call
+      should "be keyword call" do
+        assert { subject.class == Ruby::KeywordCall }
+      end
+    end
+
+    def should_have_keyword
+      should "have keyword" do
+        assert { subject.keyword.class == Ruby::Keyword }
+      end
+    end
+
+    def should_have_keyword_token(token)
+      should "have keyword token" do
+        assert { subject.keyword.token == token }
+      end
+    end
+
+    def should_have_no_arguments
+      should "have no argument list" do
+        assert { subject.arguments == nil }
+      end
+    end
+
+    def should_have_no_block
+      should "have no block" do
+        assert { subject.block == nil }
+      end
+    end
+  end
+
   context "alias" do
     subject { statement "  alias one two" }
 
@@ -8,13 +42,8 @@ class KeywordTest < Test::Unit::TestCase
       assert { subject.class == Ruby::Alias }
     end
 
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "alias" }
-    end
+    should_have_keyword
+    should_have_keyword_token "alias"
 
     should "have alias" do
       assert { subject.alias.class == Ruby::Identifier }
@@ -40,13 +69,8 @@ class KeywordTest < Test::Unit::TestCase
       assert { subject.class == Ruby::Alias }
     end
 
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "alias" }
-    end
+    should_have_keyword
+    should_have_keyword_token "alias"
 
     should "have alias" do
       assert { subject.alias.class == Ruby::GlobalVariable }
@@ -68,41 +92,19 @@ class KeywordTest < Test::Unit::TestCase
   context "bare super" do
     subject { statement " super " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "super" }
-    end
-
-    should "have no argument list" do
-      assert { subject.arguments == nil }
-    end
-
-    should "have no block" do
-      assert { subject.block == nil }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "super"
+    should_have_no_arguments
+    should_have_no_block
   end
 
   context "super without arguments" do
     subject { statement " super() " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "super" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "super"
 
     should "have argument list" do
       assert { subject.arguments.class == Ruby::ArgumentList }
@@ -124,17 +126,9 @@ class KeywordTest < Test::Unit::TestCase
   context "super with arguments" do
     subject { statement " super(foo, bar) " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "super" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "super"
 
     should "have argument list" do
       assert { subject.arguments.class == Ruby::ArgumentList }
@@ -152,17 +146,10 @@ class KeywordTest < Test::Unit::TestCase
   context "super with block" do
     subject { statement " super { |a, b| puts 'foo' } " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "super" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "super"
+    should_have_no_arguments
 
     should "have block" do
       assert { subject.block.class == Ruby::Block }
@@ -172,41 +159,19 @@ class KeywordTest < Test::Unit::TestCase
   context "bare yield" do
     subject { statement " yield " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "yield" }
-    end
-
-    should "have no argument list" do
-      assert { subject.arguments == nil }
-    end
-
-    should "have no block" do
-      assert { subject.block == nil }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "yield"
+    should_have_no_arguments
+    should_have_no_block
   end
 
   context "yield without arguments" do
     subject { statement " yield() " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "yield" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "yield"
 
     should "have argument list" do
       assert { subject.arguments.class == Ruby::ArgumentList }
@@ -228,17 +193,9 @@ class KeywordTest < Test::Unit::TestCase
   context "yield with arguments" do
     subject { statement " yield(foo, bar) " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "yield" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "yield"
 
     should "have argument list" do
       assert { subject.arguments.class == Ruby::ArgumentList }
@@ -256,41 +213,19 @@ class KeywordTest < Test::Unit::TestCase
   context "bare return" do
     subject { statement " return " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "return" }
-    end
-
-    should "have no argument list" do
-      assert { subject.arguments == nil }
-    end
-
-    should "have no block" do
-      assert { subject.block == nil }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "return"
+    should_have_no_arguments
+    should_have_no_block
   end
 
   context "return without argument" do
     subject { statement " return() " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "return" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "return"
 
     should "have argument list" do
       assert { subject.arguments.class == Ruby::Statements }
@@ -312,17 +247,9 @@ class KeywordTest < Test::Unit::TestCase
   context "return with argument" do
     subject { statement " return(foo) " }
 
-    should "be keyword call" do
-      assert { subject.class == Ruby::KeywordCall }
-    end
-
-    should "have keyword" do
-      assert { subject.keyword.class == Ruby::Keyword }
-    end
-
-    should "have keyword token" do
-      assert { subject.keyword.token == "return" }
-    end
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "return"
 
     should "have argument list" do
       assert { subject.arguments.class == Ruby::Statements }
@@ -335,7 +262,7 @@ class KeywordTest < Test::Unit::TestCase
     should "have argument list with right delimiter" do
       assert { subject.arguments.right_delim.token == ")" }
     end
-    
+
     context "with spaces before argument" do
       subject { statement " return  (foo) " }
 
@@ -380,4 +307,14 @@ class KeywordTest < Test::Unit::TestCase
   #     assert { subject.arguments.right_delim.token == ")" }
   #   end
   # end
+
+  context "bare next" do
+    subject { statement " next " }
+
+    should_be_keyword_call
+    should_have_keyword
+    should_have_keyword_token "next"
+    should_have_no_arguments
+    should_have_no_block
+  end
 end

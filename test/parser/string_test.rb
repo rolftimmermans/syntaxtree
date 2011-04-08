@@ -87,4 +87,16 @@ class StringTest < Test::Unit::TestCase
   test "string should return string with correct statements size in expression for interpolated string" do
     assert { statement('"my #{foo; bar; baz}"').contents.last.statements.size == 3 }
   end
+
+  test "string should return string with embedded variable for interpolated string" do
+    assert { statement('"my #@foo"').contents.last.class == Ruby::EmbeddedVariable }
+  end
+
+  test "string should return string with embedded variable with left delimier for interpolated string" do
+    assert { statement('"my #@foo"').contents.last.left_delim.token == "#" }
+  end
+
+  test "string should return string with embedded variable with identifier for interpolated string" do
+    assert { statement('"my #@foo"').contents.last.identifier.token == "@foo" }
+  end
 end

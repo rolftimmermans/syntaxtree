@@ -62,6 +62,7 @@ class NodeHierarchyTest < Test::Unit::TestCase
           String => {},
           Regexp => {},
           EmbeddedExpression => {},
+          EmbeddedVariable => {},
           Range => {},
           Association => {},
 

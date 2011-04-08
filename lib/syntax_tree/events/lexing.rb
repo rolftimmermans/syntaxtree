@@ -3,7 +3,7 @@ module SyntaxTree
     module Lexing
       TOKEN_TYPES = [:tstring_beg, :tstring_end, :regexp_beg, :regexp_end,
       :embexpr_beg, :embexpr_end, :lparen, :rparen, :lbrace, :rbrace,
-      :lbracket, :rbracket, :symbeg, :period]
+      :lbracket, :rbracket, :symbeg, :period, :embvar]
 
       TOKEN_TYPES.each do |type|
         class_eval <<-RUBY, __FILE__, __LINE__ + 1
@@ -11,27 +11,6 @@ module SyntaxTree
             push_token #{type.inspect}, token
           end
         RUBY
-      end
-
-      private
-
-      def push_token(klass = Ruby::Token, type, token)
-        tokens.push type, klass.new(token: token, position: position, prologue: prologue)
-      end
-
-      def push_token_no_prologue(type, token)
-        token = Ruby::Token.new token: token, position: position
-        tokens.push type, token
-      end
-
-      def create_whitespace(type, token)
-        token = Ruby::Whitespace.new token: token, position: position
-        tokens.push type, token
-      end
-
-      def create_comment(type, token)
-        token = Ruby::Comment.new token: token, position: position
-        tokens.push type, token
       end
 
       def on_tstring_content(content)
@@ -65,6 +44,39 @@ module SyntaxTree
 
       def on_comment(comment)
         create_comment :comment, comment
+      end
+      
+      def on_embdoc_beg(comment)
+        create_comment :comment, comment
+      end
+
+      def on_embdoc(comment)
+        create_comment :comment, comment
+      end
+
+      def on_embdoc_end(comment)
+        create_comment :comment, comment
+      end
+
+      private
+
+      def push_token(klass = Ruby::Token, type, token)
+        tokens.push type, klass.new(token: token, position: position, prologue: prologue)
+      end
+
+      def push_token_no_prologue(type, token)
+        token = Ruby::Token.new token: token, position: position
+        tokens.push type, token
+      end
+
+      def create_whitespace(type, token)
+        token = Ruby::Whitespace.new token: token, position: position
+        tokens.push type, token
+      end
+
+      def create_comment(type, token)
+        token = Ruby::Comment.new token: token, position: position
+        tokens.push type, token
       end
     end
   end

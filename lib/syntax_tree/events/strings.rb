@@ -32,7 +32,16 @@ module SyntaxTree
       alias_method :on_regexp_add, :on_string_add
 
       def on_string_embexpr(statements)
-        Ruby::EmbeddedExpression.new statements: statements, left_delim: tokens.pop(:embexpr_beg), right_delim: tokens.pop(:rbrace)
+        Ruby::EmbeddedExpression.new(
+          left_delim: tokens.pop(:embexpr_beg),
+          statements: statements,
+          right_delim: tokens.pop(:rbrace))
+      end
+
+      def on_string_dvar(variable)
+        Ruby::EmbeddedVariable.new(
+          left_delim: tokens.pop(:embvar),
+          identifier: variable)
       end
     end
   end

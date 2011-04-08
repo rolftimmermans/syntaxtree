@@ -64,6 +64,11 @@ module SyntaxTree
       include Delimited
     end
 
+    class EmbeddedVariable < Node
+      define_nodes :identifier
+      include LeftDelimited
+    end
+
     class Epilogue < Composite
       include Summarizable
     end

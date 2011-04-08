@@ -68,4 +68,12 @@ class ProgramTest < Test::Unit::TestCase
       assert { subject.epilogue.to_s == " ; " }
     end
   end
+
+  context "program with statement on multiple lines" do
+    subject { parse "foo \\\nbar" }
+
+    should "have one statement" do
+      assert { subject.statements.size == 1 }
+    end
+  end
 end

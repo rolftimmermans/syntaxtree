@@ -35,6 +35,8 @@ module SyntaxTree
       def on_label(symbol)
         Ruby::Label.new token: symbol, position: position, prologue: prologue
       end
+      
+      private
 
       def create_named_keyword(token)
         klass = Ruby.const_get(token[0].upcase + token[1..-1])
