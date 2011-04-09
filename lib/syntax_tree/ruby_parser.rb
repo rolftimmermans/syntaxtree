@@ -12,7 +12,11 @@ module SyntaxTree
     end
 
     class << self
-      def build(source, filename = nil)
+      def read(filename)
+        parse(File.read(filename), filename)
+      end
+
+      def parse(source, filename = nil)
         new(source, filename).parse
       end
     end

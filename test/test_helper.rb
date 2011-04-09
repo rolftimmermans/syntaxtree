@@ -3,6 +3,7 @@ require "bundler/setup"
 
 require "ripper"
 require "syntaxtree"
+require "syntax_tree/visitors/to_dot"
 require "syntax_tree/visitors/to_ruby"
 
 Defined = SyntaxTree::Events.constants.map { |c| SyntaxTree::Events.const_get(c).instance_methods }.flatten
