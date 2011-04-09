@@ -66,6 +66,7 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Range => {},
           Association => {},
 
+          UnaryOperator => {},
           BinaryOperator => {},
 
           Alias => {},

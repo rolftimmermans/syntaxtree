@@ -2,6 +2,16 @@ require File.expand_path("../../test_helper", File.dirname(__FILE__))
 
 class ToRubyOperatorTest < Test::Unit::TestCase
   context "to ruby" do
+    should "convert unary keyword operators" do
+      src = " not foo "
+      assert { to_ruby(src) == src }
+    end
+
+    should "convert unary token operators" do
+      src = " !foo; +foo; -foo; ~foo "
+      assert { to_ruby(src) == src }
+    end
+
     should "convert binary keyword operators" do
       src = " foo or bar and baz "
       assert { to_ruby(src) == src }

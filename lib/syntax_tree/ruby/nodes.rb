@@ -156,5 +156,9 @@ module SyntaxTree
         @identifier.token.to_sym
       end
     end
+
+    class UnaryOperator < Node
+      define_nodes :operator, :right
+    end
   end
 end
