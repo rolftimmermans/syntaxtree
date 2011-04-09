@@ -1,102 +1,119 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class StringTest < Test::Unit::TestCase
-  # Single quotes
-  test "string should return string" do
-    assert { statement("'abc'").class == Ruby::String }
+  context "string" do
+    subject { statement "'abc'" }
+
+    should "be string" do
+      assert { subject.class == Ruby::String }
+    end
+
+    should "have left delim" do
+      assert { subject.left_delim.token == "'" }
+    end
+
+    should "have left delim at correct position" do
+      assert { subject.left_delim.position == pos(0, 0) }
+    end
+
+    should "have right delim" do
+      assert { subject.right_delim.token == "'" }
+    end
+
+    should "have right delim at correct position" do
+      assert { subject.right_delim.position == pos(0, 4) }
+    end
+
+    should "have string contents" do
+      assert { subject.contents.class == Ruby::StringContents }
+    end
+
+    should "have string contents with elements" do
+      assert { subject.contents.elements.kind_of? Array }
+    end
+
+    should "have string contents with string value" do
+      assert { subject.contents.first.token == "abc" }
+    end
+
+    context "spanning multiple lines" do
+      subject { statement "'abc\ndef\nghi'" }
+
+      should "have string value" do
+        assert { subject.contents.inject("") { |s, l| s << l.token } == "abc\ndef\nghi" }
+      end
+    end
   end
 
-  test "string should return string with left delim" do
-    assert { statement("'abc'").left_delim.token == "'" }
+  context "quoted string" do
+    subject { statement "%Q{abc}" }
+
+    should "have left delim" do
+      assert { subject.left_delim.token == "%Q{" }
+    end
+
+    should "have right delim" do
+      assert { subject.right_delim.token == "}" }
+    end
   end
 
-  test "string should return string with left delim at correct position" do
-    assert { statement("'abc'").left_delim.position == pos(0, 0) }
+  context "interpolated string" do
+    subject { statement '"my #{foo; bar; baz}"' }
+
+    should "have left delim" do
+      assert { subject.left_delim.token == '"' }
+    end
+
+    should "have right delim" do
+      assert { subject.right_delim.token == '"' }
+    end
+
+    should "have string contents" do
+      assert { subject.contents.class == Ruby::StringContents }
+    end
+
+    should "have string part" do
+      assert { subject.contents.first.class == Ruby::StringPart }
+    end
+
+    should "have string value" do
+      assert { subject.contents.first.token == "my " }
+    end
+
+    should "have embedded expression" do
+      assert { subject.contents.last.class == Ruby::EmbeddedExpression }
+    end
+
+    should "have statement in expression" do
+      assert { subject.contents.last.statements.first.token == "foo" }
+    end
+
+    should "have embedded expression with left delimiter" do
+      assert { subject.contents.last.left_delim.token == '#{' }
+    end
+
+    should "have embedded expression with right delimiter" do
+      assert { subject.contents.last.right_delim.token == '}' }
+    end
+
+    should "have correct statements size in expression" do
+      assert { subject.contents.last.statements.size == 3 }
+    end
   end
 
-  test "string should return string with right delim" do
-    assert { statement("'abc'").right_delim.token == "'" }
-  end
+  context "interpolated variable in string" do
+    subject { statement '"my #@foo"' }
 
-  test "string should return string with right delim at correct position" do
-    assert { statement("'abc'").right_delim.position == pos(0, 4) }
-  end
+    should "have embedded variable" do
+      assert { subject.contents.last.class == Ruby::EmbeddedVariable }
+    end
 
-  test "string should return string with string contents" do
-    assert { statement("'abc'").contents.class == Ruby::StringContents }
-  end
+    should "have embedded variable with left delimier" do
+      assert { subject.contents.last.left_delim.token == "#" }
+    end
 
-  test "string should return string contents with elements" do
-    assert { statement("'abc'").contents.elements.kind_of? Array }
-  end
-
-  test "string should return string contents with string value" do
-    assert { statement("'abc'").contents.first.token == "abc" }
-  end
-
-  test "string should return string contents with string value for string that spans lines" do
-    assert { statement("'abc\ndef\nghi'").contents.inject("") { |s, l| s << l.token } == "abc\ndef\nghi" }
-  end
-
-  # Quoted string
-  test "string should return string with left delim for quoted string" do
-    assert { statement("%Q{abc}").left_delim.token == "%Q{" }
-  end
-
-  test "string should return string with right delim for quoted string" do
-    assert { statement("%Q{abc}").right_delim.token == "}" }
-  end
-
-  # Interpolated string
-  test "string should return string with left delim for interpolated string" do
-    assert { statement('"my #{foo}"').left_delim.token == '"' }
-  end
-
-  test "string should return string with right delim for interpolated string" do
-    assert { statement('"my #{foo}"').right_delim.token == '"' }
-  end
-
-  test "string should return string with string contents for interpolated string" do
-    assert { statement('"my #{foo}"').contents.class == Ruby::StringContents }
-  end
-
-  test "string should return string with string literal for interpolated string" do
-    assert { statement('"my #{foo}"').contents.first.class == Ruby::StringPart }
-  end
-
-  test "string should return string with string value for in interpolated string" do
-    assert { statement('"my #{foo}"').contents.first.token == "my " }
-  end
-
-  test "string should return string with embedded expression for interpolated string" do
-    assert { statement('"my #{foo}"').contents.last.class == Ruby::EmbeddedExpression }
-  end
-
-  test "string should return string with statement in expression for interpolated string" do
-    assert { statement('"my #{foo}"').contents.last.statements.first.token == "foo" }
-  end
-
-  test "string should return string with embedded expression with left delimiter for interpolated string" do
-    assert { statement('"my #{foo}"').contents.last.left_delim.token == '#{' }
-  end
-
-  test "string should return string with embedded expression with right delimiter for interpolated string" do
-    assert { statement('"my #{foo}"').contents.last.right_delim.token == '}' }
-  end
-
-  test "string should return string with correct statements size in expression for interpolated string" do
-    assert { statement('"my #{foo; bar; baz}"').contents.last.statements.size == 3 }
-  end
-
-  test "string should return string with embedded variable for interpolated string" do
-    assert { statement('"my #@foo"').contents.last.class == Ruby::EmbeddedVariable }
-  end
-
-  test "string should return string with embedded variable with left delimier for interpolated string" do
-    assert { statement('"my #@foo"').contents.last.left_delim.token == "#" }
-  end
-
-  test "string should return string with embedded variable with identifier for interpolated string" do
-    assert { statement('"my #@foo"').contents.last.identifier.token == "@foo" }
+    should "have embedded variable with identifier" do
+      assert { subject.contents.last.identifier.token == "@foo" }
+    end
   end
 end

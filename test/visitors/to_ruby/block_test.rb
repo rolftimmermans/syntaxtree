@@ -51,5 +51,10 @@ class ToRubyBlockTest < Test::Unit::TestCase
       src = "foo.bar(a, 3) do |x, y = 3, z = 'foo', *parameters, &block|\n  puts x; puts y\n  puts z\nend "
       assert { to_ruby(src) == src }
     end
+    
+    should "convert lambda" do
+      src = "lambda { |foo, bar = nil, *args| puts 'foo' }"
+      assert { to_ruby(src) == src }
+    end
   end
 end
