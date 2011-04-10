@@ -7,7 +7,7 @@ module SyntaxTree
           identifier: constant,
           operator: tokens.pop(:<),
           superclass: superclass,
-          statements: body,
+          expressions: body,
           right_delim: tokens.pop(:end))
       end
 
@@ -16,7 +16,7 @@ module SyntaxTree
           left_delim: tokens.pop(:class),
           operator: tokens.pop(:<<),
           identifier: identifier,
-          statements: body,
+          expressions: body,
           right_delim: tokens.pop(:end))
       end
 
@@ -24,7 +24,7 @@ module SyntaxTree
         Ruby::Module.new(
           left_delim: tokens.pop(:module),
           identifier: constant,
-          statements: body,
+          expressions: body,
           right_delim: tokens.pop(:end))
       end
 

@@ -15,12 +15,12 @@ class ClassTest < Test::Unit::TestCase
       assert { subject.identifier.token == "Foo" }
     end
 
-    should "have statements attribute" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+    should "have expressions attribute" do
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have no statements" do
-      assert { subject.statements.elements == [] }
+    should "have no expressions" do
+      assert { subject.expressions.elements == [] }
     end
 
     should "have no operator" do
@@ -32,21 +32,21 @@ class ClassTest < Test::Unit::TestCase
     end
   end
 
-  context "class with statements" do
+  context "class with expressions" do
     subject { statement "class Foo; define_foo; define_bar; 3; end" }
 
     should_be Ruby::Class
 
-    should "have statements attribute" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+    should "have expressions attribute" do
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have statements" do
-      assert { subject.statements.first.class == Ruby::Variable }
+    should "have expressions" do
+      assert { subject.expressions.first.class == Ruby::Variable }
     end
 
     should "have correct statement length" do
-      assert { subject.statements.size == 3 }
+      assert { subject.expressions.size == 3 }
     end
   end
 
@@ -102,12 +102,12 @@ class ClassTest < Test::Unit::TestCase
       assert { subject.identifier.token == "foo_bar" }
     end
 
-    should "have statements" do
-      assert { subject.statements.first.class == Ruby::Variable }
+    should "have expressions" do
+      assert { subject.expressions.first.class == Ruby::Variable }
     end
 
     should "have correct statement length" do
-      assert { subject.statements.size == 2 }
+      assert { subject.expressions.size == 2 }
     end
   end
 

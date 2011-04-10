@@ -22,7 +22,7 @@ class ToRubyModuleTest < Test::Unit::TestCase
       assert { to_ruby(src) == src }
     end
 
-    should "convert module definition with statements" do
+    should "convert module definition with expressions" do
       src = "module Foo::Bar::Baz\n\nfoo\nbar\n\nend"
       assert { to_ruby(src) == src }
     end

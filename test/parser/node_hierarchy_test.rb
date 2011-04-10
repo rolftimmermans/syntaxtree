@@ -98,23 +98,22 @@ class NodeHierarchyTest < Test::Unit::TestCase
           #   ...
           # }
 
-          Symbol => {},
           DynamicSymbol => {},
           String => {},
           Regexp => {},
-          EmbeddedExpression => {},
-          EmbeddedVariable => {},
+
+          Symbol => {},
           Range => {},
           Association => {},
 
-          # Operator => { # Abstract
-          #   UnaryOperator => {},
-          #   BinaryOperator => {},
-          #   TernaryOperator => {},
-          # }
+          EmbeddedExpression => {},
+          EmbeddedVariable => {},
 
-          UnaryOperator => {},
-          BinaryOperator => {},
+          Operator => { # Abstract
+            UnaryOperator => {},
+            BinaryOperator => {},
+            # TernaryOperator => {},
+          },
 
           # ControlExpression => { # Abstract
           #   IfExpression => {

@@ -1,8 +1,8 @@
 module SyntaxTree
   module Events
     module Expressions
-      def on_program(statements)
-        Ruby::Program.new source: source, file: file, statements: statements, epilogue: epilogue
+      def on_program(expressions)
+        Ruby::Program.new source: source, file: file, expressions: expressions, epilogue: epilogue
       end
 
       def on_magic_comment(key, somehow_always_false)
@@ -22,9 +22,9 @@ module SyntaxTree
         Ruby::ExpressionList.new
       end
 
-      def on_stmts_add(statements, statement)
-        statements.push statement
-        statements
+      def on_stmts_add(expressions, statement)
+        expressions.push statement
+        expressions
       end
 
       def on_void_stmt
@@ -64,8 +64,8 @@ module SyntaxTree
       alias_method :on_var_alias, :on_alias
 
       # def on_body_stmt(body, rescue_block, else_block, ensure_block)
-      #   statements = [rescue_block, else_block, ensure_block].compact
-      #   body = body.to_chained_block(nil, statements) unless statements.empty?
+      #   expressions = [rescue_block, else_block, ensure_block].compact
+      #   body = body.to_chained_block(nil, expressions) unless expressions.empty?
       #   body
       # end
       #

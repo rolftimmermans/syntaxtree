@@ -162,31 +162,31 @@ class BlockTest < Test::Unit::TestCase
     end
   end
 
-  context "block without statements" do
+  context "block without expressions" do
     subject { statement("foo(a, b) { }").block }
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have no statements" do
-      assert { subject.statements.elements == [] }
+    should "have no expressions" do
+      assert { subject.expressions.elements == [] }
     end
   end
 
-  context "block with statements" do
+  context "block with expressions" do
     subject { statement("foo(a, b) { foo\nbar; baz }").block }
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have statements" do
-      assert { subject.statements.first.class == Ruby::Variable }
+    should "have expressions" do
+      assert { subject.expressions.first.class == Ruby::Variable }
     end
 
     should "have statement list with size" do
-      assert { subject.statements.size == 3 }
+      assert { subject.expressions.size == 3 }
     end
   end
 
@@ -204,11 +204,11 @@ class BlockTest < Test::Unit::TestCase
     end
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
     should "have statement list with size" do
-      assert { subject.statements.size == 2 }
+      assert { subject.expressions.size == 2 }
     end
   end
 end

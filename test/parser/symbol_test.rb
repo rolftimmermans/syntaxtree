@@ -66,7 +66,7 @@ class SymbolTest < Test::Unit::TestCase
     end
 
     should "have statement in expression" do
-      assert { subject.contents.elements[1].statements.first.token == "foo" }
+      assert { subject.contents.elements[1].expressions.first.token == "foo" }
     end
   end
 end

@@ -301,7 +301,7 @@ class KeywordTest < Test::Unit::TestCase
     context "block" do
       subject { statement(" BEGIN { puts 'foo'; puts 'bar' }").block }
 
-      should_have_statements 2
+      should_have_expressions 2
       should_have_delimiters "{", "}"
     end
   end
@@ -317,7 +317,7 @@ class KeywordTest < Test::Unit::TestCase
     context "block" do
       subject { statement(" END { puts 'foo'; puts 'bar' }").block }
 
-      should_have_statements 2
+      should_have_expressions 2
       should_have_delimiters "{", "}"
     end
   end

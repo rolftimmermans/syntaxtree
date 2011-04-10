@@ -17,8 +17,8 @@ module SyntaxTree
       end
 
       # def on_body_stmt(body, rescue_block, else_block, ensure_block)
-      #   statements = [rescue_block, else_block, ensure_block].compact
-      #   body = body.to_chained_block(nil, statements) unless statements.empty?
+      #   expressions = [rescue_block, else_block, ensure_block].compact
+      #   body = body.to_chained_block(nil, expressions) unless expressions.empty?
       #   body
       # end
       #

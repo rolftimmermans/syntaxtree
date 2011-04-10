@@ -7,7 +7,7 @@ class IfTest < Test::Unit::TestCase
     should_be Ruby::IfExpression
     should_have :expression, Ruby::Variable
     should_not_have :else
-    should_have_statements 2
+    should_have_expressions 2
     should_have_delimiters "if", "end"
   end
 
@@ -16,7 +16,7 @@ class IfTest < Test::Unit::TestCase
 
     should_be Ruby::IfExpression
     should_have :expression, Ruby::Variable
-    should_have_statements 2
+    should_have_expressions 2
     should_have_delimiters "if", "end"
 
   end
@@ -25,7 +25,7 @@ class IfTest < Test::Unit::TestCase
     subject { statement("if foo \n else puts 'baz'; puts 'qux' \n end").else }
 
     should_be Ruby::ElseExpression
-    should_have_statements 2
+    should_have_expressions 2
     should_have_left_delimiter "else"
   end
 
@@ -34,7 +34,7 @@ class IfTest < Test::Unit::TestCase
 
     should_be Ruby::IfExpression
     should_have :expression, Ruby::Variable
-    should_have_statements 2
+    should_have_expressions 2
     should_have_left_delimiter "elsif"
   end
 
@@ -44,7 +44,7 @@ class IfTest < Test::Unit::TestCase
     should_be Ruby::UnlessExpression
     should_have :expression, Ruby::Variable
     should_not_have :else
-    should_have_statements 2
+    should_have_expressions 2
     should_have_delimiters "unless", "end"
   end
 
@@ -54,8 +54,8 @@ class IfTest < Test::Unit::TestCase
     should_be Ruby::IfExpression
     should_have :expression, Ruby::Variable
     should_not_have :else
-    should_have_statements 2
-    should_have_statements_with_left_delimiter "then"
+    should_have_expressions 2
+    should_have_expressions_with_left_delimiter "then"
     should_have_delimiters "if", "end"
   end
 end

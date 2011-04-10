@@ -9,11 +9,11 @@ class ProgramTest < Test::Unit::TestCase
     end
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have no statements" do
-      assert { subject.statements.empty? }
+    should "have no expressions" do
+      assert { subject.expressions.empty? }
     end
   end
 
@@ -24,8 +24,8 @@ class ProgramTest < Test::Unit::TestCase
       assert { subject.class == Ruby::Program }
     end
 
-    should "have no statements" do
-      assert { subject.statements.empty? }
+    should "have no expressions" do
+      assert { subject.expressions.empty? }
     end
 
     should "have epilogue" do
@@ -37,7 +37,7 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "foo" }
 
     should "have identifier" do
-      assert { subject.statements.first.class == Ruby::Variable }
+      assert { subject.expressions.first.class == Ruby::Variable }
     end
   end
 
@@ -45,11 +45,11 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "foo; foo" }
 
     should "have identifier" do
-      assert { subject.statements.first.class == Ruby::Variable }
+      assert { subject.expressions.first.class == Ruby::Variable }
     end
 
     should "have identifier with prologue" do
-      assert { subject.statements.last.prologue.to_s == "; " }
+      assert { subject.expressions.last.prologue.to_s == "; " }
     end
   end
 
@@ -57,7 +57,7 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "foo;;; foo" }
 
     should "have identifier with prologue" do
-      assert { subject.statements.last.prologue.to_s == ";;; " }
+      assert { subject.expressions.last.prologue.to_s == ";;; " }
     end
   end
 
@@ -73,7 +73,7 @@ class ProgramTest < Test::Unit::TestCase
     subject { parse "foo \\\nbar" }
 
     should "have one statement" do
-      assert { subject.statements.size == 1 }
+      assert { subject.expressions.size == 1 }
     end
   end
 end

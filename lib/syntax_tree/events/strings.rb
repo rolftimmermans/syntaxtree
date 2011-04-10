@@ -31,10 +31,10 @@ module SyntaxTree
       alias_method :on_xstring_add, :on_string_add
       alias_method :on_regexp_add, :on_string_add
 
-      def on_string_embexpr(statements)
+      def on_string_embexpr(expressions)
         Ruby::EmbeddedExpression.new(
           left_delim: tokens.pop(:embexpr_beg),
-          statements: statements,
+          expressions: expressions,
           right_delim: tokens.pop(:rbrace))
       end
 

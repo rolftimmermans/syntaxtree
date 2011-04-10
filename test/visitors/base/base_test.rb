@@ -10,7 +10,7 @@ class BaseVisitorTest < Test::Unit::TestCase
           @visited = true
         end
       end
-      subject.accept parse(":'foo'").statements.first
+      subject.accept parse(":'foo'").expressions.first
       assert { subject.visited == true }
     end
 
@@ -20,7 +20,7 @@ class BaseVisitorTest < Test::Unit::TestCase
           @visited = true
         end
       end
-      subject.accept parse("foo").statements.first
+      subject.accept parse("foo").expressions.first
       assert { subject.visited == true }
     end
 

@@ -10,6 +10,12 @@ require "syntax_tree/ruby/node/summarizable"
 
 module SyntaxTree
   module Ruby
+    class Operator < Node
+      define_nodes :operator
+    end
+
+
+
     class Alias < Node
       define_nodes :keyword, :alias, :original
     end
@@ -26,12 +32,13 @@ module SyntaxTree
       define_nodes :key, :operator, :value
     end
 
-    class BinaryOperator < Node
-      define_nodes :left, :operator, :right
+    class BinaryOperator < Operator
+      prepend_nodes :left
+      append_nodes :right
     end
 
     class Block < Node
-      define_nodes :parameters, :statements
+      define_nodes :parameters, :expressions
 
       include Delimited
     end
@@ -49,7 +56,7 @@ module SyntaxTree
     end
 
     class Class < Node
-      define_nodes :identifier, :operator, :superclass, :statements
+      define_nodes :identifier, :operator, :superclass, :expressions
 
       include Delimited
     end
@@ -65,13 +72,13 @@ module SyntaxTree
     end
 
     class ElseExpression < Node
-      define_nodes :statements
+      define_nodes :expressions
 
       include LeftDelimited
     end
 
     class EmbeddedExpression < Node
-      define_nodes :statements
+      define_nodes :expressions
 
       include Delimited
     end
@@ -95,7 +102,7 @@ module SyntaxTree
     end
 
     class IfExpression < Node
-      define_nodes :expression, :statements, :else
+      define_nodes :expression, :expressions, :else
 
       include Delimited
     end
@@ -105,7 +112,7 @@ module SyntaxTree
     end
 
     class MetaClass < Class
-      define_nodes :operator, :identifier, :statements
+      define_nodes :operator, :identifier, :expressions
 
       include Delimited
     end
@@ -115,13 +122,13 @@ module SyntaxTree
     end
 
     class MethodDefinition < Node
-      define_nodes :receiver, :operator, :identifier, :parameters, :statements
+      define_nodes :receiver, :operator, :identifier, :parameters, :expressions
 
       include Delimited
     end
 
     class Module < Node
-      define_nodes :identifier, :statements
+      define_nodes :identifier, :expressions
 
       include Delimited
     end
@@ -136,7 +143,7 @@ module SyntaxTree
     class Program < Node
       attr_accessor :source, :file
 
-      define_nodes :statements
+      define_nodes :expressions
 
       include Epilogued
     end
@@ -186,12 +193,12 @@ module SyntaxTree
       end
     end
 
-    class UnaryOperator < Node
-      define_nodes :operator, :right
+    class UnaryOperator < Operator
+      append_nodes :right
     end
 
     class UnlessExpression < Node
-      define_nodes :expression, :statements, :else
+      define_nodes :expression, :expressions, :else
 
       include Delimited
     end

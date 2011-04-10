@@ -37,7 +37,7 @@ class Test::Unit::TestCase
   end
 
   def statement(source)
-    parse(source).statements.first
+    parse(source).expressions.first
   end
 
   def pos(line, col)

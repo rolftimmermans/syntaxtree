@@ -6,7 +6,7 @@ module SyntaxTree
           left_delim: tokens.pop(:def),
           identifier: identifier,
           parameters: parameters,
-          statements: body,
+          expressions: body,
           right_delim: tokens.pop(:end))
       end
 
@@ -17,7 +17,7 @@ module SyntaxTree
           operator: tokens.pop(:period, :"::"),
           identifier: identifier,
           parameters: parameters,
-          statements: body,
+          expressions: body,
           right_delim: tokens.pop(:end))
       end
     end

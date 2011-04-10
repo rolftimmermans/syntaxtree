@@ -41,14 +41,14 @@ module SyntaxTree
         Ruby::KeywordCall.new keyword: tokens.pop(:retry)
       end
 
-      def on_BEGIN(statements)
+      def on_BEGIN(expressions)
         # We pretend that the argument to BEGIN/END is a block, which it
         # technically isn't (e.g. do/end does not work, it requires braces).
         Ruby::KeywordCall.new(
           keyword: tokens.pop(:BEGIN, :END),
           block: Ruby::Block.new(
             left_delim: tokens.pop(:lbrace),
-            statements: statements,
+            expressions: expressions,
             right_delim: tokens.pop(:rbrace)))
       end
       alias_method :on_END, :on_BEGIN

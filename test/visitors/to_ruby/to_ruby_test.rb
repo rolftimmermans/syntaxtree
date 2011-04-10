@@ -17,23 +17,23 @@ class ToRubyTest < Test::Unit::TestCase
     assert { to_ruby(src) == src }
   end
 
-  # Multiple statements
-  test "multiple statements should be converted back to ruby" do
+  # Multiple expressions
+  test "multiple expressions should be converted back to ruby" do
     src = "1\n2\n3"
     assert { to_ruby(src) == src }
   end
 
-  test "multiple statements with semicolons should be converted back to ruby" do
+  test "multiple expressions with semicolons should be converted back to ruby" do
     src = "1; 2;  3"
     assert { to_ruby(src) == src }
   end
 
-  test "multiple statements with parentheses should be converted back to ruby" do
+  test "multiple expressions with parentheses should be converted back to ruby" do
     src = "(1; 2;  3)"
     assert { to_ruby(src) == src }
   end
 
-  test "multiple statements with individual parentheses should be converted back to ruby" do
+  test "multiple expressions with individual parentheses should be converted back to ruby" do
     src = "(1); ((2));  (((3)))"
     assert { to_ruby(src) == src }
   end

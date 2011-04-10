@@ -87,7 +87,7 @@ class RegexpTest < Test::Unit::TestCase
   end
 
   test "regexp should return regexp with statement in expression for interpolated regexp" do
-    assert { statement('/my #{foo}/').contents.last.statements.first.token == "foo" }
+    assert { statement('/my #{foo}/').contents.last.expressions.first.token == "foo" }
   end
 
   test "regexp should return regexp with embedded expression with left delimiter for interpolated regexp" do
@@ -98,7 +98,7 @@ class RegexpTest < Test::Unit::TestCase
     assert { statement('/my #{foo}/').contents.last.right_delim.token == '}' }
   end
 
-  test "regexp should return regexp with correct statements size in expression for interpolated regexp" do
-    assert { statement('/my #{foo; bar; baz}/').contents.last.statements.size == 3 }
+  test "regexp should return regexp with correct expressions size in expression for interpolated regexp" do
+    assert { statement('/my #{foo; bar; baz}/').contents.last.expressions.size == 3 }
   end
 end

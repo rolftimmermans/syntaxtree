@@ -59,15 +59,15 @@ class MethodDefinitionTest < Test::Unit::TestCase
     end
   end
 
-  context "method def with statements" do
+  context "method def with expressions" do
     subject { statement "def foo(a, b)\n  puts 'foo'; puts b\n end" }
 
-    should "have statements" do
-      assert { subject.statements.class == Ruby::ExpressionList }
+    should "have expressions" do
+      assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have statements with size" do
-      assert { subject.statements.size == 2 }
+    should "have expressions with size" do
+      assert { subject.expressions.size == 2 }
     end
   end
 

@@ -67,36 +67,36 @@ module TestMacros
     should_have_right_delimiter right
   end
 
-  def should_have_statements(amount)
-    should_have :statements, Ruby::ExpressionList
-    should "have statements with correct size" do
-      assert { subject.statements.size == amount }
+  def should_have_expressions(amount)
+    should_have :expressions, Ruby::ExpressionList
+    should "have expressions with correct size" do
+      assert { subject.expressions.size == amount }
     end
   end
 
-  def should_have_statements_with_left_delimiter(glyph)
-    should "have statements with left delimiter" do
-      assert { subject.statements.left_delim.kind_of? Ruby::Token }
+  def should_have_expressions_with_left_delimiter(glyph)
+    should "have expressions with left delimiter" do
+      assert { subject.expressions.left_delim.kind_of? Ruby::Token }
     end
 
-    should "have statements with left delimiter with correct glyph" do
-      assert { subject.statements.left_delim.token == glyph }
-    end
-  end
-
-
-  def should_have_statements_with_right_delimiter(glyph)
-    should "have statements with right delimiter" do
-      assert { subject.statements.right_delim.kind_of? Ruby::Token }
-    end
-
-    should "have statements with right delimiter with correct glyph" do
-      assert { subject.statements.right_delim.token == glyph }
+    should "have expressions with left delimiter with correct glyph" do
+      assert { subject.expressions.left_delim.token == glyph }
     end
   end
 
-  def should_have_statements_with_delimiters(left, right)
-    should_have_statements_with_left_delimiter left
-    should_have_statements_with_right_delimiter right
+
+  def should_have_expressions_with_right_delimiter(glyph)
+    should "have expressions with right delimiter" do
+      assert { subject.expressions.right_delim.kind_of? Ruby::Token }
+    end
+
+    should "have expressions with right delimiter with correct glyph" do
+      assert { subject.expressions.right_delim.token == glyph }
+    end
+  end
+
+  def should_have_expressions_with_delimiters(left, right)
+    should_have_expressions_with_left_delimiter left
+    should_have_expressions_with_right_delimiter right
   end
 end

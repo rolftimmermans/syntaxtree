@@ -36,12 +36,12 @@ module SyntaxTree
         method_call
       end
 
-      def on_brace_block(parameters, statements)
+      def on_brace_block(parameters, expressions)
         parameters ||= Ruby::ParameterList.new
         Ruby::Block.new(
           left_delim: tokens.pop(:lbrace, :do),
           parameters: parameters,
-          statements: statements,
+          expressions: expressions,
           right_delim: tokens.pop(:rbrace, :end))
       end
       alias_method :on_do_block, :on_brace_block

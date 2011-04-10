@@ -73,7 +73,7 @@ class StringTest < Test::Unit::TestCase
     end
 
     should "have statement in expression" do
-      assert { subject.contents.last.statements.first.token == "foo" }
+      assert { subject.contents.last.expressions.first.token == "foo" }
     end
 
     should "have embedded expression with left delimiter" do
@@ -84,8 +84,8 @@ class StringTest < Test::Unit::TestCase
       assert { subject.contents.last.right_delim.token == '}' }
     end
 
-    should "have correct statements size in expression" do
-      assert { subject.contents.last.statements.size == 3 }
+    should "have correct expressions size in expression" do
+      assert { subject.contents.last.expressions.size == 3 }
     end
   end
 
