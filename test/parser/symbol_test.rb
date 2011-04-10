@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class SymbolTest < Test::Unit::TestCase
   context "symbol" do
-    subject { statement "  :abc" }
+    subject { expression "  :abc" }
 
     should "be symbol" do
       assert { subject.class == Ruby::Symbol }
@@ -24,7 +24,7 @@ class SymbolTest < Test::Unit::TestCase
   end
 
   context "symbol with keyword name" do
-    subject { statement ":begin" }
+    subject { expression ":begin" }
 
     should "be symbol" do
       assert { subject.class == Ruby::Symbol }
@@ -43,7 +43,7 @@ class SymbolTest < Test::Unit::TestCase
   end
 
   context "dynamic symbol" do
-    subject { statement ':"my #{foo}"' }
+    subject { expression ':"my #{foo}"' }
 
     should "be dynamic symbol" do
       assert { subject.class == Ruby::DynamicSymbol }
@@ -65,7 +65,7 @@ class SymbolTest < Test::Unit::TestCase
       assert { subject.contents.elements[1].class == Ruby::EmbeddedExpression }
     end
 
-    should "have statement in expression" do
+    should "have expression in expression" do
       assert { subject.contents.elements[1].expressions.first.token == "foo" }
     end
   end

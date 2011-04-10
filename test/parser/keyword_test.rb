@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class KeywordTest < Test::Unit::TestCase
   context "nil" do
-    subject { statement "  nil" }
+    subject { expression "  nil" }
 
     should_be Ruby::Nil
     should_be_kind_of Ruby::Keyword
@@ -17,7 +17,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "true" do
-    subject { statement "  true" }
+    subject { expression "  true" }
 
     should_be Ruby::True
     should_be_kind_of Ruby::Keyword
@@ -36,7 +36,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "false" do
-    subject { statement "  false" }
+    subject { expression "  false" }
 
     should_be Ruby::False
     should_be_kind_of Ruby::Keyword
@@ -55,7 +55,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "self" do
-    subject { statement "  self" }
+    subject { expression "  self" }
 
     should_be Ruby::Self
     should_be_kind_of Ruby::Keyword

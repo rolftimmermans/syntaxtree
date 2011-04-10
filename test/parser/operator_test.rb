@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class OperatorTest < Test::Unit::TestCase
   context "unary keyword operator" do
-    subject { statement "not foo" }
+    subject { expression "not foo" }
 
     should "be unary operator" do
       assert { subject.class == Ruby::UnaryOperator }
@@ -22,7 +22,7 @@ class OperatorTest < Test::Unit::TestCase
   end
 
   context "unary token operator" do
-    subject { statement "!foo" }
+    subject { expression "!foo" }
 
     should "be unary operator" do
       assert { subject.class == Ruby::UnaryOperator }
@@ -42,7 +42,7 @@ class OperatorTest < Test::Unit::TestCase
   end
 
   context "binary keyword operator" do
-    subject { statement "foo or bar" }
+    subject { expression "foo or bar" }
 
     should "be binary operator" do
       assert { subject.class == Ruby::BinaryOperator }
@@ -66,7 +66,7 @@ class OperatorTest < Test::Unit::TestCase
   end
 
   context "binary token operator" do
-    subject { statement "foo && bar" }
+    subject { expression "foo && bar" }
 
     should "be binary operator" do
       assert { subject.class == Ruby::BinaryOperator }

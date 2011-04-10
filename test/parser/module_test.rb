@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class ModuleTest < Test::Unit::TestCase
   context "empty module" do
-    subject { statement "module Foo; end" }
+    subject { expression "module Foo; end" }
 
     should "be module" do
       assert { subject.class == Ruby::Module }
@@ -28,7 +28,7 @@ class ModuleTest < Test::Unit::TestCase
   end
 
   context "module with expressions" do
-    subject { statement "module Foo; define_foo; define_bar; 3; end" }
+    subject { expression "module Foo; define_foo; define_bar; 3; end" }
 
     should "be module" do
       assert { subject.class == Ruby::Module }
@@ -42,13 +42,13 @@ class ModuleTest < Test::Unit::TestCase
       assert { subject.expressions.first.class == Ruby::Variable }
     end
 
-    should "have correct statement length" do
+    should "have correct expression length" do
       assert { subject.expressions.size == 3 }
     end
   end
 
   context "namespaced module" do
-    subject { statement "module Foo::Bar::Baz::Qux; end" }
+    subject { expression "module Foo::Bar::Baz::Qux; end" }
 
     should "be module" do
       assert { subject.class == Ruby::Module }

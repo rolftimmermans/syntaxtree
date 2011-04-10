@@ -36,7 +36,7 @@ class Test::Unit::TestCase
     RubyParser.new(source, "test.rb").parse
   end
 
-  def statement(source)
+  def expression(source)
     parse(source).expressions.first
   end
 

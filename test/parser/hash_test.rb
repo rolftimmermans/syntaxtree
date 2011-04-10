@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class HashTest < Test::Unit::TestCase
   context "empty hash" do
-    subject { statement "{}" }
+    subject { expression "{}" }
 
     should_be Ruby::Hash
 
@@ -12,7 +12,7 @@ class HashTest < Test::Unit::TestCase
   end
 
   context "hash" do
-    subject { statement "{ :one => 2, :two => 3 }" }
+    subject { expression "{ :one => 2, :two => 3 }" }
 
     should_be Ruby::Hash
     should_have_delimiters "{", "}"

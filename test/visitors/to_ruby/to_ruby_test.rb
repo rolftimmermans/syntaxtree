@@ -2,17 +2,17 @@ require File.expand_path("../../test_helper", File.dirname(__FILE__))
 
 class ToRubyTest < Test::Unit::TestCase
   # Trivial programs
-  test "trivial statement should be converted back to ruby" do
+  test "trivial expression should be converted back to ruby" do
     src = "nil"
     assert { to_ruby(src) == src }
   end
 
-  test "trivial statement with whitespace should be converted back to ruby" do
+  test "trivial expression with whitespace should be converted back to ruby" do
     src = "\t  nil"
     assert { to_ruby(src) == src }
   end
 
-  test "trivial statement with trailing whitespace should be converted back to ruby" do
+  test "trivial expression with trailing whitespace should be converted back to ruby" do
     src = "  nil \t  "
     assert { to_ruby(src) == src }
   end

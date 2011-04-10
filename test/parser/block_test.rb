@@ -2,14 +2,14 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class BlockTest < Test::Unit::TestCase
   context "block without parameters" do
-    subject { statement("foo(a, b) { puts x }").block }
+    subject { expression("foo(a, b) { puts x }").block }
 
     should_be Ruby::Block
     should_have :parameters, Ruby::ParameterList
   end
 
   context "block with empty parameters" do
-    subject { statement("foo(a, b) { || puts x }").block }
+    subject { expression("foo(a, b) { || puts x }").block }
 
     should "have parameter list" do
       assert { subject.parameters.class == Ruby::ParameterList }
@@ -33,7 +33,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with empty parameters with space" do
-    subject { statement("foo(a, b) { |  | puts x }").block }
+    subject { expression("foo(a, b) { |  | puts x }").block }
 
     should "have parameter list" do
       assert { subject.parameters.class == Ruby::ParameterList }
@@ -57,7 +57,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with parameter" do
-    subject { statement("foo(a, b) { |x| puts x }").block }
+    subject { expression("foo(a, b) { |x| puts x }").block }
 
     should_be Ruby::Block
 
@@ -74,7 +74,7 @@ class BlockTest < Test::Unit::TestCase
     end
 
     context "with excess comma" do
-      subject { statement("foo(a, b) { |x, y, | puts x }").block }
+      subject { expression("foo(a, b) { |x, y, | puts x }").block }
 
       should "should have parameter list with size" do
         assert { subject.parameters.size == 2 }
@@ -83,7 +83,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with default parameter" do
-    subject { statement("foo(a, b) { |x, y = 3| puts x }").block }
+    subject { expression("foo(a, b) { |x, y = 3| puts x }").block }
 
     should "have parameter list" do
       assert { subject.parameters.class == Ruby::ParameterList }
@@ -103,7 +103,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with regular parameter after default parametr" do
-    subject { statement("foo(a, b) { |x, y = 3, z| puts x }").block }
+    subject { expression("foo(a, b) { |x, y = 3, z| puts x }").block }
 
     should "have parameter with token" do
       assert { subject.parameters.last.token == "z" }
@@ -111,7 +111,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with only a default parameter" do
-    subject { statement("foo(a, b) { |x = 3| puts x }").block }
+    subject { expression("foo(a, b) { |x = 3| puts x }").block }
 
     should "have default parameter" do
       assert { subject.parameters.first.class == Ruby::DefaultParameter }
@@ -123,7 +123,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with splat parameter" do
-    subject { statement("foo(a, b) { |x, *other| puts x }").block }
+    subject { expression("foo(a, b) { |x, *other| puts x }").block }
 
     should "have splat parameter" do
       assert { subject.parameters.last.class == Ruby::SplatParameter }
@@ -143,7 +143,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with block parameter" do
-    subject { statement("foo(a, b) { |x, &block| puts x }").block }
+    subject { expression("foo(a, b) { |x, &block| puts x }").block }
 
     should "have block parameter" do
       assert { subject.parameters.last.class == Ruby::BlockParameter }
@@ -163,9 +163,9 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block without expressions" do
-    subject { statement("foo(a, b) { }").block }
+    subject { expression("foo(a, b) { }").block }
 
-    should "have statement list" do
+    should "have expression list" do
       assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
@@ -175,9 +175,9 @@ class BlockTest < Test::Unit::TestCase
   end
 
   context "block with expressions" do
-    subject { statement("foo(a, b) { foo\nbar; baz }").block }
+    subject { expression("foo(a, b) { foo\nbar; baz }").block }
 
-    should "have statement list" do
+    should "have expression list" do
       assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
@@ -185,13 +185,13 @@ class BlockTest < Test::Unit::TestCase
       assert { subject.expressions.first.class == Ruby::Variable }
     end
 
-    should "have statement list with size" do
+    should "have expression list with size" do
       assert { subject.expressions.size == 3 }
     end
   end
 
   context "block with do keyword" do
-    subject { statement("foo(a, b) do |foo, bar = 3, baz = {}, *args, &block|\n  puts 'foo'\n  puts 'bar'\nend").block }
+    subject { expression("foo(a, b) do |foo, bar = 3, baz = {}, *args, &block|\n  puts 'foo'\n  puts 'bar'\nend").block }
 
     should_be Ruby::Block
 
@@ -203,11 +203,11 @@ class BlockTest < Test::Unit::TestCase
       assert { subject.parameters.size == 5 }
     end
 
-    should "have statement list" do
+    should "have expression list" do
       assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
-    should "have statement list with size" do
+    should "have expression list with size" do
       assert { subject.expressions.size == 2 }
     end
   end

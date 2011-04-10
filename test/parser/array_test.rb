@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class ArrayTest < Test::Unit::TestCase
   context "empty array" do
-    subject { statement "[]" }
+    subject { expression "[]" }
 
     should_be Ruby::Array
 
@@ -12,7 +12,7 @@ class ArrayTest < Test::Unit::TestCase
   end
 
   context "array" do
-    subject { statement "[1, 2, 3]" }
+    subject { expression "[1, 2, 3]" }
 
     should_be Ruby::Array
     should_have_delimiters "[", "]"
@@ -33,7 +33,7 @@ class ArrayTest < Test::Unit::TestCase
   end
 
   context "array with method calls" do
-    subject { statement "[foo(), bar()]" }
+    subject { expression "[foo(), bar()]" }
 
     should "have identifiers with prologue" do
       assert { subject.last.identifier.prologue.to_s == ", " }
@@ -41,7 +41,7 @@ class ArrayTest < Test::Unit::TestCase
   end
 
   context "array with trailing comma" do
-    subject { statement "[1, 2, 3, ]" }
+    subject { expression "[1, 2, 3, ]" }
 
     should_be Ruby::Array
 

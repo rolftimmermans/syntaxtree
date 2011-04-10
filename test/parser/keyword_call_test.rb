@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class KeywordTest < Test::Unit::TestCase
   context "alias" do
-    subject { statement "  alias one two" }
+    subject { expression "  alias one two" }
 
     should "be alias" do
       assert { subject.class == Ruby::Alias }
@@ -29,7 +29,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "variable alias" do
-    subject { statement "  alias $one $two" }
+    subject { expression "  alias $one $two" }
 
     should "be alias" do
       assert { subject.class == Ruby::Alias }
@@ -56,7 +56,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "bare super" do
-    subject { statement " super " }
+    subject { expression " super " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -66,7 +66,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "super without arguments" do
-    subject { statement " super() " }
+    subject { expression " super() " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -90,7 +90,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "super with arguments" do
-    subject { statement " super(foo, bar) " }
+    subject { expression " super(foo, bar) " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -110,7 +110,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "super with block" do
-    subject { statement " super { |a, b| puts 'foo' } " }
+    subject { expression " super { |a, b| puts 'foo' } " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -123,7 +123,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "bare yield" do
-    subject { statement " yield " }
+    subject { expression " yield " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -133,7 +133,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "yield without arguments" do
-    subject { statement " yield() " }
+    subject { expression " yield() " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -157,7 +157,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "yield with arguments" do
-    subject { statement " yield(foo, bar) " }
+    subject { expression " yield(foo, bar) " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -177,7 +177,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "bare return" do
-    subject { statement " return " }
+    subject { expression " return " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -187,7 +187,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "return without argument" do
-    subject { statement " return() " }
+    subject { expression " return() " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -211,7 +211,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "return with argument" do
-    subject { statement " return(foo) " }
+    subject { expression " return(foo) " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -230,7 +230,7 @@ class KeywordTest < Test::Unit::TestCase
     end
 
     context "with spaces before argument" do
-      subject { statement " return  (foo) " }
+      subject { expression " return  (foo) " }
 
       should "have argument list" do
         assert { subject.arguments.class == Ruby::ExpressionList }
@@ -247,7 +247,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   # context "return with multiple arguments" do
-  #   subject { statement " return(foo, bar) " }
+  #   subject { expression " return(foo, bar) " }
   #
   #   should "be keyword call" do
   #     assert { subject.class == Ruby::KeywordCall }
@@ -275,7 +275,7 @@ class KeywordTest < Test::Unit::TestCase
   # end
 
   context "bare next" do
-    subject { statement " next " }
+    subject { expression " next " }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -291,7 +291,7 @@ class KeywordTest < Test::Unit::TestCase
   # retry
 
   context "begin" do
-    subject { statement " BEGIN { puts 'foo'; puts 'bar' }" }
+    subject { expression " BEGIN { puts 'foo'; puts 'bar' }" }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -299,7 +299,7 @@ class KeywordTest < Test::Unit::TestCase
     should_have :block, Ruby::Block
 
     context "block" do
-      subject { statement(" BEGIN { puts 'foo'; puts 'bar' }").block }
+      subject { expression(" BEGIN { puts 'foo'; puts 'bar' }").block }
 
       should_have_expressions 2
       should_have_delimiters "{", "}"
@@ -307,7 +307,7 @@ class KeywordTest < Test::Unit::TestCase
   end
 
   context "end" do
-    subject { statement " END { puts 'foo'; puts 'bar' }" }
+    subject { expression " END { puts 'foo'; puts 'bar' }" }
 
     should_be Ruby::KeywordCall
     should_have :keyword, Ruby::Keyword
@@ -315,7 +315,7 @@ class KeywordTest < Test::Unit::TestCase
     should_have :block, Ruby::Block
 
     context "block" do
-      subject { statement(" END { puts 'foo'; puts 'bar' }").block }
+      subject { expression(" END { puts 'foo'; puts 'bar' }").block }
 
       should_have_expressions 2
       should_have_delimiters "{", "}"

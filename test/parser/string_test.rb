@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class StringTest < Test::Unit::TestCase
   context "string" do
-    subject { statement "'abc'" }
+    subject { expression "'abc'" }
 
     should "be string" do
       assert { subject.class == Ruby::String }
@@ -31,7 +31,7 @@ class StringTest < Test::Unit::TestCase
     end
 
     context "spanning multiple lines" do
-      subject { statement "'abc\ndef\nghi'" }
+      subject { expression "'abc\ndef\nghi'" }
 
       should "have string value" do
         assert { subject.contents.inject("") { |s, l| s << l.token } == "abc\ndef\nghi" }
@@ -40,13 +40,13 @@ class StringTest < Test::Unit::TestCase
   end
 
   context "quoted string" do
-    subject { statement "%Q{abc}" }
+    subject { expression "%Q{abc}" }
 
     should_have_delimiters "%Q{", "}"
   end
 
   context "interpolated string" do
-    subject { statement '"my #{foo; bar; baz}"' }
+    subject { expression '"my #{foo; bar; baz}"' }
 
     should "have left delim" do
       assert { subject.left_delim.token == '"' }
@@ -72,7 +72,7 @@ class StringTest < Test::Unit::TestCase
       assert { subject.contents.last.class == Ruby::EmbeddedExpression }
     end
 
-    should "have statement in expression" do
+    should "have expression in expression" do
       assert { subject.contents.last.expressions.first.token == "foo" }
     end
 
@@ -90,7 +90,7 @@ class StringTest < Test::Unit::TestCase
   end
 
   context "interpolated variable in string" do
-    subject { statement '"my #@foo"' }
+    subject { expression '"my #@foo"' }
 
     should "have embedded variable" do
       assert { subject.contents.last.class == Ruby::EmbeddedVariable }

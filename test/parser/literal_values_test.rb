@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class LiteralValuesTest < Test::Unit::TestCase
   context "integer" do
-    subject { statement "  123" }
+    subject { expression "  123" }
 
     should "be literal" do
       assert { subject.kind_of? Ruby::Literal }
@@ -26,7 +26,7 @@ class LiteralValuesTest < Test::Unit::TestCase
   end
 
   context "float" do
-    subject { statement "  1.23" }
+    subject { expression "  1.23" }
 
     should "be literal" do
       assert { subject.kind_of? Ruby::Literal }
@@ -50,7 +50,7 @@ class LiteralValuesTest < Test::Unit::TestCase
   end
 
   context "character" do
-    subject { statement " ?x" }
+    subject { expression " ?x" }
 
     should "be literal" do
       assert { subject.kind_of? Ruby::Literal }
@@ -74,7 +74,7 @@ class LiteralValuesTest < Test::Unit::TestCase
   end
 
   context "label" do
-    subject { statement("{  label: bar }").first }
+    subject { expression("{  label: bar }").first }
 
     should "be literal" do
       assert { subject.key.kind_of? Ruby::Literal }

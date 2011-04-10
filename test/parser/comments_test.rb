@@ -1,8 +1,8 @@
 require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class CommentsTest < Test::Unit::TestCase
-  context "commented statement" do
-    subject { statement "# One two\n# Three four\n\ndef foo; end" }
+  context "commented expression" do
+    subject { expression "# One two\n# Three four\n\ndef foo; end" }
 
     setup do
       @comments = subject.left_delim.prologue.select { |c| c.kind_of? Ruby::Comment }
@@ -26,8 +26,8 @@ class CommentsTest < Test::Unit::TestCase
     end
   end
 
-  context "statement with multiline comment" do
-    subject { statement "=begin\nOne two\nThree four\n=end\n\ndef foo; end" }
+  context "expression with multiline comment" do
+    subject { expression "=begin\nOne two\nThree four\n=end\n\ndef foo; end" }
 
     setup do
       @comments = subject.left_delim.prologue.select { |c| c.kind_of? Ruby::Comment }

@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class ClassTest < Test::Unit::TestCase
   context "empty class" do
-    subject { statement "class Foo; end" }
+    subject { expression "class Foo; end" }
 
     should_be Ruby::Class
     should_have_delimiters "class", "end"
@@ -33,7 +33,7 @@ class ClassTest < Test::Unit::TestCase
   end
 
   context "class with expressions" do
-    subject { statement "class Foo; define_foo; define_bar; 3; end" }
+    subject { expression "class Foo; define_foo; define_bar; 3; end" }
 
     should_be Ruby::Class
 
@@ -45,13 +45,13 @@ class ClassTest < Test::Unit::TestCase
       assert { subject.expressions.first.class == Ruby::Variable }
     end
 
-    should "have correct statement length" do
+    should "have correct expression length" do
       assert { subject.expressions.size == 3 }
     end
   end
 
   context "namespaced class" do
-    subject { statement "class Foo::Bar::Baz::Qux; end" }
+    subject { expression "class Foo::Bar::Baz::Qux; end" }
 
     should_be Ruby::Class
     should_have :identifier, Ruby::Namespace
@@ -66,7 +66,7 @@ class ClassTest < Test::Unit::TestCase
   end
 
   context "child class" do
-    subject { statement "class Foo < Bar; end" }
+    subject { expression "class Foo < Bar; end" }
 
     should_be Ruby::Class
     should_have :superclass, Ruby::Constant
@@ -81,7 +81,7 @@ class ClassTest < Test::Unit::TestCase
   end
 
   context "metaclass" do
-    subject { statement "class << foo_bar; define_foo; def xyz(); end; end" }
+    subject { expression "class << foo_bar; define_foo; def xyz(); end; end" }
 
     should "be class" do
       assert { subject.kind_of? Ruby::Class }
@@ -106,13 +106,13 @@ class ClassTest < Test::Unit::TestCase
       assert { subject.expressions.first.class == Ruby::Variable }
     end
 
-    should "have correct statement length" do
+    should "have correct expression length" do
       assert { subject.expressions.size == 2 }
     end
   end
 
   context "singleton class" do
-    subject { statement "class << self; end" }
+    subject { expression "class << self; end" }
 
     should "be class" do
       assert { subject.kind_of? Ruby::Class }

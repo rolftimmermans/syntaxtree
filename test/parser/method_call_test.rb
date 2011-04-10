@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class MethodCallTest < Test::Unit::TestCase
   context "method call with empty args" do
-    subject { statement "foo()" }
+    subject { expression "foo()" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -42,7 +42,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with primitive args" do
-    subject { statement "foo(1, 2)" }
+    subject { expression "foo(1, 2)" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -86,7 +86,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with hash argument" do
-    subject { statement "foo(1, :foo => :bar)" }
+    subject { expression "foo(1, :foo => :bar)" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -118,7 +118,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with splat argument" do
-    subject { statement "foo(1, *args)" }
+    subject { expression "foo(1, *args)" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -142,7 +142,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with block argument" do
-    subject { statement "foo(1, &block)" }
+    subject { expression "foo(1, &block)" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -166,7 +166,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with receiver" do
-    subject { statement "foo.bar(1, 2)" }
+    subject { expression "foo.bar(1, 2)" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -198,7 +198,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with constant receiver" do
-    subject { statement "FooBar.bar(1, 2)" }
+    subject { expression "FooBar.bar(1, 2)" }
 
     should "have method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -221,7 +221,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     context "with colon operator" do
-      subject { statement "FooBar::bar(1, 2)" }
+      subject { expression "FooBar::bar(1, 2)" }
 
       should "should have operator" do
         assert { subject.operator.token == "::" }
@@ -230,7 +230,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call without parens" do
-    subject { statement "foo 1, 2" }
+    subject { expression "foo 1, 2" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -266,7 +266,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call without parens with receiver" do
-    subject { statement "foo.bar 1, 2" }
+    subject { expression "foo.bar 1, 2" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -310,7 +310,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "array element method call" do
-    subject { statement "foo[1, 3]" }
+    subject { expression "foo[1, 3]" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }
@@ -342,7 +342,7 @@ class MethodCallTest < Test::Unit::TestCase
   end
 
   context "method call with operator identifier" do
-    subject { statement "foo.<<(bar)" }
+    subject { expression "foo.<<(bar)" }
 
     should "be method call" do
       assert { subject.class == Ruby::MethodCall }

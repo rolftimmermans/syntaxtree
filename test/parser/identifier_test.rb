@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class IdentifierTest < Test::Unit::TestCase
   context "variable" do
-    subject { statement "foo" }
+    subject { expression "foo" }
 
     should_be Ruby::Variable
     should_be_kind_of Ruby::Identifier
@@ -10,7 +10,7 @@ class IdentifierTest < Test::Unit::TestCase
   end
 
   context "instance variable" do
-    subject { statement "@foo" }
+    subject { expression "@foo" }
 
     should_be Ruby::InstanceVariable
     should_be_kind_of Ruby::Identifier
@@ -18,7 +18,7 @@ class IdentifierTest < Test::Unit::TestCase
   end
 
   context "class variable" do
-    subject { statement "@@foo" }
+    subject { expression "@@foo" }
 
     should_be Ruby::ClassVariable
     should_be_kind_of Ruby::Identifier
@@ -26,7 +26,7 @@ class IdentifierTest < Test::Unit::TestCase
   end
 
   context "global variable" do
-    subject { statement "$foo" }
+    subject { expression "$foo" }
 
     should_be Ruby::GlobalVariable
     should_be_kind_of Ruby::Identifier
@@ -34,7 +34,7 @@ class IdentifierTest < Test::Unit::TestCase
   end
 
   context "back reference" do
-    subject { statement "$1" }
+    subject { expression "$1" }
 
     should_be Ruby::GlobalVariable
     should_be_kind_of Ruby::Identifier

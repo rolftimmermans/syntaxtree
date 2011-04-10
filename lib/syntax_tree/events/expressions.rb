@@ -22,8 +22,8 @@ module SyntaxTree
         Ruby::ExpressionList.new
       end
 
-      def on_stmts_add(expressions, statement)
-        expressions.push statement
+      def on_stmts_add(expressions, expression)
+        expressions.push expression
         expressions
       end
 
@@ -70,9 +70,9 @@ module SyntaxTree
       # end
       #
       #
-      # def on_stmts_add(target, statement)
-      #   on_words_end if statement.is_a?(Ruby::Array) && !string_stack.empty? # simulating on_words_end event
-      #   target.elements << statement if statement
+      # def on_stmts_add(target, expression)
+      #   on_words_end if expression.is_a?(Ruby::Array) && !string_stack.empty? # simulating on_words_end event
+      #   target.elements << expression if expression
       #   target
       # end
     end

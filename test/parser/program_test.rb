@@ -8,7 +8,7 @@ class ProgramTest < Test::Unit::TestCase
       assert { subject.class == Ruby::Program }
     end
 
-    should "have statement list" do
+    should "have expression list" do
       assert { subject.expressions.class == Ruby::ExpressionList }
     end
 
@@ -33,7 +33,7 @@ class ProgramTest < Test::Unit::TestCase
     end
   end
 
-  context "program with statement" do
+  context "program with expression" do
     subject { parse "foo" }
 
     should "have identifier" do
@@ -69,10 +69,10 @@ class ProgramTest < Test::Unit::TestCase
     end
   end
 
-  context "program with statement on multiple lines" do
+  context "program with expression on multiple lines" do
     subject { parse "foo \\\nbar" }
 
-    should "have one statement" do
+    should "have one expression" do
       assert { subject.expressions.size == 1 }
     end
   end
