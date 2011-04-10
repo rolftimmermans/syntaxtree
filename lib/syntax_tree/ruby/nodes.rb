@@ -64,6 +64,12 @@ module SyntaxTree
       include Delimited
     end
 
+    class ElseExpression < Node
+      define_nodes :statements
+
+      include LeftDelimited
+    end
+
     class EmbeddedExpression < Node
       define_nodes :statements
 
@@ -80,12 +86,16 @@ module SyntaxTree
       include Summarizable
     end
 
+    class ExpressionList < Composite
+      include Delimited
+    end
+
     class Hash < Composite
       include Delimited
     end
 
-    class IfStatement < Node
-      define_nodes :expression, :statements
+    class IfExpression < Node
+      define_nodes :expression, :statements, :else
 
       include Delimited
     end
@@ -157,10 +167,6 @@ module SyntaxTree
       include LeftDelimited
     end
 
-    class Statements < Composite
-      include Delimited
-    end
-
     class String < Node
       define_nodes :contents
 
@@ -182,6 +188,12 @@ module SyntaxTree
 
     class UnaryOperator < Node
       define_nodes :operator, :right
+    end
+
+    class UnlessExpression < Node
+      define_nodes :expression, :statements, :else
+
+      include Delimited
     end
   end
 end

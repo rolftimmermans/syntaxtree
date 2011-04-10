@@ -23,7 +23,7 @@ module SyntaxTree
       # end
       #
       # def on_paren(node)
-      #   node = Ruby::Statements.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
+      #   node = Ruby::ExpressionList.new(node) unless node.is_a?(Ruby::ArgsList) || node.is_a?(Ruby::Params)
       #   node.rdelim ||= tokens.pop(:@rparen)
       #   node.ldelim ||= tokens.pop(:@lparen)
       #   node

@@ -61,6 +61,7 @@ module SyntaxTree
     include Events::Constants
     include Events::ControlStructures
     include Events::Errors
+    include Events::Expressions
     include Events::Hashes
     include Events::Identifiers
     include Events::KeywordCalls
@@ -70,7 +71,6 @@ module SyntaxTree
     include Events::MethodDefinitions
     include Events::Operators
     include Events::Parameters
-    include Events::Statements
     include Events::Strings
     include Events::Symbols
   end

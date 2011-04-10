@@ -16,7 +16,7 @@ class ClassTest < Test::Unit::TestCase
     end
 
     should "have statements attribute" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have no statements" do
@@ -38,7 +38,7 @@ class ClassTest < Test::Unit::TestCase
     should_be Ruby::Class
 
     should "have statements attribute" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have statements" do
@@ -54,7 +54,7 @@ class ClassTest < Test::Unit::TestCase
     subject { statement "class Foo::Bar::Baz::Qux; end" }
 
     should_be Ruby::Class
-    should_have_child_of_class :identifier, Ruby::Namespace
+    should_have :identifier, Ruby::Namespace
 
     should "have namespace with constant" do
       assert { subject.identifier.first.class == Ruby::Constant }
@@ -69,7 +69,7 @@ class ClassTest < Test::Unit::TestCase
     subject { statement "class Foo < Bar; end" }
 
     should_be Ruby::Class
-    should_have_child_of_class :superclass, Ruby::Constant
+    should_have :superclass, Ruby::Constant
 
     should "have superclass with correct token" do
       assert { subject.superclass.token == "Bar" }
@@ -119,6 +119,6 @@ class ClassTest < Test::Unit::TestCase
     end
 
     should_be Ruby::MetaClass
-    should_have_child_of_class :identifier, Ruby::Self
+    should_have :identifier, Ruby::Self
   end
 end

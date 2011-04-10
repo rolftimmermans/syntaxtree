@@ -9,7 +9,7 @@ class ProgramTest < Test::Unit::TestCase
     end
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have no statements" do

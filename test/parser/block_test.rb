@@ -5,7 +5,7 @@ class BlockTest < Test::Unit::TestCase
     subject { statement("foo(a, b) { puts x }").block }
 
     should_be Ruby::Block
-    should_have_child_of_class :parameters, Ruby::ParameterList
+    should_have :parameters, Ruby::ParameterList
   end
 
   context "block with empty parameters" do
@@ -166,7 +166,7 @@ class BlockTest < Test::Unit::TestCase
     subject { statement("foo(a, b) { }").block }
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have no statements" do
@@ -178,7 +178,7 @@ class BlockTest < Test::Unit::TestCase
     subject { statement("foo(a, b) { foo\nbar; baz }").block }
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have statements" do
@@ -204,7 +204,7 @@ class BlockTest < Test::Unit::TestCase
     end
 
     should "have statement list" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have statement list with size" do

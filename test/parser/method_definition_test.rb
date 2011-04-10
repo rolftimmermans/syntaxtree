@@ -63,7 +63,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
     subject { statement "def foo(a, b)\n  puts 'foo'; puts b\n end" }
 
     should "have statements" do
-      assert { subject.statements.class == Ruby::Statements }
+      assert { subject.statements.class == Ruby::ExpressionList }
     end
 
     should "have statements with size" do

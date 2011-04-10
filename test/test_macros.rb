@@ -24,20 +24,26 @@ module TestMacros
     end
   end
 
-  def should_have_child_of_class(name, klass)
+  def should_have(name, klass)
     should "have #{name}" do
       assert { subject.send(name).class == klass }
     end
   end
 
-  def should_have_child_with_token(name, token)
+  def should_not_have(name)
+    should "not have #{name}" do
+      assert { subject.send(name) == nil }
+    end
+  end
+
+  def should_have_with_token(name, token)
     should "have #{name} with token '#{token}'" do
       assert { subject.send(name).token == token }
     end
   end
 
   def should_have_statements(amount)
-    should_have_child_of_class :statements, Ruby::Statements
+    should_have :statements, Ruby::ExpressionList
     should "have statements with correct size" do
       assert { subject.statements.size == amount }
     end
@@ -66,5 +72,11 @@ module TestMacros
   def should_have_delimiters(left, right)
     should_have_left_delimiter left
     should_have_right_delimiter right
+  end
+
+  def child_should_be(name, klass)
+    should "name #{name} that is a #{klass}" do
+      assert { subject.send(name).class == klass }
+    end
   end
 end

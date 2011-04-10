@@ -30,13 +30,15 @@ class NodeHierarchyTest < Test::Unit::TestCase
             Epilogue => {},
             Prologue => {},
 
-            Statements => {},
+            ExpressionList => {},
+            ParameterList => {},
+            ArgumentList => {},
+
+            Namespace => {},
+
+            StringContents => {},
             Hash => {},
             Array => {},
-            ArgumentList => {},
-            ParameterList => {},
-            StringContents => {},
-            Namespace => {},
           },
 
           Program => {}, # Root node
@@ -56,8 +58,10 @@ class NodeHierarchyTest < Test::Unit::TestCase
           #     Next => {},
           #     Redo => {},
           #     Retry => {},
-          #     Yield => {}.
+          #     Yield => {},
           #     ...
+          #     Begin => {},
+          #     End => {}
           #   }
           # }
 
@@ -66,7 +70,7 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Alias => {},
 
           # Argument => { # Abstract
-          #   RegularArgument => {},
+          #   RegularArgument => {}, # FIXME "Regular"? "Simple"? "Required"?
           #   SplatArgument => {},
           #   BlockArgument => {},
           # }
@@ -112,13 +116,27 @@ class NodeHierarchyTest < Test::Unit::TestCase
           UnaryOperator => {},
           BinaryOperator => {},
 
-          # ControlStructure => { # Abstract
-          #   IfStatement => {}
+          # ControlExpression => { # Abstract
+          #   IfExpression => {
+          #     ElsIfExpression => {},
+          #     UnlessExpression => {}
+          #   },
+          #   ElseExpression => {}
+          #
+          #   IfModifier => {},
+          #   UnlessModifier => {},
+          #   WhileModifier => {},
+          #
           # }
 
-          IfStatement => {},
+          IfExpression => {},
+          UnlessExpression => {},
+          ElseExpression => {},
 
-          Token => { # Abstract, Leaf nodes
+          # IfModifier => {},
+          # UnlessModifier => {},
+
+          Token => { # Abstract
             Glyph => {},
             Keyword => {
               False => {},
@@ -133,8 +151,8 @@ class NodeHierarchyTest < Test::Unit::TestCase
               Label => {}
             },
             Identifier => {
-              Constant => {},
               Variable => {},
+              Constant => {},
               InstanceVariable => {},
               ClassVariable => {},
               GlobalVariable => {}
