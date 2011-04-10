@@ -81,5 +81,15 @@ class ToRubyKeywordCallTest < Test::Unit::TestCase
       src = " return 1, 2, *args"
       assert { to_ruby(src) == src }
     end
+    
+    should "convert begin" do
+      src = " BEGIN { puts 'foo'; bar }"
+      assert { to_ruby(src) == src }
+    end
+
+    should "convert end" do
+      src = " END { puts 'foo'; bar }"
+      assert { to_ruby(src) == src }
+    end
   end
 end

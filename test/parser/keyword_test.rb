@@ -4,13 +4,8 @@ class KeywordTest < Test::Unit::TestCase
   context "nil" do
     subject { statement "  nil" }
 
-    should "be keyword" do
-      assert { subject.kind_of? Ruby::Keyword }
-    end
-
-    should "be nil" do
-      assert { subject.class == Ruby::Nil }
-    end
+    should_be Ruby::Nil
+    should_be_kind_of Ruby::Keyword
 
     should "have nil value" do
       assert { subject.value == nil }
@@ -24,13 +19,8 @@ class KeywordTest < Test::Unit::TestCase
   context "true" do
     subject { statement "  true" }
 
-    should "be keyword" do
-      assert { subject.kind_of? Ruby::Keyword }
-    end
-
-    should "be true" do
-      assert { subject.class == Ruby::True }
-    end
+    should_be Ruby::True
+    should_be_kind_of Ruby::Keyword
 
     should "have true value" do
       assert { subject.value == true }
@@ -48,13 +38,8 @@ class KeywordTest < Test::Unit::TestCase
   context "false" do
     subject { statement "  false" }
 
-    should "be keyword" do
-      assert { subject.kind_of? Ruby::Keyword }
-    end
-
-    should "be false" do
-      assert { subject.class == Ruby::False }
-    end
+    should_be Ruby::False
+    should_be_kind_of Ruby::Keyword
 
     should "have false value" do
       assert { subject.value == false }
@@ -72,13 +57,8 @@ class KeywordTest < Test::Unit::TestCase
   context "self" do
     subject { statement "  self" }
 
-    should "be keyword" do
-      assert { subject.kind_of? Ruby::Keyword }
-    end
-
-    should "be self" do
-      assert { subject.class == Ruby::Self }
-    end
+    should_be Ruby::Self
+    should_be_kind_of Ruby::Keyword
 
     should "have position" do
       assert { subject.position == pos(0, 2) }

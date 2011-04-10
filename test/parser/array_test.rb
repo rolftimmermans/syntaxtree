@@ -16,14 +16,8 @@ class ArrayTest < Test::Unit::TestCase
 
     should_be Ruby::Array
     should_have_delimiters "[", "]"
-
-    should "have elements" do
-      assert { subject.elements.kind_of? Array }
-    end
-
-    should "have integers" do
-      assert { subject.first.class == Ruby::Integer }
-    end
+    should_have :elements, Array
+    should_have :first, Ruby::Integer
 
     should "have integers with prologue" do
       assert { subject.last.prologue.to_s == ", " }

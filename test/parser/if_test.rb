@@ -55,11 +55,7 @@ class IfTest < Test::Unit::TestCase
     should_have :expression, Ruby::Variable
     should_not_have :else
     should_have_statements 2
-
-    should "have statements with left delimiter" do
-      assert { subject.statements.left_delim.token == "then" }
-    end
-
+    should_have_statements_with_left_delimiter "then"
     should_have_delimiters "if", "end"
   end
 end
