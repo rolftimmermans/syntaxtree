@@ -58,8 +58,8 @@ module SyntaxTree
     include FailFast
 
     include Events::Arguments
-    include Events::Arrays
     include Events::Constants
+    include Events::ControlStructures
     include Events::Errors
     include Events::Hashes
     include Events::Identifiers

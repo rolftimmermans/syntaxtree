@@ -4,17 +4,8 @@ class ClassTest < Test::Unit::TestCase
   context "empty class" do
     subject { statement "class Foo; end" }
 
-    should "be class" do
-      assert { subject.class == Ruby::Class }
-    end
-
-    should "have left delimiter" do
-      assert { subject.left_delim.token == "class" }
-    end
-
-    should "have right delimiter" do
-      assert { subject.right_delim.token == "end" }
-    end
+    should_be Ruby::Class
+    should_have_delimiters "class", "end"
 
     should "have constant identifier" do
       assert { subject.identifier.class == Ruby::Constant }
@@ -44,9 +35,7 @@ class ClassTest < Test::Unit::TestCase
   context "class with statements" do
     subject { statement "class Foo; define_foo; define_bar; 3; end" }
 
-    should "be class" do
-      assert { subject.class == Ruby::Class }
-    end
+    should_be Ruby::Class
 
     should "have statements attribute" do
       assert { subject.statements.class == Ruby::Statements }
@@ -64,13 +53,8 @@ class ClassTest < Test::Unit::TestCase
   context "namespaced class" do
     subject { statement "class Foo::Bar::Baz::Qux; end" }
 
-    should "be class" do
-      assert { subject.class == Ruby::Class }
-    end
-
-    should "have namespace" do
-      assert { subject.identifier.class == Ruby::Namespace }
-    end
+    should_be Ruby::Class
+    should_have_child_of_class :identifier, Ruby::Namespace
 
     should "have namespace with constant" do
       assert { subject.identifier.first.class == Ruby::Constant }
@@ -84,13 +68,8 @@ class ClassTest < Test::Unit::TestCase
   context "child class" do
     subject { statement "class Foo < Bar; end" }
 
-    should "be class" do
-      assert { subject.class == Ruby::Class }
-    end
-
-    should "have superclass" do
-      assert { subject.superclass.class == Ruby::Constant }
-    end
+    should_be Ruby::Class
+    should_have_child_of_class :superclass, Ruby::Constant
 
     should "have superclass with correct token" do
       assert { subject.superclass.token == "Bar" }
@@ -108,17 +87,8 @@ class ClassTest < Test::Unit::TestCase
       assert { subject.kind_of? Ruby::Class }
     end
 
-    should "be metaclass" do
-      assert { subject.class == Ruby::MetaClass }
-    end
-
-    should "have left delimiter" do
-      assert { subject.left_delim.token == "class" }
-    end
-
-    should "have right delimiter" do
-      assert { subject.right_delim.token == "end" }
-    end
+    should_be Ruby::MetaClass
+    should_have_delimiters "class", "end"
 
     should "have operator" do
       assert { subject.operator.token == "<<" }
@@ -148,12 +118,7 @@ class ClassTest < Test::Unit::TestCase
       assert { subject.kind_of? Ruby::Class }
     end
 
-    should "be metaclass" do
-      assert { subject.class == Ruby::MetaClass }
-    end
-
-    should "have identifier" do
-      assert { subject.identifier.class == Ruby::Self }
-    end
+    should_be Ruby::MetaClass
+    should_have_child_of_class :identifier, Ruby::Self
   end
 end

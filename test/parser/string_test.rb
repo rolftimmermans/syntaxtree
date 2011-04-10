@@ -8,16 +8,10 @@ class StringTest < Test::Unit::TestCase
       assert { subject.class == Ruby::String }
     end
 
-    should "have left delim" do
-      assert { subject.left_delim.token == "'" }
-    end
+    should_have_delimiters "'", "'"
 
     should "have left delim at correct position" do
       assert { subject.left_delim.position == pos(0, 0) }
-    end
-
-    should "have right delim" do
-      assert { subject.right_delim.token == "'" }
     end
 
     should "have right delim at correct position" do
@@ -48,13 +42,7 @@ class StringTest < Test::Unit::TestCase
   context "quoted string" do
     subject { statement "%Q{abc}" }
 
-    should "have left delim" do
-      assert { subject.left_delim.token == "%Q{" }
-    end
-
-    should "have right delim" do
-      assert { subject.right_delim.token == "}" }
-    end
+    should_have_delimiters "%Q{", "}"
   end
 
   context "interpolated string" do

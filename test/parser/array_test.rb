@@ -4,9 +4,7 @@ class ArrayTest < Test::Unit::TestCase
   context "empty array" do
     subject { statement "[]" }
 
-    should "empty have array" do
-      assert { subject.class == Ruby::Array }
-    end
+    should_be Ruby::Array
 
     should "empty have array with no elements" do
       assert { subject.elements == [] }
@@ -16,17 +14,8 @@ class ArrayTest < Test::Unit::TestCase
   context "array" do
     subject { statement "[1, 2, 3]" }
 
-    should "be array" do
-      assert { subject.class == Ruby::Array }
-    end
-
-    should "have left delimiter" do
-      assert { subject.left_delim.token == "[" }
-    end
-
-    should "have right delimiter" do
-      assert { subject.right_delim.token == "]" }
-    end
+    should_be Ruby::Array
+    should_have_delimiters "[", "]"
 
     should "have elements" do
       assert { subject.elements.kind_of? Array }
@@ -60,9 +49,7 @@ class ArrayTest < Test::Unit::TestCase
   context "array with trailing comma" do
     subject { statement "[1, 2, 3, ]" }
 
-    should "be array" do
-      assert { subject.class == Ruby::Array }
-    end
+    should_be Ruby::Array
 
     should "have left delimiter with prologue" do
       assert { subject.right_delim.prologue.to_s == ", " }

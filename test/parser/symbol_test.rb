@@ -16,9 +16,7 @@ class SymbolTest < Test::Unit::TestCase
       assert { subject.value == :abc }
     end
 
-    should "have left delimiter" do
-      assert { subject.left_delim.token == ":" }
-    end
+    should_have_left_delimiter ":"
 
     should "have prologue" do
       assert { subject.left_delim.prologue.first.token == "  " }
@@ -40,9 +38,8 @@ class SymbolTest < Test::Unit::TestCase
       assert { subject.value == :begin }
     end
 
-    should "have left delimiter" do
-      assert { subject.left_delim.token == ":" }
-    end
+    should_have_left_delimiter ":"
+
   end
 
   context "dynamic symbol" do

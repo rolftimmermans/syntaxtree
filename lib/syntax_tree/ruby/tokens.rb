@@ -4,11 +4,16 @@ require "syntax_tree/ruby/node/prologued"
 module SyntaxTree
   module Ruby
     class Token < Node
-      define_nodes :token
+      define_nodes :token  # FIXME: Rename to :lexeme
+
       attr_accessor :position
+
       include Prologued
     end
 
+
+    class Glyph < Token
+    end
 
     class StringPart < Token
     end

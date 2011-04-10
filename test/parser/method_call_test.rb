@@ -37,7 +37,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "include delimiters in nodes" do
-      assert { subject.arguments.nodes.first.class == Ruby::Token }
+      assert { subject.arguments.nodes.first.class == Ruby::Glyph }
     end
   end
 
@@ -181,7 +181,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have operator" do
-      assert { subject.operator.class == Ruby::Token }
+      assert { subject.operator.class == Ruby::Glyph }
     end
 
     should "have operator with token" do
@@ -281,7 +281,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have operator" do
-      assert { subject.operator.class == Ruby::Token }
+      assert { subject.operator.class == Ruby::Glyph }
     end
 
     should "have operator with token" do
@@ -357,7 +357,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have operator" do
-      assert { subject.operator.class == Ruby::Token }
+      assert { subject.operator.class == Ruby::Glyph }
     end
 
     should "have operator with token" do
@@ -365,7 +365,7 @@ class MethodCallTest < Test::Unit::TestCase
     end
 
     should "have token identifier" do
-      assert { subject.identifier.class == Ruby::Token }
+      assert { subject.identifier.class == Ruby::Glyph }
     end
 
     should "have identifier with token" do

@@ -29,7 +29,7 @@ class OperatorTest < Test::Unit::TestCase
     end
 
     should "have operator" do
-      assert { subject.operator.class == Ruby::Token }
+      assert { subject.operator.class == Ruby::Glyph }
     end
 
     should "have operator with token" do
@@ -77,7 +77,7 @@ class OperatorTest < Test::Unit::TestCase
     end
 
     should "have operator" do
-      assert { subject.operator.class == Ruby::Token }
+      assert { subject.operator.class == Ruby::Glyph }
     end
 
     should "have operator with token" do

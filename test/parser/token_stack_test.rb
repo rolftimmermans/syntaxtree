@@ -2,7 +2,7 @@ require File.expand_path("../test_helper", File.dirname(__FILE__))
 
 class TokenStackTest < Test::Unit::TestCase
   def new_token(val = @val.succ!)
-    Ruby::Token.new token: @val, position: Ruby::Position.new(1, 1)
+    Ruby::Glyph.new token: @val, position: Ruby::Position.new(1, 1)
   end
 
   def setup

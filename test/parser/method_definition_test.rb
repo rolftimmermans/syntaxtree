@@ -28,13 +28,7 @@ class MethodDefinitionTest < Test::Unit::TestCase
       assert { subject.parameters.left_delim == nil }
     end
 
-    should "have left delim" do
-      assert { subject.left_delim.token == "def" }
-    end
-
-    should "have right delim" do
-      assert { subject.right_delim.token == "end" }
-    end
+    should_have_delimiters "def", "end"
   end
 
   context "method def with empty params" do

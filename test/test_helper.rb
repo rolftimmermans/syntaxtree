@@ -23,19 +23,14 @@ puts "#{Complete.round(2)}% complete"
 require "test/unit"
 require "wrong"
 require "shoulda-context"
+require File.expand_path("test_macros", File.dirname(__FILE__))
 
 Wrong.config.color
 
 class Test::Unit::TestCase
   include SyntaxTree
   include Wrong
-
-  class << self
-    # Support declarative specification of test methods.
-    def test(name)
-      define_method "test_#{name.gsub(/\s+/,'_')}".to_sym, &Proc.new
-    end
-  end
+  extend TestMacros
 
   def parse(source)
     RubyParser.new(source, "test.rb").parse
@@ -66,3 +61,5 @@ class Hash
     end
   end
 end
+
+# FIXME: Make Node, Composite, Token and Literal abstract.

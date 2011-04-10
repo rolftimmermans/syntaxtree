@@ -1,29 +1,6 @@
 module SyntaxTree
   module Events
     module Literals
-      LITERALS = %w{nil true false self}
-
-      def on_kw(keyword)
-        if LITERALS.include? keyword
-          create_named_keyword(keyword)
-        else
-          token = Ruby::Keyword.new token: keyword, position: position, prologue: prologue
-          tokens.push keyword.to_sym, token
-        end
-      end
-
-      def on_CHAR(character)
-        Ruby::Character.new token: character, position: position, prologue: prologue
-      end
-
-      def on_int(integer)
-        Ruby::Integer.new token: integer, position: position, prologue: prologue
-      end
-
-      def on_float(float)
-        Ruby::Float.new token: float, position: position, prologue: prologue
-      end
-
       def on_dot2(left, right)
         Ruby::Range.new begin: left, operator: tokens.pop(:".."), end: right
       end
@@ -32,17 +9,12 @@ module SyntaxTree
         Ruby::Range.new begin: left, operator: tokens.pop(:"..."), end: right
       end
 
-      def on_label(symbol)
-        Ruby::Label.new token: symbol, position: position, prologue: prologue
+      def on_array(argument_list)
+        Ruby::Array.new(
+          left_delim: tokens.pop(:lbracket),
+          elements: argument_list ? argument_list.elements : [],
+          right_delim: tokens.pop(:rbracket))
       end
-      
-      private
-
-      def create_named_keyword(token)
-        klass = Ruby.const_get(token[0].upcase + token[1..-1])
-        klass.new token: token, position: position, prologue: prologue
-      end
-
 
       # def on_body_stmt(body, rescue_block, else_block, ensure_block)
       #   statements = [rescue_block, else_block, ensure_block].compact

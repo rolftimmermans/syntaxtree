@@ -4,80 +4,40 @@ class IdentifierTest < Test::Unit::TestCase
   context "variable" do
     subject { statement "foo" }
 
-    should "be identifier" do
-      assert { subject.kind_of? Ruby::Identifier }
-    end
-
-    should "be variable" do
-      assert { subject.class == Ruby::Variable }
-    end
-
-    should "have token" do
-      assert { subject.token == "foo" }
-    end
+    should_be_kind_of Ruby::Identifier
+    should_be Ruby::Variable
+    should_have_token "foo"
   end
 
   context "instance variable" do
     subject { statement "@foo" }
 
-    should "be identifier" do
-      assert { subject.kind_of? Ruby::Identifier }
-    end
-
-    should "be instance variable" do
-      assert { subject.class == Ruby::InstanceVariable }
-    end
-
-    should "have token" do
-      assert { subject.token == "@foo" }
-    end
+    should_be_kind_of Ruby::Identifier
+    should_be Ruby::InstanceVariable
+    should_have_token "@foo"
   end
 
   context "class variable" do
     subject { statement "@@foo" }
 
-    should "be identifier" do
-      assert { subject.kind_of? Ruby::Identifier }
-    end
-
-    should "be class variable" do
-      assert { subject.class == Ruby::ClassVariable }
-    end
-
-    should "have token" do
-      assert { subject.token == "@@foo" }
-    end
+    should_be_kind_of Ruby::Identifier
+    should_be Ruby::ClassVariable
+    should_have_token "@@foo"
   end
 
   context "global variable" do
     subject { statement "$foo" }
 
-    should "be identifier" do
-      assert { subject.kind_of? Ruby::Identifier }
-    end
-
-    should "be global variable" do
-      assert { subject.class == Ruby::GlobalVariable }
-    end
-
-    should "have token" do
-      assert { subject.token == "$foo" }
-    end
+    should_be_kind_of Ruby::Identifier
+    should_be Ruby::GlobalVariable
+    should_have_token "$foo"
   end
 
   context "back reference" do
     subject { statement "$1" }
 
-    should "be identifier" do
-      assert { subject.kind_of? Ruby::Identifier }
-    end
-
-    should "be global variable" do
-      assert { subject.class == Ruby::GlobalVariable }
-    end
-
-    should "have token" do
-      assert { subject.token == "$1" }
-    end
+    should_be_kind_of Ruby::Identifier
+    should_be Ruby::GlobalVariable
+    should_have_token "$1"
   end
 end

@@ -13,6 +13,33 @@ module SyntaxTree
         RUBY
       end
 
+      NAMED_KEYWORDS = %w{nil true false self}
+
+      def on_kw(keyword)
+        if NAMED_KEYWORDS.include? keyword
+          create_named_keyword(keyword)
+        else
+          token = Ruby::Keyword.new token: keyword, position: position, prologue: prologue
+          tokens.push keyword.to_sym, token
+        end
+      end
+
+      def on_CHAR(character)
+        Ruby::Character.new token: character, position: position, prologue: prologue
+      end
+
+      def on_int(integer)
+        Ruby::Integer.new token: integer, position: position, prologue: prologue
+      end
+
+      def on_float(float)
+        Ruby::Float.new token: float, position: position, prologue: prologue
+      end
+
+      def on_label(symbol)
+        Ruby::Label.new token: symbol, position: position, prologue: prologue
+      end
+
       def on_tstring_content(content)
         token = Ruby::StringPart.new token: content, position: position
         tokens.push :tstring_content, token
@@ -45,7 +72,7 @@ module SyntaxTree
       def on_comment(comment)
         create_comment :comment, comment
       end
-      
+
       def on_embdoc_beg(comment)
         create_comment :comment, comment
       end
@@ -60,12 +87,12 @@ module SyntaxTree
 
       private
 
-      def push_token(klass = Ruby::Token, type, token)
+      def push_token(klass = Ruby::Glyph, type, token)
         tokens.push type, klass.new(token: token, position: position, prologue: prologue)
       end
 
       def push_token_no_prologue(type, token)
-        token = Ruby::Token.new token: token, position: position
+        token = Ruby::Glyph.new token: token, position: position
         tokens.push type, token
       end
 
@@ -77,6 +104,11 @@ module SyntaxTree
       def create_comment(type, token)
         token = Ruby::Comment.new token: token, position: position
         tokens.push type, token
+      end
+
+      def create_named_keyword(token)
+        klass = Ruby.const_get(token[0].upcase + token[1..-1])
+        klass.new token: token, position: position, prologue: prologue
       end
     end
   end

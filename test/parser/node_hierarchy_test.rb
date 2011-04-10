@@ -47,15 +47,52 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Module => {},
           Block => {},
 
+          # Call => { # Abstract
+          #   MethodCall => {},
+          #   KeywordCall => { # Abstract
+          #     Alias => {},
+          #     Defined => {},
+          #     Return => {},
+          #     Next => {},
+          #     Redo => {},
+          #     Retry => {},
+          #     Yield => {}.
+          #     ...
+          #   }
+          # }
+
           MethodCall => {},
           KeywordCall => {},
+          Alias => {},
+
+          # Argument => { # Abstract
+          #   RegularArgument => {},
+          #   SplatArgument => {},
+          #   BlockArgument => {},
+          # }
+
           SplatArgument => {},
           BlockArgument => {},
 
           MethodDefinition => {},
+
+          # Parameter => { # Abstract
+          #   RegularParameter => {},
+          #   DefaultParameter => {},
+          #   SplatParameter => {},
+          #   BlockParameter => {},
+          # }
+
           DefaultParameter => {},
           SplatParameter => {},
           BlockParameter => {},
+
+          # StringLike = { # Abstract
+          #   String = {},
+          #   Regexp = {},
+          #   DynamicSymbol = {},
+          #   ...
+          # }
 
           Symbol => {},
           DynamicSymbol => {},
@@ -66,12 +103,23 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Range => {},
           Association => {},
 
+          # Operator => { # Abstract
+          #   UnaryOperator => {},
+          #   BinaryOperator => {},
+          #   TernaryOperator => {},
+          # }
+
           UnaryOperator => {},
           BinaryOperator => {},
 
-          Alias => {},
+          # ControlStructure => { # Abstract
+          #   IfStatement => {}
+          # }
 
-          Token => { # Leaf nodes
+          IfStatement => {},
+
+          Token => { # Abstract, Leaf nodes
+            Glyph => {},
             Keyword => {
               False => {},
               True => {},

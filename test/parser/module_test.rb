@@ -8,13 +8,7 @@ class ModuleTest < Test::Unit::TestCase
       assert { subject.class == Ruby::Module }
     end
 
-    should "have left delimiter" do
-      assert { subject.left_delim.token == "module" }
-    end
-
-    should "have right delimiter" do
-      assert { subject.right_delim.token == "end" }
-    end
+    should_have_delimiters "module", "end"
 
     should "have constant identifier" do
       assert { subject.identifier.class == Ruby::Constant }

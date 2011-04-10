@@ -4,9 +4,7 @@ class HashTest < Test::Unit::TestCase
   context "empty hash" do
     subject { statement "{}" }
 
-    should "be hash" do
-      assert { subject.class == Ruby::Hash }
-    end
+    should_be Ruby::Hash
 
     should "have no elements" do
       assert { subject.elements.empty? }
@@ -16,17 +14,8 @@ class HashTest < Test::Unit::TestCase
   context "hash" do
     subject { statement "{ :one => 2, :two => 3 }" }
 
-    should "be hash" do
-      assert { subject.class == Ruby::Hash }
-    end
-
-    should "have left delimiter" do
-      assert { subject.left_delim.token == "{" }
-    end
-
-    should "have right delimiter" do
-      assert { subject.right_delim.token == "}" }
-    end
+    should_be Ruby::Hash
+    should_have_delimiters "{", "}"
 
     should "have association" do
       assert { subject.first.class == Ruby::Association }

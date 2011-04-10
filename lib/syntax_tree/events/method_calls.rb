@@ -74,11 +74,11 @@ module SyntaxTree
 
       def split_empty_block_delims
         incorrect_operator = tokens.pop(:"||")
-        left_delim = Ruby::Token.new(
+        left_delim = Ruby::Glyph.new(
           token: "|",
           position: incorrect_operator.position,
           prologue: incorrect_operator.prologue)
-        right_delim = Ruby::Token.new(
+        right_delim = Ruby::Glyph.new(
           token: "|",
           position: Ruby::Position.new(incorrect_operator.position.line, incorrect_operator.position.column + 1))
         [left_delim, right_delim]
