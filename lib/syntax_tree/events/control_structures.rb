@@ -5,7 +5,7 @@ module SyntaxTree
         expressions.left_delim = tokens.pop(:then)
         Ruby::IfExpression.new(
           left_delim: tokens.pop(:if),
-          expression: expression,
+          condition: expression,
           expressions: expressions,
           else: else_block,
           right_delim: tokens.pop(:end))
@@ -14,7 +14,7 @@ module SyntaxTree
       def on_unless(expression, expressions, else_block)
         Ruby::UnlessExpression.new(
           left_delim: tokens.pop(:unless),
-          expression: expression,
+          condition: expression,
           expressions: expressions,
           else: else_block,
           right_delim: tokens.pop(:end))
@@ -23,7 +23,7 @@ module SyntaxTree
       def on_elsif(expression, expressions, else_block)
         Ruby::IfExpression.new(
           left_delim: tokens.pop(:elsif),
-          expression: expression,
+          condition: expression,
           expressions: expressions,
           else: else_block)
       end

@@ -102,7 +102,7 @@ module SyntaxTree
     end
 
     class IfExpression < Node
-      define_nodes :expression, :expressions, :else
+      define_nodes :condition, :expressions, :else
 
       include Delimited
     end
@@ -198,7 +198,7 @@ module SyntaxTree
     end
 
     class UnlessExpression < Node
-      define_nodes :expression, :expressions, :else
+      define_nodes :condition, :expressions, :else
 
       include Delimited
     end

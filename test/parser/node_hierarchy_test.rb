@@ -70,7 +70,7 @@ class NodeHierarchyTest < Test::Unit::TestCase
           Alias => {},
 
           # Argument => { # Abstract
-          #   RegularArgument => {}, # FIXME "Regular"? "Simple"? "Required"?
+          #   RegularArgument => {}, # FIXME "Regular"? "Normal"? "Simple"? "Required"?
           #   SplatArgument => {},
           #   BlockArgument => {},
           # }
